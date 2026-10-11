@@ -21,7 +21,10 @@ Lo que ya está decidido (de los prototipos):
 - Membresía gratis: acceso a 2-3 secciones. Quien compra una aplicación tiene acceso total a la membresía.
 - Cuentas: solicitud y aprobación manual por Carlos. Se cobra a la empresa (organización), que invita a sus empleados.
 - Primeros cobros por factura manual; Stripe más adelante. Precios sin definir.
-- Primera app del MVP: Pendientes de obra (Control de horario después, verificando antes la parte legal).
+- Primer módulo del MVP: **Hostelería** (carta + pedidos + panel de barra), rehecho a partir de `Carloswxht/la-mar-de-gambas` (cliente real, sigue funcionando aparte hasta migrarlo). Pendientes de obra y Control de horario, después.
+- Hospedaje: el navegador solo habla con nuestro dominio (antibloqueos de LaLiga y Safari). Producción en VPS UE con IP propia; Vercel solo para vistas previas.
+- Webs de clientes: proyectos distintos (kit base, una carpeta por cliente), fuera del MVP.
+- Otros repos de Carlos: `war300`, `El-Recreo` (probablemente otro bar), `Sueloslagiralda-web`. Preguntar qué son antes de migrarlos.
 - Modelo (confirmado): una sola plataforma modular. Cada empresa recibe "su" app combinando módulos (Pendientes de obra, Control de horario…), su marca (logo, colores) y opciones/campos propios. Una sola base de datos con RLS por organización. Lo que no quepa en configuración se hace como módulo nuevo, que luego entra en el catálogo.
 
 Plan técnico del MVP: `docs/plan-mvp.md`.

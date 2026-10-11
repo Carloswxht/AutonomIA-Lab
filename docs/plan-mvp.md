@@ -1,70 +1,93 @@
 # Plan técnico del MVP — autonomIA Lab
 
-Estado: aprobado por Carlos (sesión 1). Nada programado todavía.
+Estado: aprobado por Carlos (sesión 1, 11 oct 2026). Nada programado todavía.
 
 ## Modelo
-Una sola plataforma modular. Cada empresa (organización) recibe "su" app combinando:
-1. Módulos activados (catálogo): en el MVP solo **Pendientes de obra**.
-2. Marca: nombre de la app, logo, color principal.
-3. Opciones: nombres de las cosas ("obra"/"proyecto"…), estados, campos extra.
+Una sola plataforma modular, UNA base de datos para todos los clientes. Cada empresa recibe "su" app combinando:
+1. **Módulos** activados (catálogo). Primer módulo: **Hostelería** (carta digital + pedidos + panel de barra).
+2. **Marca**: nombre de la app, logo, colores, tipografía.
+3. **Interruptores y opciones** por empresa (ver abajo) y campos personalizados para lo raro de cada negocio.
 
-Membresía: cuenta gratis → 3 secciones (Aplicaciones útiles, Ranking, Blog). Empresa con algún módulo comprado → acceso total.
-Lo que no quepa en opciones → módulo nuevo, cobrado a ese cliente, que luego entra al catálogo.
+- Cada tabla de módulo lleva `organizacion_id`. Una empresa solo ve sus filas y solo los módulos activados.
+  Las tablas de módulos que no usa existen, pero para ella están vacías.
+- Membresía: cuenta gratis → 3 secciones (Aplicaciones útiles, Ranking, Blog). Empresa con algún módulo comprado → acceso total.
+- Lo que no quepa en opciones → se programa una vez como opción o módulo nuevo y queda en el catálogo para todos.
+- Velocidad: índices por `organizacion_id` en todas las tablas; 1 o 200 clientes no se nota.
+
+## Primer módulo: Hostelería (a partir de La Mar de Gambas)
+Origen: repo `Carloswxht/la-mar-de-gambas` (HTML + Neon, carta v7 y panel v8 funcionando con cliente real).
+Se **rehace** dentro de la plataforma aprovechando diseño, lógica de pedidos y SQL (reglas anti-spam, estados,
+código secreto por mesa, precio que pone la base, limpieza de datos).
+**La Mar de Gambas sigue funcionando tal cual** hasta que la versión de la plataforma esté igual o mejor; entonces se migra
+(sus datos de Neon → la plataforma) sin cambiar los QR si es posible (redirección de las URL antiguas).
+
+Pantallas del módulo:
+- Carta pública por QR: `/<bar>/carta?mesa=N&c=CÓDIGO` (pestañas, Tapa/Plato, notas, tique, enviar pedido, estado del pedido).
+- Panel de barra: pedidos (nuevo → en preparación → servido), modificar pedido, nuevo pedido del camarero,
+  lista de precios y agotados, resumen del día, mesas (QR) y usuarios.
+- Roles dentro de cada bar: `admin`, `barra`, `camarero`.
+
+Interruptores por bar (los pone Carlos desde `/admin`):
+- Pedidos desde la mesa (si está apagado, la carta es solo para mirar).
+- Tamaños (Tapa/Plato, Copa/Botella).
+- Alérgenos en la carta.
+- Aceptación automática a los N minutos.
+- Resumen del día.
+- Futuro: checklist de apertura/cierre, reservas, etc.
 
 ## Tecnología
-- Next.js (App Router) + TypeScript, un solo repo. Estilos con variables CSS sacadas de `prototipos/`.
-- Supabase (UN proyecto, región UE): Auth, Postgres con `organizacion_id` y RLS por organización, Storage para fotos.
-- Vercel para desplegar, con vista previa por rama. `autonomialab.com` principal; `autonomialab.es` redirige a `.com`.
-- Tests: Vitest (lógica), Playwright en 390x844 (pantallas), tests de aislamiento RLS (empresa A no ve nada de empresa B).
+- Next.js (App Router) + TypeScript, un solo repo.
+- Supabase (UN proyecto, región UE): Postgres con RLS por organización, Auth, Storage (logos, fotos).
+  - La base de La Mar de Gambas está en Neon; los dos son Postgres, así que su SQL se aprovecha.
+- **Regla antibloqueo y de Safari:** el navegador SOLO habla con nuestro dominio. Datos, login y fotos pasan por el servidor
+  de la app (cookies de nuestro propio dominio). Así: (1) un bloqueo de LaLiga a IPs de Supabase/Cloudflare en España no
+  rompe la app; (2) Safari/iPhone no bloquea el login (problema que La Mar de Gambas tuvo con Neon Auth).
+- Hospedaje: vistas previas en Vercel durante el desarrollo. Producción (antes del primer cliente en la plataforma):
+  VPS en la UE con IP propia (p. ej. Hetzner, ~6–10 €/mes con copias). Nada de Cloudflare delante.
+- Tests: Vitest (lógica), Playwright a 390x844 (pantallas), tests de aislamiento RLS (empresa A no ve nada de B;
+  usuario anónimo solo puede crear pedidos válidos).
 - CI en GitHub Actions: lint + build + tests en cada push.
 
 ## Base de datos (primera migración)
-- `organizaciones`: nombre, slug, nombre_app, logo_url, color_primario, estado (activa/suspendida).
-- `perfiles`: un registro por usuario; `es_superadmin` (solo Carlos).
-- `miembros`: usuario ↔ organización, rol `admin` | `empleado`.
-- `solicitudes_cuenta`: nombre, email, empresa, teléfono, mensaje, estado (pendiente/aprobada/rechazada).
-- `modulos`: catálogo (clave, nombre).
-- `organizacion_modulos`: qué módulos tiene cada empresa + `config` (jsonb: nombres, estados, campos extra).
-- Pendientes de obra: `obras` (nombre, dirección, estado) y `pendientes` (obra, texto, para quién, estado, foto, creado por, fecha, `extra` jsonb).
-- RLS en todas: solo miembros de la organización; superadmin ve todo. Sin `using (true)` para `anon`
-  (única excepción: `anon` puede INSERTAR en `solicitudes_cuenta`, nunca leer).
-
-## Pantallas
-| Ruta | Qué es |
-|---|---|
-| `/` | Portada filtro (como `prototipos/index.html`) |
-| `/solicitar` | Formulario de solicitud de cuenta |
-| `/entrar` | Login (email + contraseña o enlace mágico) |
-| `/miembros` | Panel de tarjetas; las de pago bloqueadas → WhatsApp |
-| `/miembros/aplicaciones` | Catálogo de aplicaciones útiles (demos de los prototipos) |
-| `/app` | "Su" app: marca de la empresa + módulos activos |
-| `/app/pendientes` | Módulo Pendientes de obra |
-| `/app/equipo` | El admin de la empresa invita empleados |
-| `/admin` | Panel de Carlos: solicitudes, empresas, módulos, marca |
+Plataforma:
+- `organizaciones`: nombre, slug, nombre_app, logo_url, colores, tipografía, estado.
+- `perfiles` (`es_superadmin` solo Carlos), `miembros` (usuario ↔ organización, rol).
+- `solicitudes_cuenta` (anon solo INSERTA, nunca lee).
+- `modulos` (catálogo) y `organizacion_modulos` (activos + `config` jsonb con los interruptores).
+Hostelería (todas con `organizacion_id`):
+- `hos_categorias`, `hos_productos` (con tamaños y precio por tamaño, agotado, oculto, alérgenos),
+  `hos_mesas` (código secreto), `hos_pedidos`, `hos_pedido_lineas` (copian nombre, tamaño y precio del momento).
+- Pedidos de clientes anónimos: solo a través de funciones del servidor que comprueban código de mesa y límites anti-spam.
+- Sin `using (true)` para `anon` en ninguna tabla.
 
 ## Pasos (cada uno = commit pequeño + vista previa)
-1. Esqueleto Next.js, tipografías/colores, marca `[autonomIA Lab]`, CI.
-2. Migración SQL + RLS + tests de aislamiento.
-3. Portada + solicitar cuenta.
-4. Login + invitaciones.
-5. Panel `/admin`: aprobar solicitud → crea empresa e invita a su admin; activar módulos; logo y color.
-6. Panel de miembros con reglas gratis / total.
-7. Módulo Pendientes de obra (crear pendiente con foto, filtrar por obra, marcar resuelto, aviso al destinatario).
-8. Despliegue en Vercel + dominios. Prueba completa en móvil.
+1. Esqueleto Next.js, colores y tipografías, marca `[autonomIA Lab]`, CI.
+2. Proyecto Supabase + migración de plataforma + RLS + tests de aislamiento.
+3. Portada + solicitar cuenta + login.
+4. Panel `/admin` de Carlos: solicitudes, empresas, módulos, marca, interruptores.
+5. Panel de miembros (gratis / total).
+6. Hostelería — carta pública con la marca del bar.
+7. Hostelería — pedidos desde la mesa + panel de barra.
+8. Hostelería — precios, mesas/QR, usuarios, resumen del día.
+9. Segundo bar de ejemplo con otra marca (para enseñar a clientes; datos marcados como "ejemplo").
+10. Despliegue en VPS + dominio `autonomialab.com` (`.es` redirige). Prueba en iPhone y Android y un día de partido.
+11. Migrar La Mar de Gambas a la plataforma (cuando Carlos y el local lo aprueben).
 
-## Bloqueos de LaLiga (IPs bloqueadas en España durante partidos)
-- Regla: el navegador del usuario solo habla con NUESTRO dominio. Todas las llamadas a Supabase (datos, login, fotos)
-  pasan por el servidor de la app; así un bloqueo de las IPs de Supabase/Cloudflare en España no rompe la app.
-- Desarrollo y vistas previas: Vercel (rápido, vista previa por rama). Aun así, sus IPs se han visto afectadas alguna vez.
-- Producción (decidir antes del primer cliente): servidor propio en la UE con IP exclusiva (p. ej. Hetzner + Coolify),
-  sin compartir IP con webs piratas. El código es el mismo; solo cambia dónde se publica.
-- Antes de decidir: comprobar en bandaancha.eu/bloqueos-futbol si las IPs elegidas aparecen bloqueadas.
+## Mientras tanto
+Si aparece un bar nuevo antes de que el módulo esté listo: copiar La Mar de Gambas (1–2 días) y migrarlo después.
+Aceptable con 2–3 bares; a partir de 4–5 copias el mantenimiento se dispara.
 
 ## Fuera del MVP
-Stripe y planes, Control de horario (antes verificar la normativa en fuente oficial), blog/ranking reales,
-Universidad/Agentes/Plantillas, subdominio por cliente, notificaciones push, instancia dedicada.
+Pendientes de obra y Control de horario (este último, verificando antes la normativa en fuente oficial), módulos comunes
+(clientes, presupuestos, tareas, checklist), webs de clientes (kit base, una carpeta por cliente, mismo servidor),
+Stripe y planes, blog/ranking reales, Universidad/Agentes/Plantillas, subdominio o dominio propio por cliente,
+notificaciones push, instancia dedicada.
+
+## Costes previstos (no crecen por cliente)
+- Supabase Pro ~25 $/mes (el gratis se pausa y solo permite 2 proyectos activos; Carlos ya tiene 2).
+- VPS ~6–10 €/mes. Vercel solo para vistas previas (gratis no permite uso comercial).
+- Envío de correos (p. ej. Resend): plan gratis con límite; comprobar antes de lanzar.
 
 ## Riesgos y avisos
-- Emails: el correo de Supabase gratis tiene un límite muy bajo por hora → configurar un servicio de envío (p. ej. Resend) antes de clientes reales.
-- Supabase gratis se pausa por inactividad y permite 2 proyectos activos → plan Pro con el primer cliente.
-- Vercel gratis no permite uso comercial → plan Pro al lanzar.
+- Bloqueos de LaLiga: ver regla antibloqueo. Comprobar en bandaancha.eu/bloqueos-futbol las IPs elegidas.
+- El rehacer Hostelería cuesta trabajo una vez; a cambio, cada bar nuevo es configuración, no código.
