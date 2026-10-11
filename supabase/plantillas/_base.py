@@ -15,6 +15,8 @@ APAGADO = "#5C606C"
 AZUL = "#3B82F6"
 AZUL_VIVO = "#5B9CFF"
 AZUL_SUAVE = "#132342"
+AZUL_LINEA = "#1E3A63"
+RESALTE = "#1A1C22"
 TITULO = "'Space Grotesk','Segoe UI',Roboto,Helvetica,Arial,sans-serif"
 CUERPO = "'Work Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif"
 MONO = "'IBM Plex Mono',Menlo,Consolas,'Courier New',monospace"
@@ -61,9 +63,9 @@ def correo(preheader, etiqueta, titulo, parrafos, boton, enlace, extra_html, not
               <a href="{enlace}" target="_blank" style="display:inline-block;padding:16px 30px;font-family:{CUERPO};font-size:16px;font-weight:600;color:#FFFFFF;text-decoration:none;border-radius:12px;">{boton} &rarr;</a>
             </td></tr>
           </table>
-          <p style="margin:0 0 4px;font-family:{CUERPO};font-size:13px;line-height:1.5;color:{APAGADO};">{nota}</p>
+          <p style="margin:0 0 4px;font-family:{CUERPO};font-size:13px;line-height:1.5;color:{TENUE};">{nota}</p>
           {extra_html}
-          <p style="margin:26px 0 0;padding-top:20px;border-top:1px solid {BORDE};font-family:{CUERPO};font-size:12px;line-height:1.6;color:{APAGADO};">
+          <p style="margin:26px 0 0;padding-top:20px;border-top:1px solid {BORDE};font-family:{CUERPO};font-size:12px;line-height:1.6;color:{TENUE};">
             ¿El botón no funciona? Copia este enlace en tu navegador:<br>
             <a href="{enlace}" target="_blank" style="color:{TENUE};word-break:break-all;">{enlace}</a>
           </p>
@@ -85,21 +87,21 @@ def correo(preheader, etiqueta, titulo, parrafos, boton, enlace, extra_html, not
 
 def _ventaja(titulo, texto):
     return f"""
-            <tr><td style="padding:12px 16px;border:1px solid {BORDE};border-radius:12px;background:{FONDO};font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TEXTO};">
-              <span style="color:{AZUL_VIVO};">&rarr;</span>&nbsp; <b style="font-weight:600;">{titulo}</b><span style="color:{TENUE};"> · {texto}</span>
+            <tr><td bgcolor="{RESALTE}" style="padding:12px 16px;border:1px solid {AZUL_LINEA};border-radius:12px;background:{RESALTE};font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TEXTO};">
+              <span style="color:{AZUL_VIVO};">&rarr;</span>&nbsp; <b style="font-weight:600;">{titulo}</b><span style="color:#C3C8D2;"> · {texto}</span>
             </td></tr>
             <tr><td height="8" style="height:8px;font-size:0;line-height:0;">&nbsp;</td></tr>"""
 
 
 DENTRO = f"""
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:28px 0 0;">
-            <tr><td style="padding:0 0 6px;font-family:{MONO};font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:{APAGADO};">Qué encontrarás dentro</td></tr>
-            <tr><td style="padding:0 0 12px;font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TENUE};">Aplicaciones web empresariales pensadas para autónomos, pymes y empresas en España:</td></tr>
+            <tr><td style="padding:0 0 8px;font-family:{MONO};font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:{AZUL_VIVO};">Qué encontrarás dentro</td></tr>
+            <tr><td style="padding:0 0 14px;font-family:{TITULO};font-size:18px;line-height:1.4;font-weight:600;color:{TEXTO};">Aplicaciones web empresariales pensadas para autónomos, pymes y empresas en España:</td></tr>
             {_ventaja("Ahorra tiempo", "las tareas que hoy haces a mano, hechas solas.")}
             {_ventaja("Ahorra dinero", "menos papeleo, menos errores y menos herramientas sueltas.")}
             {_ventaja("Decide con datos", "toda la información de tu negocio ordenada en un panel, para decidir mejor y más rápido.")}
             {_ventaja("Atiende mejor", "que tus clientes nunca tengan que esperar.")}
-            <tr><td style="padding:4px 0 0;font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TENUE};">Y ejemplos reales que puedes probar desde el móvil.</td></tr>
+            <tr><td style="padding:4px 0 0;font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TEXTO};">Y ejemplos reales que puedes probar desde el móvil.</td></tr>
           </table>"""
 
 PLANTILLAS = {
