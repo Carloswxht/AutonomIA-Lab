@@ -40,7 +40,7 @@ La plantilla antigua (un HTML + Supabase con política abierta `anon`, un proyec
 - Next.js (App Router) + TypeScript, un solo repo.
 - Supabase: UN proyecto para todos los clientes. Auth real (email + contraseña / magic link), Postgres con `organizacion_id` en cada tabla y **RLS por organización**. Prohibido `using (true)` para `anon`.
 - Pagos: Stripe (suscripciones, portal de cliente). Más adelante.
-- Despliegue: Vercel (o Cloudflare si hay motivo). Previews por rama.
+- Despliegue: producción en VPS Hetzner (Alemania) con IP propia y solo dominios nuestros/de clientes; comprobar que la IP está limpia antes de usarla. Vercel SOLO para vistas previas internas (ningún cliente ni dominio de cliente pasa por Vercel). Nada de Cloudflare delante. Ver `docs/plan-mvp.md`.
 - Entrega del SQL: siempre el SQL exacto en `supabase/migrations/` y avisar a Carlos de lo que tiene que correr.
 
 ## Diseño
