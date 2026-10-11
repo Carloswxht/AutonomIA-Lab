@@ -38,6 +38,9 @@ Pasamos de páginas HTML sueltas a un **SaaS**. `prototipos/` son maquetas de re
 - Flujo de acceso: `/solicitar` → `/solicitud/[token]` (datos opcionales; sectores de más a menos autónomos en `src/lib/sectores.ts`: 7 primeros verificados con MITES ene-2026, resto aproximado).
 - **Hetzner (en curso, 11 oct)**: cuenta creada (particular, con su Gmail; sin VAT ID) y 2FA activa con Google Authenticator. **Pendiente**: verificación de identidad con **pasaporte** (Carlos no tiene DNI; lo hará más tarde). Recomendado (no urgente): rehacer la 2FA y la clave de recuperación porque salieron en capturas del chat. Después: crear proyecto `autonomIA Lab`, token de API como secreto del entorno + permitir `api.hetzner.cloud` en la red, y crear el servidor (precio exacto en pantalla antes de crearlo).
 - **Siguiente**: terminar Hetzner y publicar. Después: contenido de «Aplicaciones útiles» (portar demos del prototipo) y módulo Hostelería.
+- **Antes del primer cliente real (obligatorio)** — el alojamiento + mantenimiento se vende como ingreso recurrente (decidido; ante el cliente responde Carlos, no Supabase/Hetzner):
+  1. **Copias**: Supabase **Pro** (copia diaria; valorar PITR) + **copia propia nocturna** automática desde el servidor de Hetzner (`pg_dump`) a otro sitio (p. ej. Storage Box de Hetzner), con alerta si falla y **prueba de recuperación** periódica.
+  2. **Contrato tipo + encargo de tratamiento (RGPD)** revisado por gestor/abogado: copias diarias, pérdida máxima posible (horas desde la última copia), sin prometer 100 % de disponibilidad, responsabilidad limitada; aceptar los DPA de Hetzner, Supabase y Resend; aviso legal y política de privacidad.
 - Vista previa estática (sin servidor) de las pantallas públicas: https://claude.ai/artifact/ULY9dFJ6FGL6SkTjFLJErC (se regenera con `scripts/vista-previa.mjs`).
 
 ## Al empezar cada sesión
