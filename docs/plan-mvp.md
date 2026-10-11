@@ -64,9 +64,13 @@ Hostelería (todas con `organizacion_id`):
 - Pedidos de clientes anónimos: solo a través de funciones del servidor que comprueban código de mesa y límites anti-spam.
 - Sin `using (true)` para `anon` en ninguna tabla.
 
+## Tests de seguridad de la base
+`select pruebas.aislamiento();` → 'OK' o el motivo del fallo (crea datos de ejemplo y lo deshace todo).
+Lanzarlo tras cada migración que toque tablas o RLS, y ampliarlo con cada módulo nuevo.
+
 ## Pasos (cada uno = commit pequeño + vista previa)
-1. Esqueleto Next.js, colores y tipografías, marca `[autonomIA Lab]`, CI.
-2. Proyecto Supabase + migración de plataforma + RLS + tests de aislamiento.
+1. ✅ Esqueleto Next.js, colores y tipografías, marca `[autonomIA Lab]`, CI (11 oct).
+2. ✅ Proyecto Supabase + migración de plataforma + RLS + tests de aislamiento (11 oct).
 3. Portada + solicitar cuenta + login.
 4. Panel `/admin` de Carlos: solicitudes, empresas, módulos, marca, interruptores.
 5. Panel de miembros (gratis / total).

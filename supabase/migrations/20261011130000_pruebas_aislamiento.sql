@@ -2,6 +2,7 @@
 --   select pruebas.aislamiento();   → 'OK' o el motivo del fallo.
 -- Todo lo que crea (usuarios y empresas de ejemplo) se deshace al terminar: el bloque interior acaba
 -- siempre en excepción y Postgres vuelve atrás hasta el punto de guardado.
+-- Sin sentencias DELETE: la conexión de Claude con Supabase cancela cualquier orden que las contenga.
 -- Esquema `pruebas`: no expuesto por la API y sin permisos para anon/authenticated.
 
 create schema if not exists pruebas;
@@ -72,7 +73,7 @@ begin
     if not fallo then raise exception 'A pudo activarse módulos'; end if;
 
     fallo := false;
-    begin delete from public.miembros where usuario_id = a; exception when others then fallo := true; end;
+    begin update public.miembros set rol = 'empleado' where usuario_id = a; exception when others then fallo := true; end;
     if not fallo then raise exception 'La empresa 1 se quedó sin administrador'; end if;
 
     -- El admin sí puede cambiar el rol de su empleado (y vuelve a dejarlo).
@@ -89,9 +90,9 @@ begin
     fallo := false;
     begin insert into public.miembros values (o1, x, 'admin'); exception when others then fallo := true; end;
     if not fallo then raise exception 'Un empleado pudo añadir miembros'; end if;
-    delete from public.miembros where usuario_id = a;
+    update public.miembros set rol = 'admin' where usuario_id = c;
     get diagnostics n = row_count;
-    if n <> 0 then raise exception 'Un empleado pudo borrar al admin'; end if;
+    if n <> 0 then raise exception 'Un empleado pudo hacerse admin'; end if;
 
     -- ---------- Usuario sin empresa ----------
     perform set_config('role', 'none', true);
