@@ -26,8 +26,8 @@ La plantilla antigua (un HTML + Supabase con política abierta `anon`, un proyec
 - Next.js (App Router) + TypeScript, un solo repo.
 - Supabase: UN proyecto para todos los clientes. Auth real (email + contraseña / magic link), Postgres con `organizacion_id` en cada tabla y **RLS por organización**. Prohibido `using (true)` para `anon`.
 - Pagos: Stripe (suscripciones, portal de cliente). Más adelante.
-- Despliegue: **VPS propio con IP pública fija** (decidido por Carlos; NO Vercel). Propuesta: Coolify (deploys + previews por rama) + Caddy (HTTPS automático por dominio). Supabase en su nube, no autoalojado.
-- Webs de clientes: a medida, una por cliente (servicio). Las aplicaciones viven en el SaaS (un único código para todos) y la web del cliente enlaza a ellas (`app.dominio` o subdominio del cliente apuntando al VPS). Nunca copiar una aplicación por cliente.
+- Despliegue: **EN DISCUSIÓN, no decidido.** Carlos tiene un VPS (IP pública fija) y prefiere no usar Vercel. Propuesta: Coolify + Caddy en el VPS; base de datos en Supabase nube (o en el VPS: pendiente de decidir). Carlos quiere cobrar el hosting porque el cliente le reclama a él igualmente.
+- Webs de clientes (propuesta, pendiente de confirmar): a medida, una por cliente (servicio). Las aplicaciones viven en el SaaS (un único código para todos) y la web del cliente enlaza a ellas (`app.dominio` o subdominio del cliente apuntando al VPS). Nunca copiar una aplicación por cliente.
 - Entrega del SQL: siempre el SQL exacto en `supabase/migrations/` y avisar a Carlos de lo que tiene que correr.
 
 ## Diseño
