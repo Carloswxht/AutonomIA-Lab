@@ -3,15 +3,23 @@ import { NextResponse, type NextRequest } from "next/server";
 import { rutaSegura } from "@/lib/registro";
 import { crearClienteServidor } from "@/lib/supabase/servidor";
 
-// Destino de los enlaces de los correos (confirmar cuenta, cambiar contraseña).
-// Supabase ya ha marcado el correo como confirmado antes de llegar aquí; esto solo abre la sesión.
-// Si no se puede (enlace abierto en otro navegador o caducado), se explica en /confirmado.
+// Destino de los enlaces de los correos. Las plantillas de Supabase (Authentication → Emails) apuntan aquí con
+// token_hash, así el enlace funciona aunque se abra en otro navegador:
+//   Magic link (acceso aprobado):  {{ .SiteURL }}/auth/confirmar?token_hash={{ .TokenHash }}&type=magiclink
+//   Reset password:                {{ .SiteURL }}/auth/confirmar?token_hash={{ .TokenHash }}&type=recovery
+// También acepta ?code= (enlaces por defecto de Supabase, solo si se abren en el mismo navegador).
+const TRAS_TIPO: Partial<Record<EmailOtpType, string>> = {
+  magiclink: "/nueva-contrasena",
+  recovery: "/nueva-contrasena",
+};
+
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  const siguiente = rutaSegura(searchParams.get("siguiente"));
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
   const tipo = searchParams.get("type") as EmailOtpType | null;
+  const siguiente = rutaSegura(searchParams.get("siguiente") ?? (tipo ? TRAS_TIPO[tipo] : null));
+
   if (searchParams.get("error_code") || searchParams.get("error")) {
     return NextResponse.redirect(new URL("/confirmado?motivo=caducado", request.url));
   }

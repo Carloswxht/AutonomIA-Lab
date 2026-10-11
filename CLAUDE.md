@@ -19,7 +19,7 @@ Lo que ya está decidido (de los prototipos):
 ## Decidido en la sesión 1
 - Negocio: vender paneles y aplicaciones web a medida para cada empresa. La membresía es el gancho gratuito.
 - Membresía gratis: acceso a 2-3 secciones. Quien compra una aplicación tiene acceso total a la membresía.
-- Cuentas (cambiado el 11 oct): **registro libre** clásico (correo + contraseña + repetir + confirmación por email) → membresía gratis. Nada de nombre de empresa al registrarse. Cuando alguien compra una app, Carlos escribe su correo en /admin («Nuevo cliente») y se crea su espacio (organización) ligado a ese correo; los datos del negocio los pone Carlos. Se cobra al cliente (organización), que da acceso a sus empleados por correo.
+- Cuentas (decidido el 11 oct, versión final): **«Solicitar acceso» solo con el correo** → pantalla «Solicitud recibida, pendiente de aprobación, te escribiremos en breve» + formulario opcional (Eres: autónomo/pyme/empresa/otro, sector, nombre, WhatsApp, qué mejorar). Carlos aprueba en /admin → se crea el usuario y le llega un correo para entrar y crear su contraseña (nunca se envían contraseñas). Cuando alguien compra una app, Carlos lo da de alta como cliente con su correo («Nuevo cliente») y se crea su espacio (organización). Se cobra al cliente, que da acceso a sus empleados por correo.
 - Primeros cobros por factura manual; Stripe más adelante. Precios sin definir.
 - Primer módulo del MVP: **Hostelería** (carta + pedidos + panel de barra), rehecho a partir de `Carloswxht/la-mar-de-gambas` (cliente real, sigue funcionando aparte hasta migrarlo). Pendientes de obra y Control de horario, después.
 - Hospedaje: el navegador solo habla con nuestro dominio (antibloqueos de LaLiga y Safari). Producción futura en VPS Hetzner (Alemania) con IP propia. Sin Vercel. De momento sin servidor: Claude prueba la app en su entorno y envía capturas y un enlace de vista a Carlos.
@@ -36,7 +36,8 @@ Plan técnico del MVP: `docs/plan-mvp.md`.
 - Supabase MCP: cualquier SQL con `DELETE` se cancela solo; evitarlo o pedir a Carlos que lo ejecute en el SQL Editor.
 - Tests de seguridad de la base: `select pruebas.aislamiento(), pruebas.admin(), pruebas.clientes();` → 'OK'. Flujo real con usuario de prueba: ver `docs/pruebas.md`.
 - Carlos (carloswxht@gmail.com) es superadmin en la plataforma.
-- Correos de Supabase: el SMTP de serie NO envía (límite agotado); hace falta SMTP propio (Resend) para que funcionen el registro y «olvidé mi contraseña». Pendiente de Carlos.
+- Correos de Supabase: el SMTP de serie NO envía; hace falta SMTP propio (Resend) para el correo de aprobación y «olvidé mi contraseña». Pendiente de Carlos. Además, en Authentication → Emails las plantillas deben enlazar con token_hash (ver `src/app/auth/confirmar/route.ts`) y la Site URL debe ser el dominio real (cuando haya servidor).
+- Supabase MCP: también se cancela cualquier SQL con `DROP`. Para retirar algo: `revoke` o tabla nueva.
 
 ## Lo que NO está definido (aclararlo con Carlos en plan mode antes de programar)
 - Qué es exactamente el producto que se cobra y a quién (¿membresía con contenido?, ¿las aplicaciones como servicio para empresas?, ¿ambas?).

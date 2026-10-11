@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mensajeErrorAuth, rutaSegura, validarRegistro } from "./registro";
+import { mensajeErrorAuth, rutaSegura, validarContrasenas, validarCorreo } from "./registro";
 
 const formulario = (campos: Record<string, string>) => {
   const f = new FormData();
@@ -7,23 +7,33 @@ const formulario = (campos: Record<string, string>) => {
   return f;
 };
 
-describe("validarRegistro", () => {
-  it("acepta correo y dos contraseñas iguales, y normaliza el correo", () => {
-    expect(validarRegistro(formulario({ email: " Ana@Ejemplo.ES ", password: "unaclave8", password2: "unaclave8" }))).toEqual({
-      ok: true,
-      datos: { email: "ana@ejemplo.es", password: "unaclave8" },
-    });
+describe("validarCorreo", () => {
+  it("acepta y normaliza un correo", () => {
+    expect(validarCorreo(formulario({ email: " Ana@Ejemplo.ES " }))).toEqual({ ok: true, datos: { email: "ana@ejemplo.es" } });
   });
   it("rechaza un correo no válido", () => {
-    expect(validarRegistro(formulario({ email: "ana@", password: "unaclave8", password2: "unaclave8" })).ok).toBe(false);
+    expect(validarCorreo(formulario({ email: "ana@" })).ok).toBe(false);
+  });
+});
+
+describe("validarContrasenas", () => {
+  it("acepta dos contraseñas iguales de 8 o más", () => {
+    expect(validarContrasenas(formulario({ password: "unaclave8", password2: "unaclave8" }))).toEqual({
+      ok: true,
+      datos: { password: "unaclave8" },
+    });
   });
   it("pide al menos 8 caracteres", () => {
-    const r = validarRegistro(formulario({ email: "a@b.es", password: "corta", password2: "corta" }));
-    expect(r).toEqual({ ok: false, error: "La contraseña tiene que tener al menos 8 caracteres." });
+    expect(validarContrasenas(formulario({ password: "corta", password2: "corta" }))).toEqual({
+      ok: false,
+      error: "La contraseña tiene que tener al menos 8 caracteres.",
+    });
   });
   it("avisa si no coinciden", () => {
-    const r = validarRegistro(formulario({ email: "a@b.es", password: "unaclave8", password2: "otraclave8" }));
-    expect(r).toEqual({ ok: false, error: "Las contraseñas no coinciden." });
+    expect(validarContrasenas(formulario({ password: "unaclave8", password2: "otraclave8" }))).toEqual({
+      ok: false,
+      error: "Las contraseñas no coinciden.",
+    });
   });
 });
 

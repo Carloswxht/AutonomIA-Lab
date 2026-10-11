@@ -18,8 +18,8 @@ export default function Portada() {
           <Marca />
           <div className={styles.acceso}>
             <FormularioEntrar />
-            <Link href="/registro" className={styles.solicitar}>
-              ¿No tienes cuenta? <span>Crear cuenta</span>
+            <Link href="/solicitar" className={styles.solicitar}>
+              ¿No tienes cuenta? <span>Solicitar acceso</span>
             </Link>
             <Link href="/recuperar" className={styles.olvido}>
               ¿Olvidaste tu contraseña?

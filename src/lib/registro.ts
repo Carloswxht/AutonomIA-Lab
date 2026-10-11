@@ -22,14 +22,6 @@ export function validarContrasenas(f: FormData): ResultadoValidacion<{ password:
   return { ok: true, datos: { password } };
 }
 
-export function validarRegistro(f: FormData): ResultadoValidacion<{ email: string; password: string }> {
-  const correo = validarCorreo(f);
-  if (!correo.ok) return correo;
-  const claves = validarContrasenas(f);
-  if (!claves.ok) return claves;
-  return { ok: true, datos: { ...correo.datos, ...claves.datos } };
-}
-
 /** Traduce los errores de Supabase Auth a un mensaje claro. */
 export function mensajeErrorAuth(codigo: string | undefined): string {
   switch (codigo) {

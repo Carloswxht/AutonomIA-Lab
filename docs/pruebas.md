@@ -13,10 +13,10 @@ Necesita un usuario de prueba superadmin. La contraseña NO se guarda en el repo
    banned_until = null where email = 'ejemplo-pruebas@autonomialab.test'`.
 3. Hacerlo superadmin solo durante la prueba: `update public.perfiles set es_superadmin = true where id = …`.
 4. `PRUEBA_EMAIL=ejemplo-pruebas@autonomialab.test PRUEBA_PASSWORD=… npm run test:e2e`
-   - Hace de cliente `ejemplo-cliente@autonomialab.test` (existe, sin contraseña: no puede entrar).
-   - Con SMTP propio configurado, añadir `PRUEBA_REGISTRO=1` para probar también el registro por la web
-     (Supabase rechaza dominios `.test`, por eso usa `@autonomialab.com`).
-5. Al terminar: quitar superadmin, `banned_until = '2999-01-01'` y suspender las empresas `Ejemplo Bar %`
+   - Recorre: solicitar acceso → datos del negocio → aprobar → alta de cliente → marca, módulo y persona.
+   - Crea `ejemplo-solicitud-…@autonomialab.test` (sin contraseña) y un cliente «Ejemplo Bar …».
+5. Al terminar: quitar superadmin, `banned_until = '2999-01-01'` (también a `ejemplo-solicitud-%`), rechazar
+   solicitudes `ejemplo-%` pendientes y suspender las empresas `Ejemplo Bar %`
    (no se pueden borrar desde el MCP).
 
 En el entorno de Claude Code, Node necesita el proxy (`playwright.config.ts` ya lo pone en el servidor de pruebas).

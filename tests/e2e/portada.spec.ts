@@ -16,7 +16,7 @@ test("la portada muestra marca, acceso, mensajes y asesor", async ({ page }) => 
     "href",
     /^https:\/\/wa\.me\/34605288673\?text=/,
   );
-  await expect(page.getByRole("link", { name: /Crear cuenta/ })).toHaveAttribute("href", "/registro");
+  await expect(page.getByRole("link", { name: /Solicitar acceso/ })).toHaveAttribute("href", "/solicitar");
   await expect(page.getByRole("link", { name: "¿Olvidaste tu contraseña?" })).toHaveAttribute("href", "/recuperar");
   await sinScrollLateral(page);
   await page.screenshot({ path: "test-results/portada-390.png", fullPage: true });
@@ -39,28 +39,28 @@ test("sin sesión, miembros y administración vuelven a la portada", async ({ pa
   await expect(page).toHaveURL(/\/$/);
 });
 
-test("/solicitar lleva a crear cuenta", async ({ page }) => {
-  await page.goto("/solicitar");
-  await expect(page).toHaveURL(/\/registro$/);
+test("/registro lleva a solicitar acceso", async ({ page }) => {
+  await page.goto("/registro");
+  await expect(page).toHaveURL(/\/solicitar$/);
 });
 
-test("Crear cuenta valida las contraseñas", async ({ page }) => {
-  await page.goto("/registro");
-  await expect(page.getByRole("heading", { name: "Crear cuenta" })).toBeVisible();
-  await page.screenshot({ path: "test-results/registro-390.png", fullPage: true });
+test("Solicitar acceso pide un correo válido y lo conserva", async ({ page }) => {
+  await page.goto("/solicitar");
+  await expect(page.getByRole("heading", { name: "Solicitar acceso" })).toBeVisible();
+  await page.screenshot({ path: "test-results/solicitar-390.png", fullPage: true });
+  await page.getByLabel("Correo").fill("ejemplo@sin-punto");
+  await page.getByRole("button", { name: "Solicitar acceso" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "Revisa el correo" })).toBeVisible();
+  await expect(page.getByLabel("Correo")).toHaveValue("ejemplo@sin-punto");
+  await sinScrollLateral(page);
+});
 
-  await page.getByLabel("Correo").fill("ejemplo@ejemplo.com");
+test("Nueva contraseña comprueba que coincidan", async ({ page }) => {
+  await page.goto("/nueva-contrasena");
   await page.getByLabel("Contraseña", { exact: true }).fill("unaclave8");
   await page.getByLabel("Repite la contraseña").fill("otraclave8");
-  await page.getByRole("button", { name: "Crear cuenta" }).click();
+  await page.getByRole("button", { name: "Guardar contraseña" }).click();
   await expect(page.getByRole("alert").filter({ hasText: "Las contraseñas no coinciden." })).toBeVisible();
-
-  await expect(page.getByLabel("Correo")).toHaveValue("ejemplo@ejemplo.com");
-  await page.getByLabel("Contraseña", { exact: true }).fill("corta");
-  await page.getByLabel("Repite la contraseña").fill("corta");
-  await page.getByRole("button", { name: "Crear cuenta" }).click();
-  await expect(page.getByRole("alert").filter({ hasText: "al menos 8 caracteres" })).toBeVisible();
-  await sinScrollLateral(page);
 });
 
 test("los enlaces caducados se explican", async ({ page }) => {

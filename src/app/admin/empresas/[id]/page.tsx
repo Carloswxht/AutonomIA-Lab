@@ -127,7 +127,7 @@ export default async function Empresa({ params }: PageProps<"/admin/empresas/[id
             <option value="admin">Administrador de la empresa</option>
           </select>
           <p className={styles.nota}>
-            La persona tiene que haberse registrado antes en autonomialab.com con ese correo.
+            La persona tiene que tener acceso aprobado con ese correo.
           </p>
         </FormularioAccion>
       </section>
