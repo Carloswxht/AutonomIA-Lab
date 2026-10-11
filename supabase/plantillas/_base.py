@@ -19,7 +19,7 @@ AZUL_LINEA = "#1E3A63"
 RESALTE = "#1A1C22"
 TITULO = "'Space Grotesk','Segoe UI',Roboto,Helvetica,Arial,sans-serif"
 CUERPO = "'Work Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif"
-MONO = "'IBM Plex Mono',Menlo,Consolas,'Courier New',monospace"
+MONO = "'IBM Plex Mono','Roboto Mono','SF Mono',Menlo,Consolas,monospace"
 
 
 def correo(preheader, etiqueta, titulo, parrafos, boton, enlace, extra_html, nota):
