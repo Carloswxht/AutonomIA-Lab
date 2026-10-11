@@ -54,16 +54,20 @@ ${vistas.join("\n")}
   };
   addEventListener("hashchange", mostrar);
   mostrar();
-  // Simula el aviso del formulario de acceso (el login real llega en el paso 3).
+  // En la vista previa no hay servidor: los formularios muestran lo que pasaría, sin guardar nada.
   document.querySelectorAll("form").forEach((f) =>
     f.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (f.querySelector("[role=status]")) return;
       const p = document.createElement("p");
       p.setAttribute("role", "status");
-      p.textContent = "El acceso de miembros estará disponible muy pronto.";
-      p.style.cssText = "font-size:.8rem;color:var(--text-dim)";
-      f.append(p);
+      p.style.cssText = "margin-top:12px;font-size:.9rem;line-height:1.5;color:var(--text-dim)";
+      if (f.querySelector("[name=nombre]")) {
+        p.textContent = "Solicitud enviada. La revisamos y te escribimos al correo que nos has dado. (Vista previa: no se guarda nada.)";
+        f.replaceWith(p);
+      } else if (!f.querySelector("[role=status]")) {
+        p.textContent = "Vista previa: aquí no se puede entrar. El login real funciona en la app.";
+        f.append(p);
+      }
     }),
   );
 })();

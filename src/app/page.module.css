@@ -60,14 +60,19 @@
     color 0.15s ease;
 }
 
+.formulario button:disabled {
+  opacity: 0.6;
+}
+
 .formulario button:hover {
   background: var(--surface-3);
   color: var(--text);
 }
 
 .aviso {
-  font-size: 0.8rem;
-  color: var(--text-dim);
+  line-height: 1.4;
+  font-size: 0.85rem;
+  color: var(--red);
 }
 
 .oculto {
