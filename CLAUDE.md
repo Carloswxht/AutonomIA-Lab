@@ -4,7 +4,7 @@ Responde SIEMPRE en español. Quien habla es Carlos, fundador. **Trabaja solo de
 
 ## Marca
 - El nombre es **autonomIA Lab**. Nunca "IA Partner" / "Partner" (nombre viejo, descartado).
-- Dominios: ya comprados por Carlos (pregúntale cuáles son en la primera sesión y anótalos aquí).
+- Dominios: `autonomialab.com` (plataforma y membresía gratuita para captar clientes) y `autonomialab.es` (uso por confirmar).
 
 ## Qué es esto
 Pasamos de páginas HTML sueltas a un **SaaS**. Todo lo que hay en `prototipos/` son maquetas navegables hechas para validar la idea; sirven de referencia de diseño y de contenido, no son el código final.
@@ -15,6 +15,14 @@ Lo que ya está decidido (de los prototipos):
 - `aplicaciones.html`: catálogo de aplicaciones útiles (problema → aplicación → demo tocable → botón "Quiero esto en mi empresa" a WhatsApp). Hay 2: Control de horario y Pendientes de obra. Carlos irá añadiendo más.
 - `servicios.html`, `info.html`: ventas y captación (WhatsApp +34 605 288 673).
 - `panel-gestion-referencia.html`: panel de gestión de otro negocio; solo referencia de patrones (tarjetas, nav inferior, vistas).
+
+## Decidido en la sesión 1
+- Negocio: vender paneles y aplicaciones web a medida para cada empresa. La membresía es el gancho gratuito.
+- Membresía gratis: acceso a 2-3 secciones. Quien compra una aplicación tiene acceso total a la membresía.
+- Cuentas: solicitud y aprobación manual por Carlos. Se cobra a la empresa (organización), que invita a sus empleados.
+- Primeros cobros por factura manual; Stripe más adelante. Precios sin definir.
+- Primera app del MVP: Pendientes de obra (Control de horario después, verificando antes la parte legal).
+- Pendiente: decidir si los datos de cada cliente van en una base compartida (RLS) o separada.
 
 ## Lo que NO está definido (aclararlo con Carlos en plan mode antes de programar)
 - Qué es exactamente el producto que se cobra y a quién (¿membresía con contenido?, ¿las aplicaciones como servicio para empresas?, ¿ambas?).
