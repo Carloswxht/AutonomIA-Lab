@@ -41,6 +41,8 @@ Pasamos de páginas HTML sueltas a un **SaaS**. `prototipos/` son maquetas de re
 - Vista previa estática (sin servidor) de las pantallas públicas: https://claude.ai/artifact/ULY9dFJ6FGL6SkTjFLJErC (se regenera con `scripts/vista-previa.mjs`).
 
 ## Al empezar cada sesión
+- El trabajo de la sesión 1 está en la rama `ccr-39965d98-hf2x5g` (PR #1 hacia `main`, CI en verde). Si ya está fusionado, partir de `main`; si no, partir de esa rama.
+- El recordatorio de las plantillas de correo (12 oct, 10:00) se programó en la sesión 1: si Carlos abre otra sesión, recordárselo igualmente.
 - `cp .env.example .env.local` (dirección y clave publicable de Supabase; no son secretas).
 - Red del entorno: Personalizada, con `dafmorfftnucsxcsafop.supabase.co` permitido. En Node hace falta el proxy: `NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt` (ya puesto en `playwright.config.ts`). WebFetch a webs externas está bloqueado.
 - **Supabase MCP**: se cancela cualquier SQL con `DELETE` o `DROP`. Para retirar algo: `revoke`, `update` de estado o tabla nueva; si hay que borrar, pedírselo a Carlos en el SQL Editor.
