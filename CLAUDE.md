@@ -22,7 +22,7 @@ Lo que ya está decidido (de los prototipos):
 - Cuentas: solicitud y aprobación manual por Carlos. Se cobra a la empresa (organización), que invita a sus empleados.
 - Primeros cobros por factura manual; Stripe más adelante. Precios sin definir.
 - Primera app del MVP: Pendientes de obra (Control de horario después, verificando antes la parte legal).
-- Pendiente: decidir si los datos de cada cliente van en una base compartida (RLS) o separada.
+- Modelo (propuesto, pendiente de confirmar): una sola plataforma modular. Cada empresa recibe "su" app combinando módulos (Pendientes de obra, Control de horario…), su marca (logo, colores) y opciones/campos propios. Una sola base de datos con RLS por organización. Lo que no quepa en configuración se hace como módulo nuevo, que luego entra en el catálogo.
 
 ## Lo que NO está definido (aclararlo con Carlos en plan mode antes de programar)
 - Qué es exactamente el producto que se cobra y a quién (¿membresía con contenido?, ¿las aplicaciones como servicio para empresas?, ¿ambas?).
