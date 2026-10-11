@@ -42,8 +42,10 @@ Interruptores por bar (los pone Carlos desde `/admin`):
 - **Regla antibloqueo y de Safari:** el navegador SOLO habla con nuestro dominio. Datos, login y fotos pasan por el servidor
   de la app (cookies de nuestro propio dominio). Así: (1) un bloqueo de LaLiga a IPs de Supabase/Cloudflare en España no
   rompe la app; (2) Safari/iPhone no bloquea el login (problema que La Mar de Gambas tuvo con Neon Auth).
-- Hospedaje: vistas previas en Vercel durante el desarrollo. Producción (antes del primer cliente en la plataforma):
-  VPS en la UE con IP propia (p. ej. Hetzner, ~6–10 €/mes con copias). Nada de Cloudflare delante.
+- Hospedaje (decidido 11 oct): **Hetzner desde el principio, sin Vercel**. VPS en Alemania con IP propia (~6–10 €/mes con copias)
+  y Coolify para publicar solo desde GitHub (cada push publica; vista previa por rama). Nada de Cloudflare delante.
+  El contenedor de Claude Code no tiene SSH: el servidor se crea por la API de Hetzner (token como secreto del entorno,
+  dominio `api.hetzner.cloud` permitido) y se instala solo al arrancar (cloud-init).
 - Tests: Vitest (lógica), Playwright a 390x844 (pantallas), tests de aislamiento RLS (empresa A no ve nada de B;
   usuario anónimo solo puede crear pedidos válidos).
 - CI en GitHub Actions: lint + build + tests en cada push.
@@ -85,7 +87,7 @@ notificaciones push, instancia dedicada.
 
 ## Costes previstos (no crecen por cliente)
 - Supabase Pro ~25 $/mes (el gratis se pausa y solo permite 2 proyectos activos; Carlos ya tiene 2).
-- VPS ~6–10 €/mes. Vercel solo para vistas previas (gratis no permite uso comercial).
+- VPS Hetzner ~6–10 €/mes (también da las vistas previas). Sin Vercel.
 - Envío de correos (p. ej. Resend): plan gratis con límite; comprobar antes de lanzar.
 
 ## Riesgos y avisos

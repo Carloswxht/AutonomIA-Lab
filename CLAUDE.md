@@ -22,7 +22,7 @@ Lo que ya está decidido (de los prototipos):
 - Cuentas: solicitud y aprobación manual por Carlos. Se cobra a la empresa (organización), que invita a sus empleados.
 - Primeros cobros por factura manual; Stripe más adelante. Precios sin definir.
 - Primer módulo del MVP: **Hostelería** (carta + pedidos + panel de barra), rehecho a partir de `Carloswxht/la-mar-de-gambas` (cliente real, sigue funcionando aparte hasta migrarlo). Pendientes de obra y Control de horario, después.
-- Hospedaje: el navegador solo habla con nuestro dominio (antibloqueos de LaLiga y Safari). Producción en VPS UE con IP propia; Vercel solo para vistas previas.
+- Hospedaje: el navegador solo habla con nuestro dominio (antibloqueos de LaLiga y Safari). Todo en VPS Hetzner (Alemania) con IP propia, también las vistas previas. Sin Vercel (decidido 11 oct).
 - Webs de clientes: proyectos distintos (kit base, una carpeta por cliente), fuera del MVP.
 - Supabase de la plataforma: proyecto **autonomIA Lab** (ref `dafmorfftnucsxcsafop`, región `eu-central-1` Frankfurt), creado el 11 oct 2026. Proyecto "Suelos la Giralda" pausado; "War300" activo.
 - Unificar todo en la plataforma: `la-mar-de-gambas` y `El-Recreo` (bares) → módulo Hostelería; `war300` (rutinas de gimnasio) → futuro módulo Entrenamiento; `Sueloslagiralda-web` (web de empresa) → servicio de webs.
@@ -40,7 +40,7 @@ La plantilla antigua (un HTML + Supabase con política abierta `anon`, un proyec
 - Next.js (App Router) + TypeScript, un solo repo.
 - Supabase: UN proyecto para todos los clientes. Auth real (email + contraseña / magic link), Postgres con `organizacion_id` en cada tabla y **RLS por organización**. Prohibido `using (true)` para `anon`.
 - Pagos: Stripe (suscripciones, portal de cliente). Más adelante.
-- Despliegue: producción en VPS Hetzner (Alemania) con IP propia y solo dominios nuestros/de clientes; comprobar que la IP está limpia antes de usarla. Vercel SOLO para vistas previas internas (ningún cliente ni dominio de cliente pasa por Vercel). Nada de Cloudflare delante. Ver `docs/plan-mvp.md`.
+- Despliegue: VPS Hetzner (Alemania) con IP propia y solo dominios nuestros/de clientes, con Coolify (publica desde GitHub, vista previa por rama); comprobar que la IP está limpia antes de usarla. Sin Vercel. Nada de Cloudflare delante. Ver `docs/plan-mvp.md`.
 - Entrega del SQL: siempre el SQL exacto en `supabase/migrations/` y avisar a Carlos de lo que tiene que correr.
 
 ## Diseño
