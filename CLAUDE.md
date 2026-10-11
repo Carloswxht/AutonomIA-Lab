@@ -22,7 +22,7 @@ Lo que ya está decidido (de los prototipos):
 - Cuentas: solicitud y aprobación manual por Carlos. Se cobra a la empresa (organización), que invita a sus empleados.
 - Primeros cobros por factura manual; Stripe más adelante. Precios sin definir.
 - Primer módulo del MVP: **Hostelería** (carta + pedidos + panel de barra), rehecho a partir de `Carloswxht/la-mar-de-gambas` (cliente real, sigue funcionando aparte hasta migrarlo). Pendientes de obra y Control de horario, después.
-- Hospedaje: el navegador solo habla con nuestro dominio (antibloqueos de LaLiga y Safari). Todo en VPS Hetzner (Alemania) con IP propia, también las vistas previas. Sin Vercel (decidido 11 oct).
+- Hospedaje: el navegador solo habla con nuestro dominio (antibloqueos de LaLiga y Safari). Producción futura en VPS Hetzner (Alemania) con IP propia. Sin Vercel. De momento sin servidor: Claude prueba la app en su entorno y envía capturas y un enlace de vista a Carlos.
 - Webs de clientes: proyectos distintos (kit base, una carpeta por cliente), fuera del MVP.
 - Supabase de la plataforma: proyecto **autonomIA Lab** (ref `dafmorfftnucsxcsafop`, región `eu-central-1` Frankfurt), creado el 11 oct 2026. Proyecto "Suelos la Giralda" pausado; "War300" activo.
 - Unificar todo en la plataforma: `la-mar-de-gambas` y `El-Recreo` (bares) → módulo Hostelería; `war300` (rutinas de gimnasio) → futuro módulo Entrenamiento; `Sueloslagiralda-web` (web de empresa) → servicio de webs.

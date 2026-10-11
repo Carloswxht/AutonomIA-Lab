@@ -42,7 +42,9 @@ Interruptores por bar (los pone Carlos desde `/admin`):
 - **Regla antibloqueo y de Safari:** el navegador SOLO habla con nuestro dominio. Datos, login y fotos pasan por el servidor
   de la app (cookies de nuestro propio dominio). Así: (1) un bloqueo de LaLiga a IPs de Supabase/Cloudflare en España no
   rompe la app; (2) Safari/iPhone no bloquea el login (problema que La Mar de Gambas tuvo con Neon Auth).
-- Hospedaje (decidido 11 oct): **Hetzner desde el principio, sin Vercel**. VPS en Alemania con IP propia (~6–10 €/mes con copias)
+- Hospedaje (11 oct): **de momento ni Vercel ni Hetzner**. Claude ejecuta y prueba la app en su entorno y envía a Carlos
+  capturas y un enlace de vista (página de claude.ai con las pantallas). Cuando haga falta probar de verdad (login real,
+  pedidos, enseñar a un cliente), se monta Hetzner. Plan para entonces: VPS en Alemania con IP propia (~6–10 €/mes con copias)
   y Coolify para publicar solo desde GitHub (cada push publica; vista previa por rama). Nada de Cloudflare delante.
   El contenedor de Claude Code no tiene SSH: el servidor se crea por la API de Hetzner (token como secreto del entorno,
   dominio `api.hetzner.cloud` permitido) y se instala solo al arrancar (cloud-init).
