@@ -21,6 +21,10 @@ export default defineConfig({
   ],
   webServer: {
     command: "npm run start -- -p 3100",
+    // En el entorno de Claude Code la salida a internet pasa por un proxy: Node debe usarlo para llegar a Supabase.
+    env: process.env.HTTPS_PROXY
+      ? { NODE_USE_ENV_PROXY: "1", NODE_EXTRA_CA_CERTS: "/root/.ccr/ca-bundle.crt" }
+      : {},
     url: "http://localhost:3100",
     reuseExistingServer: !process.env.CI,
   },

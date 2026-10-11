@@ -71,8 +71,8 @@ Lanzarlo tras cada migración que toque tablas o RLS, y ampliarlo con cada módu
 ## Pasos (cada uno = commit pequeño + vista previa)
 1. ✅ Esqueleto Next.js, colores y tipografías, marca `[autonomIA Lab]`, CI (11 oct).
 2. ✅ Proyecto Supabase + migración de plataforma + RLS + tests de aislamiento (11 oct).
-3. Portada + solicitar cuenta + login.
-4. Panel `/admin` de Carlos: solicitudes, empresas, módulos, marca, interruptores.
+3. ✅ Portada + solicitar cuenta + login (11 oct, probado contra Supabase real).
+4. ✅ Panel `/admin` de Carlos: solicitudes, empresas, módulos, marca, personas (11 oct). Interruptores por módulo: con Hostelería.
 5. Panel de miembros (gratis / total).
 6. Hostelería — carta pública con la marca del bar.
 7. Hostelería — pedidos desde la mesa + panel de barra.

@@ -1,7 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-// Estos tests no dependen de Supabase (en CI y en el entorno de Claude no hay conexión con él):
-// comprueban pantallas, validaciones y que los errores se explican bien.
+// Estos tests funcionan con o sin conexión a Supabase: comprueban pantallas, validaciones y errores.
 
 test("la portada muestra marca, acceso, mensajes y asesor", async ({ page }) => {
   await page.goto("/");
@@ -18,12 +17,12 @@ test("la portada muestra marca, acceso, mensajes y asesor", async ({ page }) => 
   await page.screenshot({ path: "test-results/portada-390.png", fullPage: true });
 });
 
-test("Entrar sin conexión con Supabase muestra un error claro", async ({ page }) => {
+test("Entrar con datos incorrectos (o sin conexión) muestra un error claro", async ({ page }) => {
   await page.goto("/");
   await page.getByPlaceholder("Correo").fill("ejemplo@ejemplo.com");
   await page.getByPlaceholder("Contraseña").fill("ejemplo");
   await page.getByRole("button", { name: "Entrar" }).click();
-  await expect(page.getByRole("alert").filter({ hasText: "No hemos podido iniciar sesión" })).toBeVisible();
+  await expect(page.getByRole("alert").filter({ hasText: /Correo o contraseña incorrectos|No hemos podido iniciar sesión/ })).toBeVisible();
   await page.screenshot({ path: "test-results/entrar-error-390.png" });
 });
 

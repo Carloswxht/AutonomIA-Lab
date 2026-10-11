@@ -34,7 +34,7 @@ Plan técnico del MVP: `docs/plan-mvp.md`.
 - `cp .env.example .env.local` (dirección y clave publicable de Supabase; no son secretas).
 - El entorno tiene permitido `dafmorfftnucsxcsafop.supabase.co` (red Personalizada) para probar el login de verdad.
 - Supabase MCP: cualquier SQL con `DELETE` se cancela solo; evitarlo o pedir a Carlos que lo ejecute en el SQL Editor.
-- Tests de seguridad de la base: `select pruebas.aislamiento();` → 'OK'.
+- Tests de seguridad de la base: `select pruebas.aislamiento(), pruebas.admin();` → 'OK'. Flujo real con usuario de prueba: ver `docs/pruebas.md`.
 - Carlos (carloswxht@gmail.com) es superadmin en la plataforma.
 
 ## Lo que NO está definido (aclararlo con Carlos en plan mode antes de programar)

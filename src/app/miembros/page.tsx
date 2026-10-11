@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 import { Marca } from "@/components/Marca";
-import { crearClienteServidor } from "@/lib/supabase/servidor";
+import { exigirSesion } from "@/lib/sesion";
 import { salir } from "../acciones";
 import styles from "./page.module.css";
 
@@ -16,9 +16,7 @@ type Membresia = {
 
 // Panel provisional del paso 3 (comprobar el login). Las tarjetas de miembros llegan en el paso 5.
 export default async function Miembros() {
-  const supabase = await crearClienteServidor().catch(() => null);
-  const user = supabase ? (await supabase.auth.getUser()).data.user : null;
-  if (!supabase || !user) redirect("/");
+  const { supabase, user } = await exigirSesion();
 
   const [{ data: perfil }, { data: membresias }] = await Promise.all([
     supabase.from("perfiles").select("nombre, es_superadmin").eq("id", user.id).maybeSingle(),
@@ -31,7 +29,11 @@ export default async function Miembros() {
       <Marca />
       <h1>Hola{perfil?.nombre ? `, ${perfil.nombre}` : ""}</h1>
       <p className={styles.dato}>{user.email}</p>
-      {perfil?.es_superadmin && <p className={styles.insignia}>Administrador de autonomIA Lab</p>}
+      {perfil?.es_superadmin && (
+        <Link href="/admin" className={styles.insignia}>
+          Administración de autonomIA Lab →
+        </Link>
+      )}
 
       <section className={styles.bloque} aria-labelledby="t-empresas">
         <h2 id="t-empresas">Tus empresas</h2>
