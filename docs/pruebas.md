@@ -15,6 +15,8 @@ Necesita un usuario de prueba superadmin. La contraseña NO se guarda en el repo
 4. `PRUEBA_EMAIL=ejemplo-pruebas@autonomialab.test PRUEBA_PASSWORD=… npm run test:e2e`
    - Recorre: solicitar acceso → datos del negocio → aprobar → alta de cliente → marca, módulo y persona.
    - Crea `ejemplo-solicitud-…@autonomialab.test` (sin contraseña) y un cliente «Ejemplo Bar …».
+   - Con `PRUEBA_GRATIS_EMAIL=ejemplo-cliente@autonomialab.test` prueba también la cuenta gratuita: antes, ponerle la
+     misma contraseña (`encrypted_password = extensions.crypt(…)`) y al terminar dejarla vacía (`''`).
 5. Al terminar: quitar superadmin, `banned_until = '2999-01-01'` (también a `ejemplo-solicitud-%`), rechazar
    solicitudes `ejemplo-%` pendientes y suspender las empresas `Ejemplo Bar %`
    (no se pueden borrar desde el MCP).

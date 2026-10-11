@@ -38,7 +38,13 @@ test("solicitar acceso → aprobar → alta de cliente → marca, módulo y pers
   await page.getByPlaceholder("Contraseña").fill(password!);
   await page.getByRole("button", { name: "Entrar" }).click();
   await expect(page).toHaveURL(/\/miembros$/);
-  await page.getByRole("link", { name: /Administración de autonomIA Lab/ }).click();
+  // Panel de miembros: el superadmin tiene acceso completo (las 6 secciones activas).
+  await expect(page.getByText("Acceso completo")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Universidad/ })).toContainText("Activo");
+  await page.screenshot({ path: "test-results/real-miembros.png", fullPage: true });
+  await page.getByRole("button", { name: "Abrir menú" }).click();
+  await page.screenshot({ path: "test-results/real-menu.png" });
+  await page.getByRole("link", { name: /Administración/ }).click();
   await expect(page).toHaveURL(/\/admin$/);
 
   const tarjeta = page.getByRole("listitem").filter({ hasText: correo });
@@ -81,4 +87,37 @@ test("solicitar acceso → aprobar → alta de cliente → marca, módulo y pers
   await page.getByLabel("Correo").fill(correo);
   await page.getByRole("button", { name: "Solicitar acceso" }).click();
   await expect(page.getByRole("alert").filter({ hasText: "ya tiene acceso" })).toBeVisible();
+});
+
+// Cuenta gratuita (sin aplicación contratada): ve 3 secciones y las de pago le llevan a WhatsApp.
+const emailGratis = process.env.PRUEBA_GRATIS_EMAIL;
+test("cuenta gratuita: secciones de pago cerradas y sin acceso a administración", async ({ page }) => {
+  test.skip(!emailGratis, "Sin cuenta gratuita de prueba (PRUEBA_GRATIS_EMAIL)");
+  await page.goto("/");
+  await page.getByPlaceholder("Correo").fill(emailGratis!);
+  await page.getByPlaceholder("Contraseña").fill(password!);
+  await page.getByRole("button", { name: "Entrar" }).click();
+  await expect(page).toHaveURL(/\/miembros$/);
+  await expect(page.getByText("Cuenta gratuita")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Ranking/ })).toContainText("Activo");
+  const universidad = page.getByRole("link", { name: /Universidad/ });
+  await expect(universidad).toContainText("Subir plan");
+  await expect(universidad).toHaveAttribute("href", /^https:\/\/wa\.me\/34605288673/);
+  const extra = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(extra).toBeLessThanOrEqual(0);
+  await page.screenshot({ path: "test-results/real-miembros-gratis.png", fullPage: true });
+
+  // Una sección gratis se abre; una de pago, escrita a mano en la dirección, devuelve al panel.
+  await page.getByRole("link", { name: /Ranking/ }).click();
+  await expect(page.getByRole("heading", { name: "Ranking" })).toBeVisible();
+  await page.goto("/miembros/universidad");
+  await expect(page).toHaveURL(/\/miembros$/);
+  // Sin permisos de administración.
+  await page.goto("/admin");
+  await expect(page).toHaveURL(/\/miembros$/);
+  // El menú no ofrece Administración.
+  await page.getByRole("button", { name: "Abrir menú" }).click();
+  await expect(page.getByRole("link", { name: /Administración/ })).toHaveCount(0);
+  await page.getByRole("button", { name: "Salir" }).click();
+  await expect(page).toHaveURL(/\/$/);
 });

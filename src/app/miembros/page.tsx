@@ -1,61 +1,101 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { Marca } from "@/components/Marca";
-import { exigirSesion } from "@/lib/sesion";
-import { salir } from "../acciones";
-import styles from "./page.module.css";
+import { enlaceWhatsApp } from "@/lib/contacto";
+import { puedeVer, SECCIONES, type Seccion } from "@/lib/membresia";
+import { datosMiembro } from "@/lib/miembro";
+import styles from "./miembros.module.css";
 
-export const metadata: Metadata = {
-  title: "Panel de miembros — autonomIA Lab",
-};
+const NOMBRE_MODULO: Record<string, string> = { hosteleria: "Hostelería" };
 
-type Membresia = {
-  rol: string;
-  organizaciones: { nombre: string; nombre_app: string | null } | null;
-};
+function Icono({ trazos }: { trazos: string[] }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {trazos.map((d) => (
+        <path key={d} d={d} />
+      ))}
+    </svg>
+  );
+}
 
-// Panel provisional del paso 3 (comprobar el login). Las tarjetas de miembros llegan en el paso 5.
+function Tarjeta({ s, abierta }: { s: Seccion; abierta: boolean }) {
+  const contenido = (
+    <>
+      <span className={styles.icono}>
+        <Icono trazos={s.icono} />
+      </span>
+      <span className={styles.texto}>
+        <h3>{s.titulo}</h3>
+        <span>{s.descripcion}</span>
+      </span>
+      <span className={styles.badge}>{abierta ? "Activo" : "Subir plan"}</span>
+    </>
+  );
+  return abierta ? (
+    <Link href={`/miembros/${s.clave}`} className={`${styles.tarjeta} ${styles.disponible}`}>
+      {contenido}
+    </Link>
+  ) : (
+    <a
+      href={enlaceWhatsApp(`Hola, me interesa el acceso completo a autonomIA Lab (${s.titulo}).`)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${styles.tarjeta} ${styles.premium}`}
+    >
+      {contenido}
+    </a>
+  );
+}
+
 export default async function Miembros() {
-  const { supabase, user } = await exigirSesion();
-
-  const [{ data: perfil }, { data: membresias }] = await Promise.all([
-    supabase.from("perfiles").select("nombre, es_superadmin").eq("id", user.id).maybeSingle(),
-    supabase.from("miembros").select("rol, organizaciones(nombre, nombre_app)").eq("usuario_id", user.id),
-  ]);
-  const empresas = (membresias ?? []) as unknown as Membresia[];
+  const { nombre, user, espacios, accesoTotal } = await datosMiembro();
+  const saludo = nombre ? `Hola, ${nombre.split(" ")[0]}` : "Hola";
 
   return (
-    <main className={styles.caja}>
-      <Marca />
-      <h1>Hola{perfil?.nombre ? `, ${perfil.nombre}` : ""}</h1>
-      <p className={styles.dato}>{user.email}</p>
-      {perfil?.es_superadmin && (
-        <Link href="/admin" className={styles.insignia}>
-          Administración de autonomIA Lab →
-        </Link>
-      )}
+    <main className={styles.contenido}>
+      <section className={styles.bienvenida}>
+        <p className={styles.eyebrow}>{accesoTotal ? "Acceso completo" : "Cuenta gratuita"}</p>
+        <h1>{saludo}</h1>
+        <p className={styles.correo}>{user.email}</p>
+      </section>
 
-      <section className={styles.bloque} aria-labelledby="t-empresas">
-        <h2 id="t-empresas">Tus empresas</h2>
-        {empresas.length === 0 ? (
-          <p className={styles.vacio}>Todavía no perteneces a ninguna empresa.</p>
-        ) : (
-          <ul>
-            {empresas.map((m, i) => (
-              <li key={i}>
-                <span>{m.organizaciones?.nombre_app ?? m.organizaciones?.nombre}</span>
-                <span className={styles.rol}>{m.rol === "admin" ? "Administrador" : "Empleado"}</span>
+      {espacios.length > 0 && (
+        <section aria-labelledby="t-apps">
+          <h2 id="t-apps" className={styles.titulo}>
+            Tus aplicaciones
+          </h2>
+          <ul className={styles.lista}>
+            {espacios.map((e) => (
+              <li key={e.id} className={`${styles.tarjeta} ${styles.app}`}>
+                <span className={styles.texto}>
+                  <h3>{e.nombre}</h3>
+                  <span>
+                    {e.modulos.length ? e.modulos.map((m) => NOMBRE_MODULO[m] ?? m).join(" · ") : "Sin módulos activos todavía"}
+                  </span>
+                </span>
+                <span className={`${styles.badge} ${styles.preparacion}`}>En preparación</span>
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      <section aria-labelledby="t-contenido">
+        <h2 id="t-contenido" className={styles.titulo}>
+          Tu espacio
+        </h2>
+        <ul className={styles.lista}>
+          {SECCIONES.map((s) => (
+            <li key={s.clave}>
+              <Tarjeta s={s} abierta={puedeVer(s, accesoTotal)} />
+            </li>
+          ))}
+        </ul>
+        {!accesoTotal && (
+          <p className={styles.nota}>
+            Las secciones con «Subir plan» se incluyen al contratar una aplicación para tu negocio. Tócalas y te lo
+            contamos por WhatsApp.
+          </p>
         )}
       </section>
-
-      <form action={salir}>
-        <button type="submit" className={styles.salir}>
-          Salir
-        </button>
-      </form>
     </main>
   );
 }

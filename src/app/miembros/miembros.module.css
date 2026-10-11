@@ -1,0 +1,185 @@
+.pagina {
+  max-width: 560px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding-bottom: calc(66px + env(safe-area-inset-bottom) + 24px);
+}
+
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: calc(18px + env(safe-area-inset-top)) 18px 15px;
+  border-bottom: 1px solid var(--border-soft);
+  background: linear-gradient(180deg, #101115 0%, var(--bg) 100%);
+}
+
+.sub {
+  margin-top: 4px;
+  font-family: var(--font-titulo);
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+.sub span {
+  color: var(--blue-bright);
+}
+
+.contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 20px 18px 24px;
+}
+
+.eyebrow,
+.titulo,
+.badge {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.eyebrow {
+  font-size: 0.66rem;
+  color: var(--blue-bright);
+}
+
+.bienvenida h1 {
+  margin-top: 6px;
+  font-size: 1.6rem;
+}
+
+.correo {
+  margin-top: 4px;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.titulo {
+  margin-bottom: 10px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-faint);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+
+.tarjeta {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 72px;
+  padding: 14px 15px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  transition:
+    border-color 0.15s,
+    transform 0.1s;
+}
+
+.tarjeta:active {
+  transform: scale(0.98);
+  border-color: var(--blue-line);
+}
+
+.icono {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface-2);
+}
+
+.icono svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-dim);
+}
+
+.disponible .icono {
+  border-color: var(--blue-line);
+  background: var(--blue-soft);
+}
+
+.disponible .icono svg {
+  stroke: var(--blue-bright);
+}
+
+.texto {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.texto h3 {
+  font-size: 0.98rem;
+}
+
+.texto span {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--text-dim);
+}
+
+.badge {
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-faint);
+  background: var(--surface-2);
+}
+
+.disponible .badge {
+  border-color: #1c4b2e;
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.premium .badge {
+  border-color: #4d3a12;
+  background: #332507;
+  color: var(--amber);
+}
+
+.app {
+  border-color: var(--blue-line);
+}
+
+.preparacion {
+  border-color: var(--blue-line) !important;
+  background: var(--blue-soft) !important;
+  color: var(--blue-bright) !important;
+}
+
+.nota {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+.volver {
+  align-self: flex-start;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
