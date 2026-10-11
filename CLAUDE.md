@@ -36,7 +36,7 @@ Plan técnico del MVP: `docs/plan-mvp.md`.
 - Supabase MCP: cualquier SQL con `DELETE` se cancela solo; evitarlo o pedir a Carlos que lo ejecute en el SQL Editor.
 - Tests de seguridad de la base: `select pruebas.aislamiento(), pruebas.admin(), pruebas.clientes();` → 'OK'. Flujo real con usuario de prueba: ver `docs/pruebas.md`.
 - Carlos (carloswxht@gmail.com) es superadmin en la plataforma.
-- Correos de Supabase: el SMTP de serie NO envía; hace falta SMTP propio (Resend) para el correo de aprobación y «olvidé mi contraseña». Pendiente de Carlos. Además, en Authentication → Emails las plantillas deben enlazar con token_hash (ver `src/app/auth/confirmar/route.ts`) y la Site URL debe ser el dominio real (cuando haya servidor).
+- Correos (configurado el 11 oct): Supabase envía por SMTP de **Resend** (cuenta de Carlos con su Gmail, dominio `autonomialab.com` verificado en DonDominio, región Irlanda, remitente `no-responder@autonomialab.com`). Plantillas «Magic link» (acceso aprobado, `type=magiclink`) y «Reset password» (`type=recovery`) en español y con token_hash (ver `src/app/auth/confirmar/route.ts`). Site URL: `https://autonomialab.com`. Los enlaces funcionarán cuando la app esté publicada en ese dominio.
 - Supabase MCP: también se cancela cualquier SQL con `DROP`. Para retirar algo: `revoke` o tabla nueva.
 
 ## Lo que NO está definido (aclararlo con Carlos en plan mode antes de programar)
