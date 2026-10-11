@@ -1,0 +1,44 @@
+.boton {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.boton:disabled {
+  opacity: 0.6;
+}
+
+.principal {
+  background: var(--blue);
+  color: #fff;
+}
+
+.secundario {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--text-dim);
+}
+
+.peligro {
+  background: transparent;
+  border-color: #4a1e20;
+  color: #f87171;
+}
+
+.error {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #f87171;
+}
+
+.hecho {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--green);
+}

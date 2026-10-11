@@ -1,0 +1,207 @@
+.caja {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: calc(22px + env(safe-area-inset-top)) 24px 48px;
+  text-align: center;
+}
+
+.caja h1 {
+  margin-top: 36px;
+  font-size: 1.6rem;
+}
+
+.intro {
+  margin-top: 10px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 26px;
+  text-align: left;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formulario label {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.formulario label span {
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.formulario input,
+.formulario textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.formulario textarea {
+  resize: vertical;
+}
+
+.formulario input:focus,
+.formulario textarea:focus {
+  outline: none;
+  border-color: var(--blue-bright);
+}
+
+.nota {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+.boton,
+.formulario button {
+  min-height: 50px;
+  margin-top: 20px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--blue);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px;
+  margin-top: 26px;
+}
+
+.formulario button:disabled {
+  opacity: 0.6;
+}
+
+.error {
+  margin-top: 8px;
+  color: var(--red);
+  font-size: 0.9rem;
+}
+
+.hecho {
+  margin-top: 28px;
+  padding: 18px;
+  border: 1px solid var(--blue-line);
+  border-radius: 12px;
+  background: var(--blue-soft);
+  line-height: 1.5;
+}
+
+.alternativa {
+  margin-top: 28px;
+  font-size: 0.85rem;
+  color: var(--text-faint);
+}
+
+.alternativa a {
+  color: var(--blue-bright);
+  font-weight: 600;
+}
+
+.volver {
+  display: block;
+  margin-top: 18px;
+  padding: 8px;
+  font-size: 0.85rem;
+  color: var(--text-faint);
+}
+
+.negocio {
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.negocio h2 {
+  font-size: 1.15rem;
+}
+
+.formulario select {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  border: 0;
+}
+
+.opciones legend {
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.opciones label {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+}
+
+.opciones input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.opciones span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.opciones input:checked + span {
+  border-color: var(--blue-line);
+  background: var(--blue-soft);
+  color: var(--blue-bright);
+}
+
+.opciones input:focus-visible + span {
+  outline: 2px solid var(--blue-bright);
+  outline-offset: 2px;
+}

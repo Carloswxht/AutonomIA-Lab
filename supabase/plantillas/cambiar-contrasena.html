@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="supported-color-schemes" content="dark light">
+<title>Cambia tu contraseña</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&family=Space+Grotesk:wght@600&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  @media (max-width: 620px) { .caja { padding: 28px 22px !important; } .titulo { font-size: 26px !important; } }
+  a { color: #5B9CFF; }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#0A0B0D;" bgcolor="#0A0B0D">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#0A0B0D;">Pon una contraseña nueva para entrar en autonomIA Lab.&#8203;&#847;&#8203;&#847;&#8203;&#847;&#8203;&#847;&#8203;&#847;&#8203;&#847;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0A0B0D" style="background:#0A0B0D;">
+<tr><td align="center" style="padding:32px 12px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
+    <!-- Marca -->
+    <tr><td style="padding:0 6px 22px;">
+      <span style="font-family:'IBM Plex Mono','Roboto Mono','SF Mono',Menlo,Consolas,monospace;font-size:15px;font-weight:600;color:#5C606C;">[</span><span style="font-family:'IBM Plex Mono','Roboto Mono','SF Mono',Menlo,Consolas,monospace;font-size:15px;font-weight:600;color:#5B9CFF;">autonomIA Lab</span><span style="display:inline-block;width:7px;height:15px;margin-left:5px;vertical-align:-2px;background:#5B9CFF;"></span><span style="font-family:'IBM Plex Mono','Roboto Mono','SF Mono',Menlo,Consolas,monospace;font-size:15px;font-weight:600;color:#5C606C;">]</span>
+    </td></tr>
+    <!-- Tarjeta -->
+    <tr><td bgcolor="#121317" style="background:#121317;border:1px solid #24262E;border-radius:18px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td height="4" bgcolor="#3B82F6" style="height:4px;line-height:4px;font-size:0;background:linear-gradient(90deg,#3B82F6 0%,#5B9CFF 60%,#121317 100%);border-radius:18px 18px 0 0;">&nbsp;</td></tr>
+        <tr><td class="caja" style="padding:40px 40px 36px;">
+          <p style="margin:0 0 18px;"><span style="display:inline-block;padding:5px 10px;border:1px solid #1E3A63;border-radius:6px;background:#132342;font-family:'IBM Plex Mono','Roboto Mono','SF Mono',Menlo,Consolas,monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#5B9CFF;">&middot; Seguridad de tu cuenta</span></p>
+          <h1 class="titulo" style="margin:0 0 18px;font-family:'Space Grotesk','Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:30px;line-height:1.15;font-weight:600;color:#F3F4F6;">Cambia tu contraseña</h1>
+          <p style="margin:0 0 14px;font-family:'Work Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#9BA1AE;">Hemos recibido una petición para cambiar la contraseña de tu cuenta.</p><p style="margin:0 0 14px;font-family:'Work Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#9BA1AE;">Pulsa el botón y elige una nueva. Tu contraseña actual seguirá funcionando hasta que la cambies.</p>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:26px 0 12px;">
+            <tr><td bgcolor="#3B82F6" style="border-radius:12px;background:#3B82F6;">
+              <a href="{{ .SiteURL }}/auth/confirmar?token_hash={{ .TokenHash }}&type=recovery" target="_blank" style="display:inline-block;padding:16px 30px;font-family:'Work Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;font-weight:600;color:#FFFFFF;text-decoration:none;border-radius:12px;">Poner nueva contraseña &rarr;</a>
+            </td></tr>
+          </table>
+          <p style="margin:0 0 4px;font-family:'Work Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#9BA1AE;">Por seguridad, el enlace solo sirve una vez y caduca al poco tiempo. Si no lo has pedido tú, ignora este correo: nadie puede entrar sin él.</p>
+          
+          <p style="margin:26px 0 0;padding-top:20px;border-top:1px solid #24262E;font-family:'Work Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#9BA1AE;">
+            ¿El botón no funciona? Copia este enlace en tu navegador:<br>
+            <a href="{{ .SiteURL }}/auth/confirmar?token_hash={{ .TokenHash }}&type=recovery" target="_blank" style="color:#9BA1AE;word-break:break-all;">{{ .SiteURL }}/auth/confirmar?token_hash={{ .TokenHash }}&type=recovery</a>
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+    <!-- Pie -->
+    <tr><td style="padding:24px 8px 0;font-family:'Work Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.7;color:#5C606C;text-align:center;">
+      ¿Dudas? Escríbenos por WhatsApp: <a href="https://wa.me/34605288673" target="_blank" style="color:#9BA1AE;text-decoration:none;">+34 605 288 673</a><br>
+      autonomIA Lab · Paneles web con IA para autónomos, pymes y empresas en España
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
