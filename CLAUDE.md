@@ -36,7 +36,8 @@ Pasamos de páginas HTML sueltas a un **SaaS**. `prototipos/` son maquetas de re
 4. ✅ `/admin` (solo superadmin): solicitudes (aprobar/rechazar, WhatsApp directo), usuarios con acceso, «Nuevo cliente» por correo, ficha de cliente (marca, módulos, personas).
 5. ✅ `/miembros`: tarjetas gratis/pago, «Tus aplicaciones» (clientes, solo espacios activos), barra inferior con menú hamburguesa; secciones con página «Próximamente».
 - Flujo de acceso: `/solicitar` → `/solicitud/[token]` (datos opcionales; sectores de más a menos autónomos en `src/lib/sectores.ts`: 7 primeros verificados con MITES ene-2026, resto aproximado).
-- **Siguiente**: publicar en Hetzner (guiar a Carlos para crear la cuenta). Después: contenido de «Aplicaciones útiles» (portar demos del prototipo) y módulo Hostelería.
+- **Hetzner (en curso, 11 oct)**: cuenta creada (particular, con su Gmail; sin VAT ID) y 2FA activa con Google Authenticator. **Pendiente**: verificación de identidad con **pasaporte** (Carlos no tiene DNI; lo hará más tarde). Recomendado (no urgente): rehacer la 2FA y la clave de recuperación porque salieron en capturas del chat. Después: crear proyecto `autonomIA Lab`, token de API como secreto del entorno + permitir `api.hetzner.cloud` en la red, y crear el servidor (precio exacto en pantalla antes de crearlo).
+- **Siguiente**: terminar Hetzner y publicar. Después: contenido de «Aplicaciones útiles» (portar demos del prototipo) y módulo Hostelería.
 - Vista previa estática (sin servidor) de las pantallas públicas: https://claude.ai/artifact/ULY9dFJ6FGL6SkTjFLJErC (se regenera con `scripts/vista-previa.mjs`).
 
 ## Al empezar cada sesión
