@@ -30,6 +30,13 @@ Lo que ya está decidido (de los prototipos):
 
 Plan técnico del MVP: `docs/plan-mvp.md`.
 
+## Al empezar cada sesión
+- `cp .env.example .env.local` (dirección y clave publicable de Supabase; no son secretas).
+- El entorno tiene permitido `dafmorfftnucsxcsafop.supabase.co` (red Personalizada) para probar el login de verdad.
+- Supabase MCP: cualquier SQL con `DELETE` se cancela solo; evitarlo o pedir a Carlos que lo ejecute en el SQL Editor.
+- Tests de seguridad de la base: `select pruebas.aislamiento();` → 'OK'.
+- Carlos (carloswxht@gmail.com) es superadmin en la plataforma.
+
 ## Lo que NO está definido (aclararlo con Carlos en plan mode antes de programar)
 - Qué es exactamente el producto que se cobra y a quién (¿membresía con contenido?, ¿las aplicaciones como servicio para empresas?, ¿ambas?).
 - Planes y precios. Carlos pidió explícitamente no diseñarlos aún.
