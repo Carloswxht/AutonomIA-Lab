@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>autonomIA Lab — Esto puede hacer la IA por tu negocio</title>
+<meta name="description" content="Que tus clientes no tengan que esperar. Que te ahorres tiempo y dinero. Que tus tareas se hagan solas. Habla con un asesor y te decimos cómo.">
+
+<!-- Open Graph / WhatsApp, Facebook, LinkedIn -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://autonomialab.es/">
+<meta property="og:title" content="autonomIA Lab — Esto puede hacer la IA por tu negocio">
+<meta property="og:description" content="Que tus clientes no tengan que esperar. Que te ahorres tiempo y dinero. Que tus tareas se hagan solas. Habla con un asesor y te decimos cómo.">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="autonomIA Lab — Esto puede hacer la IA por tu negocio">
+<meta name="twitter:description" content="Que tus clientes no tengan que esperar. Que te ahorres tiempo y dinero. Que tus tareas se hagan solas. Habla con un asesor y te decimos cómo.">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg:#0A0B0D; --surface:#121317; --surface-2:#1A1C22; --surface-3:#212329;
+    --border:#24262E; --border-soft:#1C1E24;
+    --text:#F3F4F6; --text-dim:#9BA1AE; --text-faint:#5C606C;
+    --blue:#3B82F6; --blue-bright:#5B9CFF; --blue-soft:#132342; --blue-line:#1E3A63;
+    --green:#22C55E; --green-soft:#0F2A1B;
+    --red:#EF4444;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg); color:var(--text); font-family:'Work Sans',sans-serif;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden; min-height:100vh;
+  }
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; font-weight:600; line-height:1.15; }
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background:var(--blue-soft); color:#fff; }
+  .wrap{ max-width:520px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- NAV ---------- */
+  .topnav{ padding:22px 0 0; text-align:center; }
+  .brand-mark{
+    font-family:'IBM Plex Mono',monospace; font-size:0.86rem; font-weight:600; color:var(--blue-bright);
+  }
+  .brand-mark::before{ content:'['; color:var(--text-faint); }
+  .brand-mark::after{ content:']'; color:var(--text-faint); }
+  .cursor{
+    display:inline-block; width:6px; height:13px; background:var(--blue-bright); margin-left:5px;
+    vertical-align:-1px; animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+  /* ---------- LOGIN ---------- */
+  .login-box{ text-align:center; margin-top:18px; }
+  .login-form{
+    max-width:260px; margin:0 auto; display:flex; flex-direction:column; gap:10px;
+  }
+  .login-form input{
+    width:100%; background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:11px 14px; font-family:'Work Sans',sans-serif; font-size:0.88rem; color:var(--text);
+  }
+  .login-form input:focus{ outline:none; border-color:var(--blue-bright); }
+  .login-form input::placeholder{ color:var(--text-faint); }
+  .login-submit{
+    width:100%; background:var(--surface-2); color:var(--text-dim); border:1px solid var(--border);
+    border-radius:10px; padding:11px 14px; font-family:'Work Sans',sans-serif; font-size:0.86rem;
+    font-weight:600; cursor:pointer; transition:background .15s ease, color .15s ease;
+  }
+  .login-submit:hover{ background:var(--surface-3); color:var(--text); }
+  .login-link{
+    display:inline-block; margin-top:13px; font-size:0.78rem; color:var(--text-faint);
+    border-bottom:1px solid transparent; transition:color .15s ease, border-color .15s ease;
+  }
+  .login-link span{ color:var(--blue-bright); font-weight:600; }
+  .login-link:hover{ color:var(--text-dim); border-color:var(--border); }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:40px 0 56px; position:relative; text-align:center; }
+  .hero-bg{
+    position:absolute; top:-140px; left:50%; transform:translateX(-50%); width:560px; height:480px;
+    background:radial-gradient(ellipse at center, rgba(59,130,246,0.16) 0%, rgba(59,130,246,0) 70%);
+    pointer-events:none; z-index:0;
+  }
+  .hero-inner{ position:relative; z-index:1; }
+  .hero h1{
+    font-size:1.92rem; letter-spacing:-0.02em; max-width:420px; margin:0 auto;
+  }
+  .value-list{ margin:30px auto 0; max-width:360px; text-align:left; }
+  .value-item{
+    font-family:'Space Grotesk',sans-serif; font-size:1.14rem; font-weight:600; color:var(--text);
+    line-height:1.35; margin-top:16px; display:flex; gap:10px;
+  }
+  .value-item:first-child{ margin-top:0; }
+  .value-mark{ color:var(--blue-bright); flex:0 0 auto; }
+
+  /* ---------- CTA ---------- */
+  .cta-group{ margin-top:36px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .btn-asesor{
+    display:inline-block; background:var(--blue); color:#fff; border:none; border-radius:12px;
+    padding:16px 30px; font-family:'Work Sans',sans-serif; font-size:0.98rem; font-weight:600;
+    box-shadow:0 10px 28px rgba(59,130,246,0.32); transition:transform .12s ease;
+  }
+  .btn-asesor:active{ transform:scale(0.97); }
+
+  footer{ padding:48px 0 40px; text-align:center; }
+  footer p{ font-size:0.74rem; color:var(--text-faint); }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="wrap">
+    <span class="brand-mark">autonomIA Lab<span class="cursor"></span></span>
+
+    <div class="login-box">
+      <div class="login-form">
+        <input type="text" id="memberUser" placeholder="Usuario" autocomplete="username">
+        <input type="password" id="memberPass" placeholder="Contraseña" autocomplete="current-password">
+        <button class="login-submit" id="membersSubmit" type="button">Entrar</button>
+      </div>
+      <a href="info.html" class="login-link">¿No tienes cuenta? <span>Solicitar cuenta</span></a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="wrap hero-inner">
+    <h1>Esto es lo que puede hacer la inteligencia artificial por tu negocio.</h1>
+
+    <div class="value-list">
+      <p class="value-item"><span class="value-mark">→</span> Que tus clientes nunca tengan que esperar.</p>
+      <p class="value-item"><span class="value-mark">→</span> Que te ahorres tiempo y dinero.</p>
+      <p class="value-item"><span class="value-mark">→</span> Que tus tareas se hagan solas, sin esperar a que tengas tiempo.</p>
+    </div>
+
+    <div class="cta-group">
+      <a href="info.html" class="btn-asesor">Habla con un asesor</a>
+    </div>
+  </div>
+</header>
+
+<footer>
+  <div class="wrap">
+    <p>autonomIA Lab — Paneles web con IA para autónomos, pymes y empresas en España.</p>
+  </div>
+</footer>
+
+<script>
+  // El botón "Entrar" aún no valida usuario/contraseña contra Supabase —
+  // eso llega cuando definamos el flujo de autenticación de clientes.
+  // Por ahora abre directamente el Panel de Miembros para ver el flujo completo.
+  document.getElementById('membersSubmit').addEventListener('click', () => {
+    window.location.href = 'miembros.html';
+  });
+</script>
+
+</body>
+</html>
