@@ -52,6 +52,14 @@ Lo que no quepa en opciones → módulo nuevo, cobrado a ese cliente, que luego 
 7. Módulo Pendientes de obra (crear pendiente con foto, filtrar por obra, marcar resuelto, aviso al destinatario).
 8. Despliegue en Vercel + dominios. Prueba completa en móvil.
 
+## Bloqueos de LaLiga (IPs bloqueadas en España durante partidos)
+- Regla: el navegador del usuario solo habla con NUESTRO dominio. Todas las llamadas a Supabase (datos, login, fotos)
+  pasan por el servidor de la app; así un bloqueo de las IPs de Supabase/Cloudflare en España no rompe la app.
+- Desarrollo y vistas previas: Vercel (rápido, vista previa por rama). Aun así, sus IPs se han visto afectadas alguna vez.
+- Producción (decidir antes del primer cliente): servidor propio en la UE con IP exclusiva (p. ej. Hetzner + Coolify),
+  sin compartir IP con webs piratas. El código es el mismo; solo cambia dónde se publica.
+- Antes de decidir: comprobar en bandaancha.eu/bloqueos-futbol si las IPs elegidas aparecen bloqueadas.
+
 ## Fuera del MVP
 Stripe y planes, Control de horario (antes verificar la normativa en fuente oficial), blog/ranking reales,
 Universidad/Agentes/Plantillas, subdominio por cliente, notificaciones push, instancia dedicada.
