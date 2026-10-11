@@ -1,0 +1,78 @@
+/* Tokens de diseño de autonomIA Lab (sacados de prototipos/). */
+:root {
+  --bg: #0a0b0d;
+  --surface: #121317;
+  --surface-2: #1a1c22;
+  --surface-3: #212329;
+  --border: #24262e;
+  --border-soft: #1c1e24;
+  --text: #f3f4f6;
+  --text-dim: #9ba1ae;
+  --text-faint: #5c606c;
+  --blue: #3b82f6;
+  --blue-bright: #5b9cff;
+  --blue-soft: #132342;
+  --blue-line: #1e3a63;
+  --green: #22c55e;
+  --green-soft: #0f2a1b;
+  --red: #ef4444;
+  --amber: #f5a623;
+
+  --font-titulo: "Space Grotesk", system-ui, sans-serif;
+  --font-cuerpo: "Work Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-cuerpo);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-titulo);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--blue-soft);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue-bright);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
