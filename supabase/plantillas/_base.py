@@ -83,20 +83,23 @@ def correo(preheader, etiqueta, titulo, parrafos, boton, enlace, extra_html, not
 """
 
 
+def _ventaja(titulo, texto):
+    return f"""
+            <tr><td style="padding:12px 16px;border:1px solid {BORDE};border-radius:12px;background:{FONDO};font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TEXTO};">
+              <span style="color:{AZUL_VIVO};">&rarr;</span>&nbsp; <b style="font-weight:600;">{titulo}</b><span style="color:{TENUE};"> · {texto}</span>
+            </td></tr>
+            <tr><td height="8" style="height:8px;font-size:0;line-height:0;">&nbsp;</td></tr>"""
+
+
 DENTRO = f"""
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:28px 0 0;">
-            <tr><td style="padding:0 0 10px;font-family:{MONO};font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:{APAGADO};">Qué encontrarás dentro</td></tr>
-            <tr><td style="padding:12px 16px;border:1px solid {BORDE};border-radius:12px;background:{FONDO};font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TEXTO};">
-              <span style="color:{AZUL_VIVO};">&rarr;</span>&nbsp; <b style="font-weight:600;">Aplicaciones útiles</b><span style="color:{TENUE};"> · problemas reales del día a día y la app que los resuelve</span>
-            </td></tr>
-            <tr><td height="8" style="height:8px;font-size:0;line-height:0;">&nbsp;</td></tr>
-            <tr><td style="padding:12px 16px;border:1px solid {BORDE};border-radius:12px;background:{FONDO};font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TEXTO};">
-              <span style="color:{AZUL_VIVO};">&rarr;</span>&nbsp; <b style="font-weight:600;">Ranking de herramientas de IA</b><span style="color:{TENUE};"> · las que de verdad sirven</span>
-            </td></tr>
-            <tr><td height="8" style="height:8px;font-size:0;line-height:0;">&nbsp;</td></tr>
-            <tr><td style="padding:12px 16px;border:1px solid {BORDE};border-radius:12px;background:{FONDO};font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TEXTO};">
-              <span style="color:{AZUL_VIVO};">&rarr;</span>&nbsp; <b style="font-weight:600;">Noticias de IA</b><span style="color:{TENUE};"> · explicadas para tu negocio</span>
-            </td></tr>
+            <tr><td style="padding:0 0 6px;font-family:{MONO};font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:{APAGADO};">Qué encontrarás dentro</td></tr>
+            <tr><td style="padding:0 0 12px;font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TENUE};">Aplicaciones web empresariales pensadas para autónomos, pymes y empresas en España:</td></tr>
+            {_ventaja("Ahorra tiempo", "las tareas que hoy haces a mano, hechas solas.")}
+            {_ventaja("Ahorra dinero", "menos papeleo, menos errores y menos herramientas sueltas.")}
+            {_ventaja("Decide con datos", "toda la información de tu negocio ordenada en un panel, para decidir mejor y más rápido.")}
+            {_ventaja("Atiende mejor", "que tus clientes nunca tengan que esperar.")}
+            <tr><td style="padding:4px 0 0;font-family:{CUERPO};font-size:15px;line-height:1.5;color:{TENUE};">Y ejemplos reales que puedes probar desde el móvil.</td></tr>
           </table>"""
 
 PLANTILLAS = {
