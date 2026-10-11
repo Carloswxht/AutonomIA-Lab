@@ -4,7 +4,7 @@ Responde SIEMPRE en español. Quien habla es Carlos, fundador. **Trabaja solo de
 
 ## Marca
 - El nombre es **autonomIA Lab**. Nunca "IA Partner" / "Partner" (nombre viejo, descartado).
-- Dominios: `autonomialab.com` (plataforma y membresía gratuita para captar clientes) y `autonomialab.es` (uso por confirmar).
+- Dominios: `autonomialab.com` (plataforma y membresía gratuita para captar clientes) y `autonomialab.es` (redirige a `.com`).
 
 ## Qué es esto
 Pasamos de páginas HTML sueltas a un **SaaS**. Todo lo que hay en `prototipos/` son maquetas navegables hechas para validar la idea; sirven de referencia de diseño y de contenido, no son el código final.
@@ -22,7 +22,9 @@ Lo que ya está decidido (de los prototipos):
 - Cuentas: solicitud y aprobación manual por Carlos. Se cobra a la empresa (organización), que invita a sus empleados.
 - Primeros cobros por factura manual; Stripe más adelante. Precios sin definir.
 - Primera app del MVP: Pendientes de obra (Control de horario después, verificando antes la parte legal).
-- Modelo (propuesto, pendiente de confirmar): una sola plataforma modular. Cada empresa recibe "su" app combinando módulos (Pendientes de obra, Control de horario…), su marca (logo, colores) y opciones/campos propios. Una sola base de datos con RLS por organización. Lo que no quepa en configuración se hace como módulo nuevo, que luego entra en el catálogo.
+- Modelo (confirmado): una sola plataforma modular. Cada empresa recibe "su" app combinando módulos (Pendientes de obra, Control de horario…), su marca (logo, colores) y opciones/campos propios. Una sola base de datos con RLS por organización. Lo que no quepa en configuración se hace como módulo nuevo, que luego entra en el catálogo.
+
+Plan técnico del MVP: `docs/plan-mvp.md`.
 
 ## Lo que NO está definido (aclararlo con Carlos en plan mode antes de programar)
 - Qué es exactamente el producto que se cobra y a quién (¿membresía con contenido?, ¿las aplicaciones como servicio para empresas?, ¿ambas?).
