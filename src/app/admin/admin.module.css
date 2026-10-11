@@ -308,3 +308,12 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+.opcional {
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.separado {
+  margin-top: 12px;
+}

@@ -4,57 +4,28 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { EstadoFormulario } from "@/app/acciones";
 import { exigirSuperadmin } from "@/lib/sesion";
-import { colorValido, crearSlug } from "@/lib/slug";
+import { colorValido } from "@/lib/color";
 
 const texto = (f: FormData, campo: string) => String(f.get(campo) ?? "").trim();
 const FALLO = "No se ha podido guardar. Inténtalo de nuevo.";
 
 /** Los errores que lanzan nuestras funciones de la base (P0001) ya vienen escritos para Carlos. */
 function mensaje(error: { code?: string; message: string }) {
-  if (error.code === "P0001") return error.message;
-  if (error.code === "23505") return "Ya existe una empresa con esa dirección corta. Cambia el nombre.";
-  return FALLO;
+  return error.code === "P0001" ? error.message : FALLO;
 }
 
-export async function aprobarSolicitud(_p: EstadoFormulario, f: FormData): Promise<EstadoFormulario> {
+/** Alguien ha comprado una aplicación: se crea su espacio ligado a su correo. */
+export async function nuevoCliente(_p: EstadoFormulario, f: FormData): Promise<EstadoFormulario> {
   const { supabase } = await exigirSuperadmin();
-  const nombre = texto(f, "empresa");
-  const slug = crearSlug(nombre);
-  if (!nombre || !slug) return { error: "Escribe el nombre de la empresa." };
+  const email = texto(f, "email").toLowerCase();
+  if (!email) return { error: "Escribe el correo con el que se registró el cliente." };
+  const nombre = texto(f, "nombre");
+  if (nombre.length > 120) return { error: "El nombre es demasiado largo." };
 
-  const { data, error } = await supabase.rpc("admin_aprobar_solicitud", {
-    p_solicitud: texto(f, "solicitud"),
-    p_nombre: nombre,
-    p_slug: slug,
-  });
+  const { data, error } = await supabase.rpc("admin_nuevo_cliente", { p_email: email, p_nombre: nombre || null });
   if (error) return { error: mensaje(error) };
   revalidatePath("/admin");
   redirect(`/admin/empresas/${data}`);
-}
-
-export async function rechazarSolicitud(_p: EstadoFormulario, f: FormData): Promise<EstadoFormulario> {
-  const { supabase } = await exigirSuperadmin();
-  const { error } = await supabase
-    .from("solicitudes_cuenta")
-    .update({ estado: "rechazada" })
-    .eq("id", texto(f, "solicitud"))
-    .eq("estado", "pendiente");
-  if (error) return { error: mensaje(error) };
-  revalidatePath("/admin");
-  return { ok: true };
-}
-
-export async function crearEmpresa(_p: EstadoFormulario, f: FormData): Promise<EstadoFormulario> {
-  const { supabase } = await exigirSuperadmin();
-  const nombre = texto(f, "nombre");
-  const slug = crearSlug(nombre);
-  if (!nombre || !slug) return { error: "Escribe el nombre de la empresa." };
-  if (nombre.length > 120) return { error: "El nombre es demasiado largo." };
-
-  const { data, error } = await supabase.from("organizaciones").insert({ nombre, slug }).select("id").single();
-  if (error) return { error: mensaje(error) };
-  revalidatePath("/admin");
-  redirect(`/admin/empresas/${data.id}`);
 }
 
 export async function guardarMarca(_p: EstadoFormulario, f: FormData): Promise<EstadoFormulario> {
@@ -73,7 +44,7 @@ export async function guardarMarca(_p: EstadoFormulario, f: FormData): Promise<E
   } catch (e) {
     return { error: (e as Error).message };
   }
-  if (!cambios.nombre) return { error: "La empresa necesita un nombre." };
+  if (!cambios.nombre) return { error: "El cliente necesita un nombre." };
   if (cambios.logo_url && !/^https:\/\//.test(cambios.logo_url))
     return { error: "El logo tiene que ser una dirección que empiece por https://" };
 
@@ -87,12 +58,12 @@ export async function guardarMarca(_p: EstadoFormulario, f: FormData): Promise<E
 export async function cambiarModulo(_p: EstadoFormulario, f: FormData): Promise<EstadoFormulario> {
   const { supabase } = await exigirSuperadmin();
   const empresa = texto(f, "empresa");
-  const modulo = texto(f, "modulo");
-  const activo = texto(f, "activo") === "si";
-
   const { error } = await supabase
     .from("organizacion_modulos")
-    .upsert({ organizacion_id: empresa, modulo, activo }, { onConflict: "organizacion_id,modulo" });
+    .upsert(
+      { organizacion_id: empresa, modulo: texto(f, "modulo"), activo: texto(f, "activo") === "si" },
+      { onConflict: "organizacion_id,modulo" },
+    );
   if (error) return { error: mensaje(error) };
   revalidatePath(`/admin/empresas/${empresa}`);
   return { ok: true };

@@ -19,7 +19,7 @@ Lo que ya está decidido (de los prototipos):
 ## Decidido en la sesión 1
 - Negocio: vender paneles y aplicaciones web a medida para cada empresa. La membresía es el gancho gratuito.
 - Membresía gratis: acceso a 2-3 secciones. Quien compra una aplicación tiene acceso total a la membresía.
-- Cuentas: solicitud y aprobación manual por Carlos. Se cobra a la empresa (organización), que invita a sus empleados.
+- Cuentas (cambiado el 11 oct): **registro libre** clásico (correo + contraseña + repetir + confirmación por email) → membresía gratis. Nada de nombre de empresa al registrarse. Cuando alguien compra una app, Carlos escribe su correo en /admin («Nuevo cliente») y se crea su espacio (organización) ligado a ese correo; los datos del negocio los pone Carlos. Se cobra al cliente (organización), que da acceso a sus empleados por correo.
 - Primeros cobros por factura manual; Stripe más adelante. Precios sin definir.
 - Primer módulo del MVP: **Hostelería** (carta + pedidos + panel de barra), rehecho a partir de `Carloswxht/la-mar-de-gambas` (cliente real, sigue funcionando aparte hasta migrarlo). Pendientes de obra y Control de horario, después.
 - Hospedaje: el navegador solo habla con nuestro dominio (antibloqueos de LaLiga y Safari). Producción futura en VPS Hetzner (Alemania) con IP propia. Sin Vercel. De momento sin servidor: Claude prueba la app en su entorno y envía capturas y un enlace de vista a Carlos.
@@ -34,13 +34,13 @@ Plan técnico del MVP: `docs/plan-mvp.md`.
 - `cp .env.example .env.local` (dirección y clave publicable de Supabase; no son secretas).
 - El entorno tiene permitido `dafmorfftnucsxcsafop.supabase.co` (red Personalizada) para probar el login de verdad.
 - Supabase MCP: cualquier SQL con `DELETE` se cancela solo; evitarlo o pedir a Carlos que lo ejecute en el SQL Editor.
-- Tests de seguridad de la base: `select pruebas.aislamiento(), pruebas.admin();` → 'OK'. Flujo real con usuario de prueba: ver `docs/pruebas.md`.
+- Tests de seguridad de la base: `select pruebas.aislamiento(), pruebas.admin(), pruebas.clientes();` → 'OK'. Flujo real con usuario de prueba: ver `docs/pruebas.md`.
 - Carlos (carloswxht@gmail.com) es superadmin en la plataforma.
+- Correos de Supabase: el SMTP de serie NO envía (límite agotado); hace falta SMTP propio (Resend) para que funcionen el registro y «olvidé mi contraseña». Pendiente de Carlos.
 
 ## Lo que NO está definido (aclararlo con Carlos en plan mode antes de programar)
 - Qué es exactamente el producto que se cobra y a quién (¿membresía con contenido?, ¿las aplicaciones como servicio para empresas?, ¿ambas?).
 - Planes y precios. Carlos pidió explícitamente no diseñarlos aún.
-- Quién crea cuentas: ¿registro libre, o solicitud y aprobación manual (como sugiere "Solicitar cuenta")?
 
 ## Propuesta técnica (confirmar con Carlos en la sesión 1, dar opinión clara)
 La plantilla antigua (un HTML + Supabase con política abierta `anon`, un proyecto Supabase por cliente) **NO sirve para un SaaS**: sin login real cualquiera lee los datos de todos. Propuesta:

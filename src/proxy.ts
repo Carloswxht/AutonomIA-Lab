@@ -32,5 +32,5 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   // Solo donde hay sesión: miembros y acciones. La portada y lo estático no lo necesitan.
-  matcher: ["/miembros/:path*", "/admin/:path*", "/app/:path*"],
+  matcher: ["/miembros/:path*", "/admin/:path*", "/app/:path*", "/nueva-contrasena"],
 };

@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  async redirects() {
+    // "Solicitar cuenta" se sustituyó por el registro libre (11 oct).
+    return [{ source: "/solicitar", destination: "/registro", permanent: true }];
+  },
   async headers() {
     return [
       {

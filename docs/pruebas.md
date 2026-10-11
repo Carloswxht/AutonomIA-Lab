@@ -1,7 +1,7 @@
 # Pruebas
 
 - `npm run lint` · `npm run typecheck` · `npm test` · `npm run build` · `npm run test:e2e` (móvil 390x844).
-- Base de datos (desde el MCP de Supabase): `select pruebas.aislamiento(), pruebas.admin();` → `OK` y `OK`.
+- Base de datos (desde el MCP de Supabase): `select pruebas.aislamiento(), pruebas.admin(), pruebas.clientes();` → `OK` ×3.
 
 ## Flujo real contra Supabase (`tests/e2e/real.spec.ts`)
 Necesita un usuario de prueba superadmin. La contraseña NO se guarda en el repo: se genera en cada sesión.
@@ -13,7 +13,10 @@ Necesita un usuario de prueba superadmin. La contraseña NO se guarda en el repo
    banned_until = null where email = 'ejemplo-pruebas@autonomialab.test'`.
 3. Hacerlo superadmin solo durante la prueba: `update public.perfiles set es_superadmin = true where id = …`.
 4. `PRUEBA_EMAIL=ejemplo-pruebas@autonomialab.test PRUEBA_PASSWORD=… npm run test:e2e`
-5. Al terminar: quitar superadmin, `banned_until = '2999-01-01'`, rechazar solicitudes `ejemplo-%@autonomialab.test`
-   pendientes y suspender las empresas `Ejemplo Bar %` (no se pueden borrar desde el MCP).
+   - Hace de cliente `ejemplo-cliente@autonomialab.test` (existe, sin contraseña: no puede entrar).
+   - Con SMTP propio configurado, añadir `PRUEBA_REGISTRO=1` para probar también el registro por la web
+     (Supabase rechaza dominios `.test`, por eso usa `@autonomialab.com`).
+5. Al terminar: quitar superadmin, `banned_until = '2999-01-01'` y suspender las empresas `Ejemplo Bar %`
+   (no se pueden borrar desde el MCP).
 
 En el entorno de Claude Code, Node necesita el proxy (`playwright.config.ts` ya lo pone en el servidor de pruebas).

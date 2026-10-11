@@ -1,13 +1,14 @@
 // Genera un único HTML autocontenido con las pantallas ya compiladas (`npm run build`),
 // para enseñárselas a Carlos como enlace sin servidor. Uso: node scripts/vista-previa.mjs <salida.html>
-// Cada ruta es una vista por hash (#inicio, #solicitar). Sin JS de Next: solo HTML + CSS + un poco de JS propio.
+// Cada ruta es una vista por hash (#inicio, #registro, #recuperar). Sin JS de Next: solo HTML + CSS + un poco de JS propio.
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const RAIZ = process.cwd();
 const RUTAS = [
   { vista: "inicio", archivo: "index.html", ruta: "/" },
-  { vista: "solicitar", archivo: "solicitar.html", ruta: "/solicitar" },
+  { vista: "registro", archivo: "registro.html", ruta: "/registro" },
+  { vista: "recuperar", archivo: "recuperar.html", ruta: "/recuperar" },
 ];
 const salida = process.argv[2] ?? "vista-previa.html";
 
@@ -61,8 +62,8 @@ ${vistas.join("\n")}
       const p = document.createElement("p");
       p.setAttribute("role", "status");
       p.style.cssText = "margin-top:12px;font-size:.9rem;line-height:1.5;color:var(--text-dim)";
-      if (f.querySelector("[name=nombre]")) {
-        p.textContent = "Solicitud enviada. La revisamos y te escribimos al correo que nos has dado. (Vista previa: no se guarda nada.)";
+      if (f.querySelector("[name=password2]") || !f.querySelector("[name=password]")) {
+        p.textContent = "Vista previa: aquí te diríamos que te hemos enviado un correo. No se guarda nada.";
         f.replaceWith(p);
       } else if (!f.querySelector("[role=status]")) {
         p.textContent = "Vista previa: aquí no se puede entrar. El login real funciona en la app.";

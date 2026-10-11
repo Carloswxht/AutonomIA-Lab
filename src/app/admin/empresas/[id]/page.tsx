@@ -24,7 +24,7 @@ export default async function Empresa({ params }: PageProps<"/admin/empresas/[id
   return (
     <main className={styles.contenido}>
       <Link href="/admin" className={styles.volver}>
-        ← Empresas
+        ← Clientes
       </Link>
       <h1 className={styles.h1}>{empresa.nombre}</h1>
       <p className={styles.mono}>/{empresa.slug}</p>
@@ -127,7 +127,7 @@ export default async function Empresa({ params }: PageProps<"/admin/empresas/[id
             <option value="admin">Administrador de la empresa</option>
           </select>
           <p className={styles.nota}>
-            La persona tiene que tener ya usuario. Por ahora se crea en Supabase → Authentication → Users → Add user.
+            La persona tiene que haberse registrado antes en autonomialab.com con ese correo.
           </p>
         </FormularioAccion>
       </section>

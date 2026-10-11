@@ -97,6 +97,15 @@
   font-weight: 600;
 }
 
+.olvido {
+  display: block;
+  width: fit-content;
+  margin: 2px auto 0;
+  padding: 6px 0;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
 /* ---------- Mensajes ---------- */
 .hero {
   position: relative;

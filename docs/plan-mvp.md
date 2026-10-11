@@ -56,7 +56,7 @@ Interruptores por bar (los pone Carlos desde `/admin`):
 Plataforma:
 - `organizaciones`: nombre, slug, nombre_app, logo_url, colores, tipografía, estado.
 - `perfiles` (`es_superadmin` solo Carlos), `miembros` (usuario ↔ organización, rol).
-- `solicitudes_cuenta` (anon solo INSERTA, nunca lee).
+- `solicitudes_cuenta`: histórico; desde el 11 oct hay registro libre y nadie escribe en ella.
 - `modulos` (catálogo) y `organizacion_modulos` (activos + `config` jsonb con los interruptores).
 Hostelería (todas con `organizacion_id`):
 - `hos_categorias`, `hos_productos` (con tamaños y precio por tamaño, agotado, oculto, alérgenos),
