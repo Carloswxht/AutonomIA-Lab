@@ -1,5 +1,14 @@
 # autonomIA Lab — SaaS
 
+@PLATAFORMA.md
+
+> **Desde el 18 oct manda `PLATAFORMA.md`** (bases comunes de todos los repositorios; **la copia maestra es la de este repositorio**). Donde este archivo contradiga a `PLATAFORMA.md`, gana `PLATAFORMA.md`. Cambios respecto a lo escrito abajo el 11 oct:
+> - **Base de datos única: `autonomialab-db`** (ref `dorunbacwnkwdatfscri`), no «autonomIA Lab» (`dafmorfftnucsxcsafop`, renombrada «autonomIA Lab antiguo» y pausada). Sus tablas se pasarán a las carpetas `comun` / `autonomialab` de `autonomialab-db` (siguiente paso de esta sesión, con plan previo y el «sí» de Carlos). **En `autonomialab-db` funciona ya MultiBar con un cliente real (La Mar de Gambas): nunca tocar la carpeta `multibar`.**
+> - **Dominio principal: `autonomialab.es`** (decisión de Carlos, 18 oct: más confianza en España); `autonomialab.com` redirige a `.es`. Revisar Site URL, plantillas de correo y remitentes.
+> - **MultiBar no se rehace como módulo «Hostelería»**: es un producto aparte, en su repositorio `multibar-platform` (`carta.autonomialab.es`). La SaaS lo enlaza desde «Tus aplicaciones». Lo mismo con cada gremio nuevo.
+> - Cuentas: el personal de cada negocio tiene una cuenta de un solo negocio (ver `PLATAFORMA.md`). Unificar el login de la SaaS (Supabase Auth) y el de MultiBar (propio) se hará más adelante.
+
+
 Responde SIEMPRE en español. Quien habla es Carlos, fundador. **Trabaja solo desde un móvil Android** (sesiones en la nube): las respuestas deben ser cortas, claras y con el resultado primero. Nada de pedirle que ejecute comandos en un terminal: tú lo haces todo. Carlos dicta por voz: interpretar la intención, no el literal. Cuando tenga que tocar paneles (Supabase, DonDominio, Resend…), guiarle paso a paso y pedirle captura.
 
 ## Marca
