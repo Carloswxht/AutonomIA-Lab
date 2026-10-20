@@ -6,6 +6,8 @@
 > - **Base de datos única: `autonomialab-db`** (ref `dorunbacwnkwdatfscri`), no «autonomIA Lab» (`dafmorfftnucsxcsafop`, renombrada «autonomIA Lab antiguo» y pausada). Sus tablas se pasarán a las carpetas `comun` / `autonomialab` de `autonomialab-db` (siguiente paso de esta sesión, con plan previo y el «sí» de Carlos). **En `autonomialab-db` funciona ya MultiBar con un cliente real (La Mar de Gambas): nunca tocar la carpeta `multibar`.**
 > - **Dominio principal: `autonomialab.es`** (decisión de Carlos, 18 oct: más confianza en España); `autonomialab.com` redirige a `.es`. Revisar Site URL, plantillas de correo y remitentes.
 > - **MultiBar no se rehace como módulo «Hostelería»**: es un producto aparte, en su repositorio `multibar-platform` (`carta.autonomialab.es`). La SaaS lo enlaza desde «Tus aplicaciones». Lo mismo con cada gremio nuevo.
+> - **Gymbro** (gimnasios, repositorio `gymbro`, `gymbro.autonomialab.es`; primer cliente War300) es también un producto aparte, no el módulo «Entrenamiento» de abajo. Tiene su `/plataforma/` (la misma cuenta de plataforma de Carlos que MultiBar) y su panel del dueño. Lo de `war300` de las notas del 11 oct ya está hecho así.
+> - **Bases en la versión 11 (20 oct)**, cambiadas desde la sesión de Gymbro con permiso de Carlos (dictado y correos con punto final; Gymbro con sus paneles). Desde aquí se siguen cambiando.
 > - Cuentas: el personal de cada negocio tiene una cuenta de un solo negocio (ver `PLATAFORMA.md`). Unificar el login de la SaaS (Supabase Auth) y el de MultiBar (propio) se hará más adelante.
 
 
