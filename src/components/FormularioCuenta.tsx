@@ -1,19 +1,24 @@
 "use client";
 
 import { useActionState } from "react";
-import type { EstadoFormulario } from "@/app/acciones";
+import { cambiarContrasena, recuperarContrasena, solicitarAcceso, type EstadoFormulario } from "@/app/acciones";
 import styles from "./Cuenta.module.css";
+
+// Las páginas son del servidor (por sus títulos) y no pueden pasar funciones: eligen la acción por su nombre.
+const ACCIONES = { solicitar: solicitarAcceso, recuperar: recuperarContrasena, cambiar: cambiarContrasena };
 
 type Campo = "email" | "password" | "password2";
 
 const CAMPOS: Record<Campo, { etiqueta: string; tipo: string; autocompletar: string }> = {
-  email: { etiqueta: "Correo", tipo: "email", autocompletar: "email" },
+  // Correo como texto (con teclado de correo): con type="email" el móvil no deja enviar «…@gmail.com.» del dictado;
+  // la acción quita ese punto y comprueba el correo.
+  email: { etiqueta: "Correo", tipo: "text", autocompletar: "email" },
   password: { etiqueta: "Contraseña", tipo: "password", autocompletar: "new-password" },
   password2: { etiqueta: "Repite la contraseña", tipo: "password", autocompletar: "new-password" },
 };
 
 type Props = {
-  accion: (previo: EstadoFormulario, f: FormData) => Promise<EstadoFormulario>;
+  accion: keyof typeof ACCIONES;
   campos: Campo[];
   boton: string;
   enviando: string;
@@ -23,7 +28,7 @@ type Props = {
 };
 
 export function FormularioCuenta({ accion, campos, boton, enviando, hecho, nota }: Props) {
-  const [estado, ejecutar, pendiente] = useActionState(accion, {});
+  const [estado, ejecutar, pendiente] = useActionState<EstadoFormulario, FormData>(ACCIONES[accion], {});
 
   if (estado.ok && hecho) {
     return (
@@ -43,6 +48,7 @@ export function FormularioCuenta({ accion, campos, boton, enviando, hecho, nota 
             name={c}
             type={CAMPOS[c].tipo}
             autoComplete={CAMPOS[c].autocompletar}
+            {...(c === "email" ? { inputMode: "email" as const, autoCapitalize: "none", spellCheck: false } : {})}
             maxLength={c === "email" ? 254 : 72}
             // Tras un error se conserva el correo; las contraseñas se vuelven a escribir.
             defaultValue={c === "email" ? estado.email : undefined}

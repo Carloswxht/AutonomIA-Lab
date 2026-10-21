@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { salir } from "@/app/acciones";
 import { enlaceWhatsApp } from "@/lib/contacto";
+import { useYo } from "@/lib/sesion";
 import styles from "./MenuInferior.module.css";
 
 /** Barra inferior con menú hamburguesa (patrón de prototipos/miembros.html). */
-export function MenuInferior({ superadmin }: { superadmin: boolean }) {
+export function MenuInferior() {
+  const superadmin = useYo().tipo === "plataforma";
   const [abierto, setAbierto] = useState(false);
 
   useEffect(() => {

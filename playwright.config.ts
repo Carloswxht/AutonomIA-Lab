@@ -10,7 +10,12 @@ export default defineConfig({
   reporter: "list",
   use: {
     baseURL: "http://localhost:3100",
-    launchOptions: existsSync(chromiumLocal) ? { executablePath: chromiumLocal } : {},
+    launchOptions: {
+      ...(existsSync(chromiumLocal) ? { executablePath: chromiumLocal } : {}),
+      // En el entorno de Claude Code la salida a internet (Supabase) pasa por un proxy que vuelve a cifrar.
+      ...(process.env.HTTPS_PROXY ? { proxy: { server: process.env.HTTPS_PROXY, bypass: "localhost,127.0.0.1" } } : {}),
+    },
+    ignoreHTTPSErrors: Boolean(process.env.HTTPS_PROXY),
   },
   projects: [
     {
@@ -20,11 +25,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run start -- -p 3100",
-    // En el entorno de Claude Code la salida a internet pasa por un proxy: Node debe usarlo para llegar a Supabase.
-    env: process.env.HTTPS_PROXY
-      ? { NODE_USE_ENV_PROXY: "1", NODE_EXTRA_CA_CERTS: "/root/.ccr/ca-bundle.crt" }
-      : {},
+    // La web es de páginas fijas: se sirve la carpeta out/ (hace falta `npm run build` antes), como GitHub Pages.
+    command: "node scripts/servir.mjs 3100",
     url: "http://localhost:3100",
     reuseExistingServer: !process.env.CI,
   },

@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { FormularioAccion } from "@/components/FormularioAccion";
-import { exigirSuperadmin } from "@/lib/sesion";
+import { panelPlataforma, producto, PRODUCTOS } from "@/lib/productos";
+import { supabase } from "@/lib/supabase/cliente";
+import { useDatos } from "@/lib/useDatos";
 import { etiquetaTipo } from "@/lib/sectores";
-import { aprobarAcceso, nuevoCliente, rechazarAcceso } from "./acciones";
+import { aprobarAcceso, rechazarAcceso } from "./acciones";
 import styles from "./admin.module.css";
 
 const fecha = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short", timeZone: "Europe/Madrid" });
@@ -18,26 +22,34 @@ const enlaceWhatsApp = (telefono: string) => {
   return `https://wa.me/${cifras.length === 9 ? `34${cifras}` : cifras}`;
 };
 
-type Usuario = { id: string; email: string; creado_en: string; confirmado: boolean; empresas: number };
+type Solicitud = {
+  id: string;
+  email: string;
+  tipo: string | null;
+  sector: string | null;
+  nombre: string | null;
+  telefono: string | null;
+  mensaje: string | null;
+  creado_en: string;
+};
+type Miembro = { auth_id: string; email: string; nombre: string | null; creado_en: string; ha_entrado: boolean; negocio: string | null };
+type Negocio = { id: number; nombre: string; slug: string; tipo: string; activo: boolean; productos: string[]; personas: number };
 
-export default async function Admin() {
-  const { supabase } = await exigirSuperadmin();
-  const [{ data: solicitudes }, { data: usuarios }, { data: clientes }] = await Promise.all([
-    supabase
-      .from("solicitudes_acceso")
-      .select("id, email, tipo, sector, nombre, telefono, mensaje, creado_en")
-      .eq("estado", "pendiente")
-      .order("creado_en", { ascending: false }),
-    supabase.rpc("admin_usuarios"),
-    supabase
-      .from("organizaciones")
-      .select("id, nombre, nombre_app, estado, organizacion_modulos(modulo, activo), miembros(count)")
-      .order("creado_en", { ascending: false }),
+const leer = () =>
+  Promise.all([
+    supabase().rpc("admin_solicitudes_autonomialab"),
+    supabase().rpc("admin_miembros_autonomialab"),
+    supabase().rpc("admin_clientes_autonomialab"),
   ]);
-  const pendientes = solicitudes ?? [];
-  const registrados = (usuarios ?? []) as Usuario[];
-  const lista = clientes ?? [];
-  const activos = lista.filter((e) => e.estado === "activa");
+
+export default function Admin() {
+  const [datos, recargar] = useDatos(leer);
+  if (!datos) return <p className="cargando">Cargando…</p>;
+  const [{ data: solicitudes }, { data: miembros }, { data: negocios }] = datos;
+  const pendientes = (solicitudes ?? []) as Solicitud[];
+  const registrados = (miembros ?? []) as Miembro[];
+  const lista = (negocios ?? []) as Negocio[];
+  const activos = lista.filter((n) => n.activo);
 
   return (
     <main className={styles.contenido}>
@@ -47,7 +59,7 @@ export default async function Admin() {
           <strong className={pendientes.length ? styles.azul : undefined}>{pendientes.length}</strong>
         </div>
         <div className={styles.kpi}>
-          <span>Clientes activos</span>
+          <span>Negocios activos</span>
           <strong className={activos.length ? styles.azul : undefined}>{activos.length}</strong>
         </div>
       </div>
@@ -78,10 +90,10 @@ export default async function Admin() {
                   {s.mensaje && <p className={styles.mensaje}>«{s.mensaje}»</p>}
                   <p className={styles.fecha}>{fechaHora.format(new Date(s.creado_en))}</p>
                   <div className={styles.acciones}>
-                    <FormularioAccion accion={aprobarAcceso} boton="Aprobar" enviando="Aprobando…" hecho="Aprobada.">
+                    <FormularioAccion accion={aprobarAcceso} boton="Aprobar" enviando="Aprobando…" hecho="Aprobada." alTerminar={recargar}>
                       <input type="hidden" name="solicitud" value={s.id} />
                     </FormularioAccion>
-                    <FormularioAccion accion={rechazarAcceso} boton="Rechazar" enviando="Rechazando…" variante="peligro" hecho="Rechazada.">
+                    <FormularioAccion accion={rechazarAcceso} boton="Rechazar" enviando="Rechazando…" variante="peligro" hecho="Rechazada." alTerminar={recargar}>
                       <input type="hidden" name="solicitud" value={s.id} />
                     </FormularioAccion>
                   </div>
@@ -94,38 +106,41 @@ export default async function Admin() {
 
       <section aria-labelledby="t-clientes">
         <h2 id="t-clientes" className={styles.titulo}>
-          Clientes
+          Negocios (clientes)
         </h2>
-        <FormularioAccion accion={nuevoCliente} boton="Dar de alta" enviando="Creando…" className={`${styles.formulario} ${styles.nueva}`}>
-          <label htmlFor="cliente-email">Nuevo cliente: su correo</label>
-          <input id="cliente-email" name="email" type="email" required maxLength={254} placeholder="El correo con el que tiene acceso" />
-          <label htmlFor="cliente-nombre">
-            Nombre del negocio <span className={styles.opcional}>(opcional, lo puedes poner después)</span>
-          </label>
-          <input id="cliente-nombre" name="nombre" maxLength={120} />
-        </FormularioAccion>
+        <p className={styles.nota}>
+          Los negocios se dan de alta en el panel de plataforma de cada producto:{" "}
+          {PRODUCTOS.map((p, i) => (
+            <span key={p.clave}>
+              {i > 0 && " · "}
+              <a href={panelPlataforma(p.clave)} target="_blank" rel="noopener noreferrer">
+                {p.nombre}
+              </a>
+            </span>
+          ))}
+          . Aquí das acceso a la web a sus dueños.
+        </p>
 
-        {lista.length > 0 && (
+        {lista.length === 0 ? (
+          <p className={styles.vacio}>Todavía no hay negocios.</p>
+        ) : (
           <ul className={`${styles.lista} ${styles.separado}`}>
-            {lista.map((e) => {
-              const modulos = (e.organizacion_modulos ?? []).filter((m) => m.activo).length;
-              const personas = (e.miembros as unknown as { count: number }[])?.[0]?.count ?? 0;
-              return (
-                <li key={e.id}>
-                  <Link href={`/admin/empresas/${e.id}`} className={`${styles.tarjeta} ${styles.enlace}`}>
-                    <div className={styles.filaTitulo}>
-                      <h3>{e.nombre_app || e.nombre}</h3>
-                      <span className={`${styles.badge} ${e.estado === "activa" ? styles.badgeVerde : styles.badgeGris}`}>
-                        {e.estado === "activa" ? "Activo" : "Suspendido"}
-                      </span>
-                    </div>
-                    <p className={styles.fecha}>
-                      {modulos} {modulos === 1 ? "módulo" : "módulos"} · {personas} {personas === 1 ? "persona" : "personas"}
-                    </p>
-                  </Link>
-                </li>
-              );
-            })}
+            {lista.map((n) => (
+              <li key={n.id}>
+                <Link href={`/admin/negocio/?id=${n.id}`} className={`${styles.tarjeta} ${styles.enlace}`}>
+                  <div className={styles.filaTitulo}>
+                    <h3>{n.nombre}</h3>
+                    <span className={`${styles.badge} ${n.activo ? styles.badgeVerde : styles.badgeGris}`}>
+                      {n.activo ? "Activo" : "De baja"}
+                    </span>
+                  </div>
+                  <p className={styles.fecha}>
+                    {n.productos.length ? n.productos.map((c) => producto(c).nombre).join(" · ") : "Sin productos"} ·{" "}
+                    {n.personas} {n.personas === 1 ? "persona en la web" : "personas en la web"}
+                  </p>
+                </Link>
+              </li>
+            ))}
           </ul>
         )}
       </section>
@@ -139,17 +154,17 @@ export default async function Admin() {
         ) : (
           <ul className={styles.lista}>
             {registrados.map((u) => (
-              <li key={u.id} className={`${styles.tarjeta} ${styles.persona}`}>
+              <li key={u.auth_id} className={`${styles.tarjeta} ${styles.persona}`}>
                 <div>
                   <p className={styles.mono}>{u.email}</p>
-                  <p className={styles.fecha}>{fecha.format(new Date(u.creado_en))}</p>
+                  <p className={styles.fecha}>
+                    {fecha.format(new Date(u.creado_en))}
+                    {u.negocio ? ` · ${u.negocio}` : ""}
+                    {u.ha_entrado ? "" : " · aún no ha entrado"}
+                  </p>
                 </div>
-                <span
-                  className={`${styles.badge} ${
-                    u.empresas > 0 ? styles.badgeAzul : styles.badgeVerde
-                  }`}
-                >
-                  {u.empresas > 0 ? "Cliente" : "Gratis"}
+                <span className={`${styles.badge} ${u.negocio ? styles.badgeAzul : styles.badgeVerde}`}>
+                  {u.negocio ? "Cliente" : "Gratis"}
                 </span>
               </li>
             ))}

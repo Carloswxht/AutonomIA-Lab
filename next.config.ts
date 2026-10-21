@@ -1,22 +1,12 @@
 import type { NextConfig } from "next";
 
+// Web de páginas fijas para GitHub Pages (carpeta `out/`). Sin servidor: no hay redirecciones ni cabeceras propias
+// (/registro lleva a /solicitar desde la propia página). Para volver a un servidor (Hetzner), ver docs/publicar.md.
 const nextConfig: NextConfig = {
+  output: "export",
+  trailingSlash: true,
+  images: { unoptimized: true },
   poweredByHeader: false,
-  async redirects() {
-    return [{ source: "/registro", destination: "/solicitar", permanent: false }];
-  },
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "X-Frame-Options", value: "DENY" },
-        ],
-      },
-    ];
-  },
 };
 
 export default nextConfig;

@@ -11,6 +11,9 @@ describe("validarCorreo", () => {
   it("acepta y normaliza un correo", () => {
     expect(validarCorreo(formulario({ email: " Ana@Ejemplo.ES " }))).toEqual({ ok: true, datos: { email: "ana@ejemplo.es" } });
   });
+  it("quita el punto y los espacios que añade el dictado", () => {
+    expect(validarCorreo(formulario({ email: "ana@gmail.com. " }))).toEqual({ ok: true, datos: { email: "ana@gmail.com" } });
+  });
   it("rechaza un correo no válido", () => {
     expect(validarCorreo(formulario({ email: "ana@" })).ok).toBe(false);
   });

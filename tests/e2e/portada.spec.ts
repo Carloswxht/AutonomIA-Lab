@@ -16,8 +16,8 @@ test("la portada muestra marca, acceso, mensajes y asesor", async ({ page }) => 
     "href",
     /^https:\/\/wa\.me\/34605288673\?text=/,
   );
-  await expect(page.getByRole("link", { name: /Solicitar acceso/ })).toHaveAttribute("href", "/solicitar");
-  await expect(page.getByRole("link", { name: "¿Olvidaste tu contraseña?" })).toHaveAttribute("href", "/recuperar");
+  await expect(page.getByRole("link", { name: /Solicitar acceso/ })).toHaveAttribute("href", "/solicitar/");
+  await expect(page.getByRole("link", { name: "¿Olvidaste tu contraseña?" })).toHaveAttribute("href", "/recuperar/");
   await sinScrollLateral(page);
   await page.screenshot({ path: "test-results/portada-390.png", fullPage: true });
 });
@@ -41,7 +41,7 @@ test("sin sesión, miembros y administración vuelven a la portada", async ({ pa
 
 test("/registro lleva a solicitar acceso", async ({ page }) => {
   await page.goto("/registro");
-  await expect(page).toHaveURL(/\/solicitar$/);
+  await expect(page).toHaveURL(/\/solicitar\/$/);
 });
 
 test("Solicitar acceso pide un correo válido y lo conserva", async ({ page }) => {
@@ -65,7 +65,7 @@ test("Nueva contraseña comprueba que coincidan", async ({ page }) => {
 
 test("los enlaces caducados se explican", async ({ page }) => {
   await page.goto("/auth/confirmar?error=access_denied&error_code=otp_expired");
-  await expect(page).toHaveURL(/\/confirmado\?motivo=caducado$/);
+  await expect(page).toHaveURL(/\/confirmado\/\?motivo=caducado$/);
   await expect(page.getByRole("heading", { name: "El enlace ha caducado" })).toBeVisible();
   await page.goto("/auth/confirmar?siguiente=/nueva-contrasena&code=falso");
   await expect(page.getByRole("heading", { name: "El enlace no sirve" })).toBeVisible();

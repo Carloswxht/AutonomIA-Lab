@@ -4,8 +4,11 @@ export const MINIMO_CONTRASENA = 8;
 
 export type ResultadoValidacion<T> = { ok: true; datos: T } | { ok: false; error: string };
 
+/** Quita espacios y puntos del final: el dictado a veces añade «.» tras el correo (ver PLATAFORMA.md). */
+export const limpiarCorreo = (valor: string) => valor.trim().replace(/[\s.]+$/, "").toLowerCase();
+
 export function validarCorreo(f: FormData): ResultadoValidacion<{ email: string }> {
-  const email = texto(f, "email").toLowerCase();
+  const email = limpiarCorreo(texto(f, "email"));
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 254)
     return { ok: false, error: "Revisa el correo: no parece válido." };
   return { ok: true, datos: { email } };
@@ -38,6 +41,8 @@ export function mensajeErrorAuth(codigo: string | undefined): string {
     case "over_request_rate_limit":
     case "over_email_send_rate_limit":
       return "Demasiados intentos. Espera unos minutos y vuelve a probar.";
+    case "user_banned":
+      return "Esta cuenta está desactivada. Escríbenos por WhatsApp si crees que es un error.";
     case "signup_disabled":
       return "Ahora mismo no se pueden crear cuentas. Escríbenos por WhatsApp.";
     default:

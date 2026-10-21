@@ -1,10 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { enlaceWhatsApp } from "@/lib/contacto";
 import { puedeVer, SECCIONES, type Seccion } from "@/lib/membresia";
-import { datosMiembro } from "@/lib/miembro";
+import { resumenMiembro } from "@/lib/miembro";
+import { panelPlataforma, PRODUCTOS, type Producto } from "@/lib/productos";
+import { useYo } from "@/lib/sesion";
 import styles from "./miembros.module.css";
-
-const NOMBRE_MODULO: Record<string, string> = { hosteleria: "Hostelería" };
 
 function Icono({ trazos }: { trazos: string[] }) {
   return (
@@ -30,7 +32,7 @@ function Tarjeta({ s, abierta }: { s: Seccion; abierta: boolean }) {
     </>
   );
   return abierta ? (
-    <Link href={`/miembros/${s.clave}`} className={`${styles.tarjeta} ${styles.disponible}`}>
+    <Link href={`/miembros/${s.clave}/`} className={`${styles.tarjeta} ${styles.disponible}`}>
       {contenido}
     </Link>
   ) : (
@@ -45,8 +47,20 @@ function Tarjeta({ s, abierta }: { s: Seccion; abierta: boolean }) {
   );
 }
 
-export default async function Miembros() {
-  const { nombre, user, espacios, accesoTotal } = await datosMiembro();
+function TarjetaApp({ p, url, detalle }: { p: Producto; url: string; detalle: string }) {
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer" className={`${styles.tarjeta} ${styles.app}`}>
+      <span className={styles.texto}>
+        <h3>{p.nombre}</h3>
+        <span>{detalle}</span>
+      </span>
+      <span className={`${styles.badge} ${styles.abrir}`}>Abrir</span>
+    </a>
+  );
+}
+
+export default function Miembros() {
+  const { nombre, email, superadmin, negocio, aplicaciones, accesoTotal } = resumenMiembro(useYo());
   const saludo = nombre ? `Hola, ${nombre.split(" ")[0]}` : "Hola";
 
   return (
@@ -54,27 +68,40 @@ export default async function Miembros() {
       <section className={styles.bienvenida}>
         <p className={styles.eyebrow}>{accesoTotal ? "Acceso completo" : "Cuenta gratuita"}</p>
         <h1>{saludo}</h1>
-        <p className={styles.correo}>{user.email}</p>
+        <p className={styles.correo}>{email}</p>
       </section>
 
-      {espacios.length > 0 && (
+      {superadmin && (
         <section aria-labelledby="t-apps">
           <h2 id="t-apps" className={styles.titulo}>
-            Tus aplicaciones
+            Paneles de plataforma
           </h2>
           <ul className={styles.lista}>
-            {espacios.map((e) => (
-              <li key={e.id} className={`${styles.tarjeta} ${styles.app}`}>
-                <span className={styles.texto}>
-                  <h3>{e.nombre}</h3>
-                  <span>
-                    {e.modulos.length ? e.modulos.map((m) => NOMBRE_MODULO[m] ?? m).join(" · ") : "Sin módulos activos todavía"}
-                  </span>
-                </span>
-                <span className={`${styles.badge} ${styles.preparacion}`}>En preparación</span>
+            {PRODUCTOS.map((p) => (
+              <li key={p.clave}>
+                <TarjetaApp p={p} url={panelPlataforma(p.clave)} detalle={`Negocios, aspecto y opciones de ${p.nombre}`} />
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {negocio && (
+        <section aria-labelledby="t-apps">
+          <h2 id="t-apps" className={styles.titulo}>
+            Tus aplicaciones · {negocio}
+          </h2>
+          {aplicaciones.length === 0 ? (
+            <p className={styles.nota}>Tu aplicación se está preparando. Te avisaremos cuando esté lista.</p>
+          ) : (
+            <ul className={styles.lista}>
+              {aplicaciones.map((p) => (
+                <li key={p.clave}>
+                  <TarjetaApp p={p} url={p.url} detalle={p.descripcion} />
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       )}
 

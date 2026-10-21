@@ -11,12 +11,18 @@ type Props = {
   hecho?: string;
   variante?: "principal" | "secundario" | "peligro";
   className?: string;
+  /** Se llama cuando la acción sale bien (p. ej. para volver a leer la lista). */
+  alTerminar?: () => void;
   children?: ReactNode;
 };
 
-/** Formulario que llama a una acción del servidor y muestra su error o su confirmación. */
-export function FormularioAccion({ accion, boton, enviando, hecho, variante = "principal", className, children }: Props) {
-  const [estado, ejecutar, pendiente] = useActionState(accion, {});
+/** Formulario que llama a una acción y muestra su error o su confirmación. */
+export function FormularioAccion({ accion, boton, enviando, hecho, variante = "principal", className, alTerminar, children }: Props) {
+  const [estado, ejecutar, pendiente] = useActionState(async (previo: EstadoFormulario, f: FormData) => {
+    const r = await accion(previo, f);
+    if (r.ok) alTerminar?.();
+    return r;
+  }, {});
   return (
     <form action={ejecutar} className={className}>
       {children}

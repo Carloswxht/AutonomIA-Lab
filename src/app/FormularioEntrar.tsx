@@ -12,7 +12,7 @@ export function FormularioEntrar() {
       <label className={styles.oculto} htmlFor="email">
         Correo
       </label>
-      <input id="email" name="email" type="email" placeholder="Correo" autoComplete="username" required />
+      <input id="email" name="email" type="text" inputMode="email" autoCapitalize="none" spellCheck={false} placeholder="Correo" autoComplete="username" required />
       <label className={styles.oculto} htmlFor="password">
         Contraseña
       </label>
