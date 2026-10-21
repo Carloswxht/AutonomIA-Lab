@@ -23,6 +23,9 @@ Lista decidida por Carlos (21 oct). Precios **sin definir**: no ponerlos en la w
 - **Panel de datos** para el dueño (por hacer): ventas, horas punta, clientes que vuelven.
 - **Control de horario** del personal (por hacer; demo en `prototipos/aplicaciones.html`). Antes de venderlo: verificar
   la normativa del registro de jornada en fuente oficial.
+- **Bitácora para empresas de seguridad** (por hacer; Carlos, 21 oct): el parte de servicio de los vigilantes desde el
+  móvil (rondas, incidencias, relevos). Antes de venderlo: comprobar en fuente oficial qué exige la normativa de
+  seguridad privada (Ley 5/2014 y su reglamento) sobre libros y registros.
 Cada producto nuevo se da de alta con los pasos de «Alta de un producto nuevo» de `PLATAFORMA.md`.
 
 ## Descartado (Carlos, 21 oct)
