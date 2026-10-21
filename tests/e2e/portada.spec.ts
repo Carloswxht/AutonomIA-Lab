@@ -77,3 +77,15 @@ test("Recuperar contraseña pide un correo válido", async ({ page }) => {
   await page.getByRole("button", { name: "Enviar enlace" }).click();
   await expect(page.getByRole("alert").filter({ hasText: "Revisa el correo" })).toBeVisible();
 });
+
+test("la página de servicios enseña los 9 servicios, los productos y lleva a WhatsApp", async ({ page }) => {
+  await page.goto("/servicios/");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("en tu negocio");
+  for (const t of ["Agentes de IA", "Automatizaciones", "Diagnóstico de IA", "Formación en IA", "Aplicaciones web empresariales a medida", "CRM a medida", "Páginas web profesionales", "Alojamiento y mantenimiento", "Ficha de Google y reseñas"])
+    await expect(page.getByRole("heading", { name: t, exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "¿Agente o automatización?" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /MultiBar/ })).toHaveAttribute("href", "https://carta.autonomialab.es");
+  await expect(page.getByRole("link", { name: "Pedir un diagnóstico" })).toHaveAttribute("href", /^https:\/\/wa\.me\/34605288673\?text=/);
+  await sinScrollLateral(page);
+  await page.screenshot({ path: "test-results/servicios-390.png", fullPage: true });
+});
