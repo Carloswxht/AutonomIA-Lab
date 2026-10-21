@@ -1,29 +1,30 @@
-# Servicios de autonomIA Lab
+# Servicios y productos de autonomIA Lab
 
-Lista de trabajo (Carlos, 21 oct). Precios **sin definir**: no ponerlos en la web hasta que Carlos los decida.
+Lista decidida por Carlos (21 oct). Precios **sin definir**: no ponerlos en la web hasta que Carlos los decida.
 
-## Decididos por Carlos (21 oct)
+## Servicios (trabajo a medida para cada cliente)
 1. **Creación de agentes de IA**: asistentes que atienden, responden o hacen tareas solos (web, WhatsApp, correo).
-2. **Aplicaciones empresariales** a medida: como MultiBar (bares) y Gymbro (gimnasios), una app por gremio que se
-   adapta a cada cliente con sus ajustes.
+2. **Aplicaciones empresariales** a medida.
 3. **Páginas web profesionales**: solo las que hacemos nosotros, alojadas y mantenidas por nosotros (no «hosting
    abierto»).
 4. **Creación de CRM**: clientes, contactos, seguimiento de ventas y presupuestos, a medida del negocio.
+5. **Automatizaciones**: tareas repetitivas hechas solas (avisos, recordatorios a clientes, pasar datos de un sitio a
+   otro, informes semanales).
+6. **Formación en IA** para el dueño y su equipo (encaja con la sección «Universidad» de la membresía).
+7. **Diagnóstico de IA**: una llamada o visita para ver qué se puede automatizar en el negocio; puerta de entrada para
+   vender lo demás.
+8. **Alojamiento y mantenimiento** de todo lo anterior (cuota mensual: el ingreso recurrente).
+9. **Ficha de Google y reseñas** (Google Business Profile): que el negocio salga bien en Google y en Maps.
 
-## Propuestas (pendiente de que Carlos elija)
-- **Automatizaciones**: tareas repetitivas hechas solas (pasar pedidos o correos a una hoja, avisos, recordatorios a
-  clientes, informes semanales).
-- **Reservas y citas online**: peluquerías, clínicas, talleres, restaurantes; con recordatorio para que no falten.
-- **Paneles de datos e informes**: ventas, horas punta, clientes que vuelven, en una pantalla para el dueño.
-- **Control de horario** del personal (ya hay demo en `prototipos/aplicaciones.html`). Antes de venderlo: verificar
+## Productos (una app por gremio, la misma para todos sus clientes; cada uno con su repositorio)
+- **MultiBar**: cartas digitales y pedidos para bares (en marcha, `carta.autonomialab.es`).
+- **Gymbro**: rutinas y entrenos para gimnasios (en marcha, `gymbro.autonomialab.es`).
+- **Reservas y citas online** (por hacer): peluquerías, clínicas, talleres, restaurantes; con recordatorios.
+- **Panel de datos** para el dueño (por hacer): ventas, horas punta, clientes que vuelven.
+- **Control de horario** del personal (por hacer; demo en `prototipos/aplicaciones.html`). Antes de venderlo: verificar
   la normativa del registro de jornada en fuente oficial.
-- **Formación en IA** para el dueño y su equipo (encaja con la sección «Universidad» de la membresía).
-- **Diagnóstico de IA**: una visita o llamada para ver qué se puede automatizar en el negocio; buena puerta de
-  entrada para vender lo demás.
-- **Alojamiento y mantenimiento** de todo lo anterior (cuota mensual: es el ingreso recurrente).
-- **Ficha de Google y presencia local** (Google Business Profile, reseñas).
+Cada producto nuevo se da de alta con los pasos de «Alta de un producto nuevo» de `PLATAFORMA.md`.
 
-## Con cuidado
-- **Facturación**: en España las facturas deben cumplir Veri*factu (programa homologado). Mejor conectar con un
-  programa de facturación ya homologado que hacer uno propio.
-- **Pagos y TPV**: no competir con el TPV del negocio; ser un complemento (como MultiBar).
+## Descartado (Carlos, 21 oct)
+- Facturación propia.
+- Cobros y TPV.
