@@ -7,7 +7,9 @@ import styles from "./Cuenta.module.css";
 type Campo = "email" | "password" | "password2";
 
 const CAMPOS: Record<Campo, { etiqueta: string; tipo: string; autocompletar: string }> = {
-  email: { etiqueta: "Correo", tipo: "email", autocompletar: "email" },
+  // Correo como texto (con teclado de correo): con type="email" el móvil no deja enviar «…@gmail.com.» del dictado;
+  // el servidor quita ese punto y comprueba el correo.
+  email: { etiqueta: "Correo", tipo: "text", autocompletar: "email" },
   password: { etiqueta: "Contraseña", tipo: "password", autocompletar: "new-password" },
   password2: { etiqueta: "Repite la contraseña", tipo: "password", autocompletar: "new-password" },
 };
@@ -43,6 +45,7 @@ export function FormularioCuenta({ accion, campos, boton, enviando, hecho, nota 
             name={c}
             type={CAMPOS[c].tipo}
             autoComplete={CAMPOS[c].autocompletar}
+            {...(c === "email" ? { inputMode: "email" as const, autoCapitalize: "none", spellCheck: false } : {})}
             maxLength={c === "email" ? 254 : 72}
             // Tras un error se conserva el correo; las contraseñas se vuelven a escribir.
             defaultValue={c === "email" ? estado.email : undefined}

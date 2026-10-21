@@ -136,7 +136,7 @@ export default async function FichaNegocio({ params }: PageProps<"/admin/negocio
         <FormularioAccion accion={anadirPersona} boton="Dar acceso" hecho="Hecho." variante="secundario" className={`${styles.formulario} ${styles.nueva}`}>
           <input type="hidden" name="negocio" value={n.id} />
           <label htmlFor="email-persona">Correo</label>
-          <input id="email-persona" name="email" type="email" required maxLength={254} />
+          <input id="email-persona" name="email" type="text" inputMode="email" autoCapitalize="none" spellCheck={false} required maxLength={254} />
           <label htmlFor="rol-persona">Papel</label>
           <select id="rol-persona" name="rol" defaultValue="admin">
             <option value="admin">Dueño del negocio</option>
