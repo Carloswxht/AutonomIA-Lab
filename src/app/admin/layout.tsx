@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Marca } from "@/components/Marca";
-import { exigirSuperadmin } from "@/lib/sesion";
+import { exigirPlataforma } from "@/lib/sesion";
 import { salir } from "../acciones";
 import styles from "./admin.module.css";
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LayoutAdmin({ children }: LayoutProps<"/admin">) {
-  await exigirSuperadmin();
+  await exigirPlataforma();
   return (
     <div className={styles.pagina}>
       <header className={styles.cabecera}>

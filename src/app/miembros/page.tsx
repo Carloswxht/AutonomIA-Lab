@@ -2,9 +2,8 @@ import Link from "next/link";
 import { enlaceWhatsApp } from "@/lib/contacto";
 import { puedeVer, SECCIONES, type Seccion } from "@/lib/membresia";
 import { datosMiembro } from "@/lib/miembro";
+import { panelPlataforma, PRODUCTOS, type Producto } from "@/lib/productos";
 import styles from "./miembros.module.css";
-
-const NOMBRE_MODULO: Record<string, string> = { hosteleria: "Hostelería" };
 
 function Icono({ trazos }: { trazos: string[] }) {
   return (
@@ -45,8 +44,20 @@ function Tarjeta({ s, abierta }: { s: Seccion; abierta: boolean }) {
   );
 }
 
+function TarjetaApp({ p, url, detalle }: { p: Producto; url: string; detalle: string }) {
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer" className={`${styles.tarjeta} ${styles.app}`}>
+      <span className={styles.texto}>
+        <h3>{p.nombre}</h3>
+        <span>{detalle}</span>
+      </span>
+      <span className={`${styles.badge} ${styles.abrir}`}>Abrir</span>
+    </a>
+  );
+}
+
 export default async function Miembros() {
-  const { nombre, user, espacios, accesoTotal } = await datosMiembro();
+  const { nombre, user, superadmin, negocio, aplicaciones, accesoTotal } = await datosMiembro();
   const saludo = nombre ? `Hola, ${nombre.split(" ")[0]}` : "Hola";
 
   return (
@@ -57,24 +68,37 @@ export default async function Miembros() {
         <p className={styles.correo}>{user.email}</p>
       </section>
 
-      {espacios.length > 0 && (
+      {superadmin && (
         <section aria-labelledby="t-apps">
           <h2 id="t-apps" className={styles.titulo}>
-            Tus aplicaciones
+            Paneles de plataforma
           </h2>
           <ul className={styles.lista}>
-            {espacios.map((e) => (
-              <li key={e.id} className={`${styles.tarjeta} ${styles.app}`}>
-                <span className={styles.texto}>
-                  <h3>{e.nombre}</h3>
-                  <span>
-                    {e.modulos.length ? e.modulos.map((m) => NOMBRE_MODULO[m] ?? m).join(" · ") : "Sin módulos activos todavía"}
-                  </span>
-                </span>
-                <span className={`${styles.badge} ${styles.preparacion}`}>En preparación</span>
+            {PRODUCTOS.map((p) => (
+              <li key={p.clave}>
+                <TarjetaApp p={p} url={panelPlataforma(p.clave)} detalle={`Negocios, aspecto y opciones de ${p.nombre}`} />
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {negocio && (
+        <section aria-labelledby="t-apps">
+          <h2 id="t-apps" className={styles.titulo}>
+            Tus aplicaciones · {negocio}
+          </h2>
+          {aplicaciones.length === 0 ? (
+            <p className={styles.nota}>Tu aplicación se está preparando. Te avisaremos cuando esté lista.</p>
+          ) : (
+            <ul className={styles.lista}>
+              {aplicaciones.map((p) => (
+                <li key={p.clave}>
+                  <TarjetaApp p={p} url={p.url} detalle={p.descripcion} />
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       )}
 

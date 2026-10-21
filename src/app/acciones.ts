@@ -3,7 +3,8 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { crearClienteServidor } from "@/lib/supabase/servidor";
-import { mensajeErrorAuth, validarContrasenas, validarCorreo } from "@/lib/registro";
+import { limpiarCorreo, mensajeErrorAuth, validarContrasenas, validarCorreo } from "@/lib/registro";
+import { consultarYo } from "@/lib/sesion";
 
 export type EstadoFormulario = { error?: string; ok?: boolean; email?: string };
 
@@ -17,7 +18,7 @@ async function origen() {
 }
 
 export async function entrar(_previo: EstadoFormulario, f: FormData): Promise<EstadoFormulario> {
-  const email = String(f.get("email") ?? "").trim().toLowerCase();
+  const email = limpiarCorreo(String(f.get("email") ?? ""));
   const password = String(f.get("password") ?? "");
   if (!email || !password) return { error: "Escribe tu correo y tu contraseña." };
 
@@ -25,6 +26,11 @@ export async function entrar(_previo: EstadoFormulario, f: FormData): Promise<Es
     const supabase = await crearClienteServidor();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { error: mensajeErrorAuth(error.code) };
+    // Las cuentas del personal de un negocio (bar, gimnasio…) son de la app de su negocio, no de esta web.
+    if (!(await consultarYo(supabase))) {
+      await supabase.auth.signOut();
+      return { error: "Esta cuenta es de la aplicación de tu negocio. Entra desde allí." };
+    }
   } catch {
     return { error: mensajeErrorAuth(undefined) };
   }
@@ -41,14 +47,14 @@ export async function salir() {
 }
 
 export async function solicitarAcceso(_previo: EstadoFormulario, f: FormData): Promise<EstadoFormulario> {
-  const email = String(f.get("email") ?? "").trim();
+  const email = limpiarCorreo(String(f.get("email") ?? ""));
   const v = validarCorreo(f);
   if (!v.ok) return { error: v.error, email };
 
   let token: string | null = null;
   try {
     const supabase = await crearClienteServidor();
-    const { data, error } = await supabase.rpc("solicitar_acceso", { p_email: v.datos.email });
+    const { data, error } = await supabase.rpc("solicitar_acceso_autonomialab", { p_email: v.datos.email });
     // Los mensajes de la base (P0001) ya vienen escritos para el usuario.
     if (error) return { error: error.code === "P0001" ? error.message : mensajeErrorAuth(undefined), email };
     token = data as string;
@@ -62,7 +68,7 @@ export async function completarSolicitud(_previo: EstadoFormulario, f: FormData)
   const campo = (c: string, max: number) => String(f.get(c) ?? "").trim().slice(0, max);
   try {
     const supabase = await crearClienteServidor();
-    const { error } = await supabase.rpc("completar_solicitud", {
+    const { error } = await supabase.rpc("completar_solicitud_autonomialab", {
       p_token: campo("token", 36),
       p_tipo: campo("tipo", 20),
       p_sector: campo("sector", 60),

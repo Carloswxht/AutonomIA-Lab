@@ -1,0 +1,153 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { FormularioAccion } from "@/components/FormularioAccion";
+import { panelPlataforma, producto } from "@/lib/productos";
+import { exigirPlataforma } from "@/lib/sesion";
+import { anadirPersona, quitarPersona } from "../../acciones";
+import styles from "../../admin.module.css";
+
+type Ficha = {
+  id: number;
+  nombre: string;
+  slug: string;
+  tipo: string;
+  activo: boolean;
+  alta: string;
+  titular: string | null;
+  nif: string | null;
+  correo_legal: string | null;
+  telefono_legal: string | null;
+  cuentas_app: number;
+  productos: { producto: string; activo: boolean; desde: string }[];
+  personas: { auth_id: string; email: string; nombre: string | null; rol: string }[];
+};
+
+const fecha = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Madrid" });
+
+/** Ficha de un negocio (cliente). Sus datos, aspecto y personal se cambian en el panel de plataforma de su producto. */
+export default async function FichaNegocio({ params }: PageProps<"/admin/negocios/[id]">) {
+  const { id } = await params;
+  if (!/^[1-9][0-9]{0,8}$/.test(id)) notFound();
+
+  const { supabase } = await exigirPlataforma();
+  const { data } = await supabase.rpc("admin_cliente_autonomialab", { p_negocio: Number(id) });
+  const n = data as Ficha | null;
+  if (!n) notFound();
+
+  const datos = [
+    ["Titular", n.titular],
+    ["NIF/CIF", n.nif],
+    ["Correo legal", n.correo_legal],
+    ["Teléfono", n.telefono_legal],
+  ].filter((d): d is [string, string] => Boolean(d[1]));
+
+  return (
+    <main className={styles.contenido}>
+      <Link href="/admin" className={styles.volver}>
+        ← Negocios
+      </Link>
+      <h1 className={styles.h1}>{n.nombre}</h1>
+      <p className={styles.mono}>
+        /{n.slug} · {n.activo ? "activo" : "de baja"} · alta {fecha.format(new Date(n.alta))}
+      </p>
+
+      <section aria-labelledby="t-productos">
+        <h2 id="t-productos" className={styles.titulo}>
+          Productos
+        </h2>
+        {n.productos.length === 0 ? (
+          <p className={styles.vacio}>No tiene productos contratados.</p>
+        ) : (
+          <ul className={styles.lista}>
+            {n.productos.map((p) => {
+              const info = producto(p.producto);
+              return (
+                <li key={p.producto} className={styles.tarjeta}>
+                  <div className={styles.filaTitulo}>
+                    <h3>{info.nombre}</h3>
+                    <span className={`${styles.badge} ${p.activo ? styles.badgeVerde : styles.badgeGris}`}>
+                      {p.activo ? "Activo" : "Apagado"}
+                    </span>
+                  </div>
+                  {info.descripcion && <p className={styles.mensaje}>{info.descripcion}</p>}
+                  <p className={styles.fecha}>
+                    Desde {fecha.format(new Date(p.desde))} · {n.cuentas_app}{" "}
+                    {n.cuentas_app === 1 ? "cuenta en la app" : "cuentas en la app"}
+                  </p>
+                  {panelPlataforma(p.producto) && (
+                    <a className={styles.whatsapp} href={panelPlataforma(p.producto)} target="_blank" rel="noopener noreferrer">
+                      Abrir su panel de plataforma
+                    </a>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+
+      {datos.length > 0 && (
+        <section aria-labelledby="t-datos">
+          <h2 id="t-datos" className={styles.titulo}>
+            Datos legales
+          </h2>
+          <ul className={styles.lista}>
+            {datos.map(([etiqueta, valor]) => (
+              <li key={etiqueta} className={`${styles.tarjeta} ${styles.persona}`}>
+                <p className={styles.fecha}>{etiqueta}</p>
+                <p className={styles.mono}>{valor}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section aria-labelledby="t-personas">
+        <h2 id="t-personas" className={styles.titulo}>
+          Personas con acceso a la web
+        </h2>
+        {n.personas.length === 0 ? (
+          <p className={styles.vacio}>Nadie de este negocio tiene acceso a la web todavía.</p>
+        ) : (
+          <ul className={styles.lista}>
+            {n.personas.map((p) => (
+              <li key={p.auth_id} className={styles.tarjeta}>
+                <div className={styles.filaTitulo}>
+                  <h3>{p.nombre ?? p.email}</h3>
+                  <span className={`${styles.badge} ${p.rol === "admin" ? styles.badgeAzul : styles.badgeGris}`}>
+                    {p.rol === "admin" ? "Dueño" : "Empleado"}
+                  </span>
+                </div>
+                {p.nombre && <p className={styles.mono}>{p.email}</p>}
+                <FormularioAccion
+                  accion={quitarPersona}
+                  boton="Quitar acceso"
+                  enviando="Quitando…"
+                  variante="peligro"
+                  className={styles.formularioLinea}
+                >
+                  <input type="hidden" name="negocio" value={n.id} />
+                  <input type="hidden" name="persona" value={p.auth_id} />
+                </FormularioAccion>
+              </li>
+            ))}
+          </ul>
+        )}
+        <FormularioAccion accion={anadirPersona} boton="Dar acceso" hecho="Hecho." variante="secundario" className={`${styles.formulario} ${styles.nueva}`}>
+          <input type="hidden" name="negocio" value={n.id} />
+          <label htmlFor="email-persona">Correo</label>
+          <input id="email-persona" name="email" type="email" required maxLength={254} />
+          <label htmlFor="rol-persona">Papel</label>
+          <select id="rol-persona" name="rol" defaultValue="admin">
+            <option value="admin">Dueño del negocio</option>
+            <option value="empleado">Empleado</option>
+          </select>
+          <p className={styles.nota}>
+            Tiene que tener acceso aprobado a la web con ese correo. Con esto ve «Tus aplicaciones» y tiene acceso completo.
+            Las cuentas de la app (barra, socios…) se dan en el panel de plataforma del producto.
+          </p>
+        </FormularioAccion>
+      </section>
+    </main>
+  );
+}

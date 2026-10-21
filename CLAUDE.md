@@ -8,7 +8,15 @@
 > - **MultiBar no se rehace como módulo «Hostelería»**: es un producto aparte, en su repositorio `multibar-platform` (`carta.autonomialab.es`). La SaaS lo enlaza desde «Tus aplicaciones». Lo mismo con cada gremio nuevo.
 > - **Gymbro** (gimnasios, repositorio `gymbro`, `gymbro.autonomialab.es`; primer cliente War300) es también un producto aparte, no el módulo «Entrenamiento» de abajo. Tiene su `/plataforma/` (la misma cuenta de plataforma de Carlos que MultiBar) y su panel del dueño. Lo de `war300` de las notas del 11 oct ya está hecho así.
 > - **Bases en la versión 11 (20 oct)**, cambiadas desde la sesión de Gymbro con permiso de Carlos (dictado y correos con punto final; Gymbro con sus paneles). Desde aquí se siguen cambiando.
-> - Cuentas: el personal de cada negocio tiene una cuenta de un solo negocio (ver `PLATAFORMA.md`). Unificar el login de la SaaS (Supabase Auth) y el de MultiBar (propio) se hará más adelante.
+> - Cuentas: el personal de cada negocio tiene una cuenta de un solo negocio (ver `PLATAFORMA.md`). **Desde el 21 oct todas las cuentas van al login de Supabase** (bases v12).
+>
+> **Sesión del 21 oct — Fase 2 (la SaaS pasa a `autonomialab-db`):**
+> - SQL en `datos/cambios/` y pruebas en `datos/pruebas/` (como en los otros repositorios). Lo de la base antigua quedó en `supabase/archivo-base-antigua/` (no aplicar).
+> - `datos/cambios/2026-10-21-cuentas-supabase.sql`: `comun.usuarios.auth_id` + disparadores de copia con `auth.users` (misma contraseña; historial intacto); carpeta `autonomialab` (`miembros_`, `solicitudes_acceso_`, `clientes_autonomialab`, cerradas) y funciones `*_autonomialab` en `public` (la web no lee tablas). Pruebas: `datos/pruebas/2026-10-21-cuentas-supabase.sql` → debe terminar en `PRUEBAS_OK` (deshace todo).
+> - Prueba local: Postgres 16 del contenedor (`initdb` como usuario `postgres` en `/srv/pglocal`, puerto 5433) con una imitación de `auth` y de `comun` (columnas copiadas de la base real).
+> - Web: `.env.example` apunta a `autonomialab-db`. «Clientes» = negocios de `comun.negocios` (se dan de alta en el `/plataforma/` de cada producto); en `/admin/negocios/[id]` se da acceso a la web a sus dueños. Catálogo de productos en `src/lib/productos.ts`. Carlos entra en `/admin` con `carloswxht+plataforma@gmail.com`.
+> - Guía para MultiBar y Gymbro: `docs/login-supabase-productos.md`.
+> - **Pendiente:** aplicar el SQL en Supabase (con el OK de Carlos) y comprobar que el historial de War300 sigue igual; permitir `dorunbacwnkwdatfscri.supabase.co` en la red del entorno para la prueba real; panel de Supabase (Site URL `autonomialab.es`, Redirect URLs de cada producto, SMTP de Resend, plantillas, desactivar «Allow new users to sign up»); copiar las bases v12 a `multibar-platform` y `gymbro`.
 
 
 Responde SIEMPRE en español. Quien habla es Carlos, fundador. **Trabaja solo desde un móvil Android** (sesiones en la nube): las respuestas deben ser cortas, claras y con el resultado primero. Nada de pedirle que ejecute comandos en un terminal: tú lo haces todo. Carlos dicta por voz: interpretar la intención, no el literal. Cuando tenga que tocar paneles (Supabase, DonDominio, Resend…), guiarle paso a paso y pedirle captura.
