@@ -26,6 +26,9 @@ Lista decidida por Carlos (21 oct). Precios **sin definir**: no ponerlos en la w
 - **Bitácora para empresas de seguridad** (por hacer; Carlos, 21 oct): el parte de servicio de los vigilantes desde el
   móvil (rondas, incidencias, relevos). Antes de venderlo: comprobar en fuente oficial qué exige la normativa de
   seguridad privada (Ley 5/2014 y su reglamento) sobre libros y registros.
+- **Central de pisos en alquiler** (por hacer; nombre por decidir; Carlos, 21 oct): para dueños de varios pisos que los
+  lleva una persona que administra. Los inquilinos escriben sus avisos, quejas y reclamaciones; la administradora
+  responde y deja constancia de cada mantenimiento (con fotos de cada piso); el dueño lo supervisa todo.
 Cada producto nuevo se da de alta con los pasos de «Alta de un producto nuevo» de `PLATAFORMA.md`.
 
 ## Descartado (Carlos, 21 oct)
