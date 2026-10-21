@@ -1,10 +1,13 @@
+"use client";
+
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { FormularioAccion } from "@/components/FormularioAccion";
 import { panelPlataforma, producto } from "@/lib/productos";
-import { exigirPlataforma } from "@/lib/sesion";
-import { anadirPersona, quitarPersona } from "../../acciones";
-import styles from "../../admin.module.css";
+import { useParametro } from "@/lib/sesion";
+import { supabase } from "@/lib/supabase/cliente";
+import { useDatos } from "@/lib/useDatos";
+import { anadirPersona, quitarPersona } from "../acciones";
+import styles from "../admin.module.css";
 
 type Ficha = {
   id: number;
@@ -25,14 +28,26 @@ type Ficha = {
 const fecha = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Madrid" });
 
 /** Ficha de un negocio (cliente). Sus datos, aspecto y personal se cambian en el panel de plataforma de su producto. */
-export default async function FichaNegocio({ params }: PageProps<"/admin/negocios/[id]">) {
-  const { id } = await params;
-  if (!/^[1-9][0-9]{0,8}$/.test(id)) notFound();
+export function FichaNegocio() {
+  const id = useParametro("id");
+  const valido = !!id && /^[1-9][0-9]{0,8}$/.test(id);
+  const [ficha, recargar] = useDatos(
+    async () =>
+      valido ? ((await supabase().rpc("admin_cliente_autonomialab", { p_negocio: Number(id) })).data as Ficha | null) : null,
+    [id],
+  );
 
-  const { supabase } = await exigirPlataforma();
-  const { data } = await supabase.rpc("admin_cliente_autonomialab", { p_negocio: Number(id) });
-  const n = data as Ficha | null;
-  if (!n) notFound();
+  if (id === undefined || (valido && ficha === undefined)) return <p className="cargando">Cargando…</p>;
+  const n = ficha ?? null;
+  if (!n)
+    return (
+      <main className={styles.contenido}>
+        <Link href="/admin/" className={styles.volver}>
+          ← Negocios
+        </Link>
+        <p className={styles.vacio}>Ese negocio no existe.</p>
+      </main>
+    );
 
   const datos = [
     ["Titular", n.titular],
@@ -43,7 +58,7 @@ export default async function FichaNegocio({ params }: PageProps<"/admin/negocio
 
   return (
     <main className={styles.contenido}>
-      <Link href="/admin" className={styles.volver}>
+      <Link href="/admin/" className={styles.volver}>
         ← Negocios
       </Link>
       <h1 className={styles.h1}>{n.nombre}</h1>
@@ -125,6 +140,7 @@ export default async function FichaNegocio({ params }: PageProps<"/admin/negocio
                   enviando="Quitando…"
                   variante="peligro"
                   className={styles.formularioLinea}
+                  alTerminar={recargar}
                 >
                   <input type="hidden" name="negocio" value={n.id} />
                   <input type="hidden" name="persona" value={p.auth_id} />
@@ -133,7 +149,7 @@ export default async function FichaNegocio({ params }: PageProps<"/admin/negocio
             ))}
           </ul>
         )}
-        <FormularioAccion accion={anadirPersona} boton="Dar acceso" hecho="Hecho." variante="secundario" className={`${styles.formulario} ${styles.nueva}`}>
+        <FormularioAccion accion={anadirPersona} boton="Dar acceso" hecho="Hecho." variante="secundario" className={`${styles.formulario} ${styles.nueva}`} alTerminar={recargar}>
           <input type="hidden" name="negocio" value={n.id} />
           <label htmlFor="email-persona">Correo</label>
           <input id="email-persona" name="email" type="text" inputMode="email" autoCapitalize="none" spellCheck={false} required maxLength={254} />

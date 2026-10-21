@@ -4,10 +4,16 @@ import { useActionState } from "react";
 import { completarSolicitud, type EstadoFormulario } from "@/app/acciones";
 import styles from "@/components/Cuenta.module.css";
 import { SECTORES, TIPOS } from "@/lib/sectores";
+import { useParametro } from "@/lib/sesion";
 
 /** Datos opcionales del negocio, después de pedir acceso. */
-export function FormularioNegocio({ token }: { token: string }) {
+export function FormularioNegocio() {
   const [estado, ejecutar, pendiente] = useActionState<EstadoFormulario, FormData>(completarSolicitud, {});
+  const token = useParametro("t");
+
+  if (token === undefined) return null;
+  // Sin código válido no hay nada que completar: la solicitud ya quedó guardada.
+  if (!token || !/^[0-9a-f-]{36}$/i.test(token)) return null;
 
   if (estado.ok) {
     return (

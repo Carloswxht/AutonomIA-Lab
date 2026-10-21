@@ -9,7 +9,7 @@ import "./globals.css";
 // Las fuentes van dentro de la app (no se cargan desde Google) por RGPD.
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://autonomialab.com"),
+  metadataBase: new URL("https://autonomialab.es"),
   title: "autonomIA Lab — Esto puede hacer la IA por tu negocio",
   description:
     "Que tus clientes no tengan que esperar. Que te ahorres tiempo y dinero. Que tus tareas se hagan solas. Habla con un asesor y te decimos cómo.",

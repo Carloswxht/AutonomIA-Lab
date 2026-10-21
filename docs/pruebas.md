@@ -1,6 +1,6 @@
 # Pruebas
 
-- `npm run lint` · `npm run typecheck` · `npm test` · `npm run build` · `npm run test:e2e` (móvil 390x844).
+- `npm run lint` · `npm run typecheck` · `npm test` · `npm run build` · `npm run test:e2e` (móvil 390x844; sirve la carpeta `out/`, así que antes `npm run build`). En el entorno de Claude, Chromium sale a Supabase por el proxy (`playwright.config.ts`).
 - Base de datos (`autonomialab-db`, desde el MCP de Supabase): pegar entero `datos/pruebas/2026-10-21-cuentas-supabase.sql`.
   Tiene que acabar con el error `PRUEBAS_OK` (ese error deshace todo: no deja nada guardado). Cualquier otro error dice
   qué falló (`FALLO n: …`). En local: Postgres 16 con una imitación de `auth` y de `comun` (ver el plan del 21 oct en
@@ -27,4 +27,4 @@ La contraseña NO se guarda en el repo: se genera en cada sesión.
    también su cuenta de Supabase), `update auth.users set banned_until = '2999-01-01' where email like
    'ejemplo-solicitud-%'` y rechazar las solicitudes `ejemplo-%` pendientes (no se pueden borrar desde el MCP).
 
-En el entorno de Claude Code, Node necesita el proxy (`playwright.config.ts` ya lo pone en el servidor de pruebas).
+En el entorno de Claude Code, el navegador de las pruebas usa el proxy (`playwright.config.ts`).

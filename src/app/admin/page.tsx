@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { FormularioAccion } from "@/components/FormularioAccion";
 import { panelPlataforma, producto, PRODUCTOS } from "@/lib/productos";
-import { exigirPlataforma } from "@/lib/sesion";
+import { supabase } from "@/lib/supabase/cliente";
+import { useDatos } from "@/lib/useDatos";
 import { etiquetaTipo } from "@/lib/sectores";
 import { aprobarAcceso, rechazarAcceso } from "./acciones";
 import styles from "./admin.module.css";
@@ -32,13 +35,17 @@ type Solicitud = {
 type Miembro = { auth_id: string; email: string; nombre: string | null; creado_en: string; ha_entrado: boolean; negocio: string | null };
 type Negocio = { id: number; nombre: string; slug: string; tipo: string; activo: boolean; productos: string[]; personas: number };
 
-export default async function Admin() {
-  const { supabase } = await exigirPlataforma();
-  const [{ data: solicitudes }, { data: miembros }, { data: negocios }] = await Promise.all([
-    supabase.rpc("admin_solicitudes_autonomialab"),
-    supabase.rpc("admin_miembros_autonomialab"),
-    supabase.rpc("admin_clientes_autonomialab"),
+const leer = () =>
+  Promise.all([
+    supabase().rpc("admin_solicitudes_autonomialab"),
+    supabase().rpc("admin_miembros_autonomialab"),
+    supabase().rpc("admin_clientes_autonomialab"),
   ]);
+
+export default function Admin() {
+  const [datos, recargar] = useDatos(leer);
+  if (!datos) return <p className="cargando">Cargando…</p>;
+  const [{ data: solicitudes }, { data: miembros }, { data: negocios }] = datos;
   const pendientes = (solicitudes ?? []) as Solicitud[];
   const registrados = (miembros ?? []) as Miembro[];
   const lista = (negocios ?? []) as Negocio[];
@@ -83,10 +90,10 @@ export default async function Admin() {
                   {s.mensaje && <p className={styles.mensaje}>«{s.mensaje}»</p>}
                   <p className={styles.fecha}>{fechaHora.format(new Date(s.creado_en))}</p>
                   <div className={styles.acciones}>
-                    <FormularioAccion accion={aprobarAcceso} boton="Aprobar" enviando="Aprobando…" hecho="Aprobada.">
+                    <FormularioAccion accion={aprobarAcceso} boton="Aprobar" enviando="Aprobando…" hecho="Aprobada." alTerminar={recargar}>
                       <input type="hidden" name="solicitud" value={s.id} />
                     </FormularioAccion>
-                    <FormularioAccion accion={rechazarAcceso} boton="Rechazar" enviando="Rechazando…" variante="peligro" hecho="Rechazada.">
+                    <FormularioAccion accion={rechazarAcceso} boton="Rechazar" enviando="Rechazando…" variante="peligro" hecho="Rechazada." alTerminar={recargar}>
                       <input type="hidden" name="solicitud" value={s.id} />
                     </FormularioAccion>
                   </div>
@@ -120,7 +127,7 @@ export default async function Admin() {
           <ul className={`${styles.lista} ${styles.separado}`}>
             {lista.map((n) => (
               <li key={n.id}>
-                <Link href={`/admin/negocios/${n.id}`} className={`${styles.tarjeta} ${styles.enlace}`}>
+                <Link href={`/admin/negocio/?id=${n.id}`} className={`${styles.tarjeta} ${styles.enlace}`}>
                   <div className={styles.filaTitulo}>
                     <h3>{n.nombre}</h3>
                     <span className={`${styles.badge} ${n.activo ? styles.badgeVerde : styles.badgeGris}`}>

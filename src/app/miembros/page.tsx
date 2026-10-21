@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { enlaceWhatsApp } from "@/lib/contacto";
 import { puedeVer, SECCIONES, type Seccion } from "@/lib/membresia";
-import { datosMiembro } from "@/lib/miembro";
+import { resumenMiembro } from "@/lib/miembro";
 import { panelPlataforma, PRODUCTOS, type Producto } from "@/lib/productos";
+import { useYo } from "@/lib/sesion";
 import styles from "./miembros.module.css";
 
 function Icono({ trazos }: { trazos: string[] }) {
@@ -29,7 +32,7 @@ function Tarjeta({ s, abierta }: { s: Seccion; abierta: boolean }) {
     </>
   );
   return abierta ? (
-    <Link href={`/miembros/${s.clave}`} className={`${styles.tarjeta} ${styles.disponible}`}>
+    <Link href={`/miembros/${s.clave}/`} className={`${styles.tarjeta} ${styles.disponible}`}>
       {contenido}
     </Link>
   ) : (
@@ -56,8 +59,8 @@ function TarjetaApp({ p, url, detalle }: { p: Producto; url: string; detalle: st
   );
 }
 
-export default async function Miembros() {
-  const { nombre, user, superadmin, negocio, aplicaciones, accesoTotal } = await datosMiembro();
+export default function Miembros() {
+  const { nombre, email, superadmin, negocio, aplicaciones, accesoTotal } = resumenMiembro(useYo());
   const saludo = nombre ? `Hola, ${nombre.split(" ")[0]}` : "Hola";
 
   return (
@@ -65,7 +68,7 @@ export default async function Miembros() {
       <section className={styles.bienvenida}>
         <p className={styles.eyebrow}>{accesoTotal ? "Acceso completo" : "Cuenta gratuita"}</p>
         <h1>{saludo}</h1>
-        <p className={styles.correo}>{user.email}</p>
+        <p className={styles.correo}>{email}</p>
       </section>
 
       {superadmin && (

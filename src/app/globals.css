@@ -76,3 +76,11 @@ a {
     transition: none !important;
   }
 }
+
+/* Mientras se comprueba la sesión o se leen los datos (la web es de páginas fijas). */
+.cargando {
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--text-faint, #6b7280);
+  font-size: 0.9rem;
+}
