@@ -19,7 +19,7 @@
 > - **Aplicado en Supabase el 21 oct** (OK de Carlos, con `execute_sql`): las 8 cuentas enlazadas con la misma contraseña; historial de War300 idéntico (16 entrenos y 198 de progreso, misma huella md5); pruebas `PRUEBAS_OK` en la base real sin dejar nada; avisos de seguridad: solo los de siempre (tablas cerradas sin políticas, funciones `security definer`) y «Leaked password protection» desactivada.
 > - **Red del entorno:** `dorunbacwnkwdatfscri.supabase.co` permitido (21 oct). Prueba real `tests/e2e/real.spec.ts` en verde (plataforma de prueba y cuenta gratuita), cuentas de prueba bloqueadas al terminar.
 > - Campos de correo: `type="text"` + `inputMode="email"` (con `type="email"` el móvil no deja enviar el punto final del dictado; lo quita el servidor).
-> - **Pendiente:** panel de Supabase (Site URL `autonomialab.es`, Redirect URLs de cada producto, SMTP de Resend, plantillas, desactivar «Allow new users to sign up»); copiar las bases v12 a `multibar-platform` y `gymbro`.
+> - **Pendiente:** panel de Supabase (Site URL `autonomialab.es`, Redirect URLs de cada producto, SMTP de Resend, plantillas, desactivar «Allow new users to sign up»). Bases v12 copiadas (21 oct): PR gymbro #14 y multibar-platform #55 (solo documentación, con `docs/login-supabase-productos.md`); falta que Carlos los fusione.
 
 
 Responde SIEMPRE en español. Quien habla es Carlos, fundador. **Trabaja solo desde un móvil Android** (sesiones en la nube): las respuestas deben ser cortas, claras y con el resultado primero. Nada de pedirle que ejecute comandos en un terminal: tú lo haces todo. Carlos dicta por voz: interpretar la intención, no el literal. Cuando tenga que tocar paneles (Supabase, DonDominio, Resend…), guiarle paso a paso y pedirle captura.
