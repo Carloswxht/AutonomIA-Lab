@@ -18,6 +18,7 @@ test("la portada muestra marca, acceso, mensajes y asesor", async ({ page }) => 
   );
   await expect(page.getByRole("link", { name: /Solicitar acceso/ })).toHaveAttribute("href", "/solicitar/");
   await expect(page.getByRole("link", { name: "¿Olvidaste tu contraseña?" })).toHaveAttribute("href", "/recuperar/");
+  await expect(page.getByRole("link", { name: /Ver nuestros servicios/ })).toHaveAttribute("href", "/servicios/");
   await sinScrollLateral(page);
   await page.screenshot({ path: "test-results/portada-390.png", fullPage: true });
 });
