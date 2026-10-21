@@ -3,13 +3,14 @@
 Lista decidida por Carlos (21 oct). Precios **sin definir**: no ponerlos en la web hasta que Carlos los decida.
 
 ## Servicios (trabajo a medida para cada cliente)
-1. **Creación de agentes de IA**: asistentes que atienden, responden o hacen tareas solos (web, WhatsApp, correo).
+1. **Creación de agentes de IA**: usan inteligencia artificial para entender lo que les piden y decidir qué hacer en cada
+   caso (conversan con clientes, buscan información, redactan, resuelven dudas distintas cada vez). No siguen pasos fijos.
 2. **Aplicaciones web empresariales a medida**.
 3. **Páginas web profesionales**: solo las que hacemos nosotros, alojadas y mantenidas por nosotros (no «hosting
    abierto»).
 4. **Creación de CRM a medida**: clientes, contactos, seguimiento de ventas y presupuestos, a medida del negocio.
-5. **Automatizaciones**: tareas repetitivas hechas solas (avisos, recordatorios a clientes, pasar datos de un sitio a
-   otro, informes semanales).
+5. **Automatizaciones**: reglas fijas que hacen siempre los mismos pasos cuando pasa algo («si llega un pedido, avisa
+   y apúntalo»): avisos, recordatorios, pasar datos de un sitio a otro, informes semanales. No piensan ni deciden.
 6. **Formación en IA** para el dueño y su equipo (encaja con la sección «Universidad» de la membresía).
 7. **Diagnóstico de IA**: una llamada o visita para ver qué se puede automatizar en el negocio; puerta de entrada para
    vender lo demás.
