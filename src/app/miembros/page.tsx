@@ -110,6 +110,18 @@ export default function Miembros() {
           Tu espacio
         </h2>
         <ul className={styles.lista}>
+          <li>
+            <Link href="/servicios/" className={`${styles.tarjeta} ${styles.disponible} ${styles.destacada}`}>
+              <span className={styles.icono}>
+                <Icono trazos={["M12 2l2.4 5.6L20 8.3l-4.2 3.9 1.2 5.8L12 15l-5 3 1.2-5.8L4 8.3l5.6-.7z"]} />
+              </span>
+              <span className={styles.texto}>
+                <h3>Nuestros servicios</h3>
+                <span>Agentes de IA, automatizaciones, aplicaciones y CRM a medida.</span>
+              </span>
+              <span className={`${styles.badge} ${styles.abrir}`}>Ver</span>
+            </Link>
+          </li>
           {SECCIONES.map((s) => (
             <li key={s.clave}>
               <Tarjeta s={s} abierta={puedeVer(s, accesoTotal)} />

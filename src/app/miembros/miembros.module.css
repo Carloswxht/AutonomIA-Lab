@@ -183,3 +183,9 @@
   font-size: 0.85rem;
   color: var(--text-dim);
 }
+
+/* Tarjeta «Nuestros servicios»: la primera de «Tu espacio». */
+.destacada {
+  border-color: var(--blue-line);
+  background: linear-gradient(135deg, var(--blue-soft), var(--surface) 65%);
+}

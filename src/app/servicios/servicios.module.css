@@ -1,0 +1,427 @@
+/* Página «Nuestros servicios». Estilo de la marca: fondo oscuro, azul, Space Grotesk / Work Sans / IBM Plex Mono.
+   Referencias: páginas de producto sobrias tipo «editorial técnico» (numeración en mono, rejilla de tarjetas con
+   borde fino, una sola llamada a la acción repetida), sin fotos de stock ni degradados llamativos. */
+
+.pagina {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: calc(14px + env(safe-area-inset-top)) 20px 14px;
+  border-bottom: 1px solid var(--border-soft);
+  background: rgba(10, 11, 13, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hablemos {
+  padding: 8px 14px;
+  border: 1px solid var(--blue-line);
+  border-radius: 999px;
+  background: var(--blue-soft);
+  color: var(--blue-bright);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ---------- Portada de la página ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 20px 48px;
+}
+
+.halo {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  width: 520px;
+  height: 360px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(59, 130, 246, 0.18), transparent);
+  pointer-events: none;
+}
+
+.eyebrow,
+.etiqueta,
+.numero,
+.badge {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.eyebrow {
+  position: relative;
+  margin-bottom: 18px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--blue-bright);
+}
+
+.hero h1 {
+  position: relative;
+  font-family: var(--font-titulo);
+  font-size: clamp(2rem, 8vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.hero h1 span {
+  color: var(--blue-bright);
+}
+
+.entrada {
+  position: relative;
+  max-width: 560px;
+  margin-top: 20px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.botones {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.principal,
+.secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.principal {
+  background: var(--blue);
+  color: #fff;
+}
+
+.principal:active {
+  background: #2f6fd6;
+}
+
+.secundario {
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.secundario:active {
+  border-color: var(--blue-line);
+}
+
+/* ---------- Bloques ---------- */
+.contenido {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+}
+
+.grupo {
+  padding-top: 44px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 8px;
+  scroll-margin-top: 70px;
+}
+
+.grupoCabeza {
+  margin-bottom: 20px;
+}
+
+.grupoCabeza h2,
+.diferencia h2,
+.final h2 {
+  font-family: var(--font-titulo);
+  font-size: 1.55rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.grupoCabeza p,
+.nota {
+  margin-top: 8px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.rejilla,
+.rejillaPequena,
+.ejemplos,
+.pasos {
+  list-style: none;
+}
+
+.rejilla {
+  display: grid;
+  gap: 12px;
+}
+
+.rejillaPequena {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .rejilla {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.servicio,
+.producto {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.numero {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--blue-bright);
+}
+
+.servicio h3,
+.producto h3,
+.pasos h3 {
+  font-family: var(--font-titulo);
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.servicio > p,
+.producto p,
+.pasos p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.ejemplos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.ejemplos li {
+  display: flex;
+  gap: 9px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.ejemplos svg {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  fill: none;
+  stroke: var(--blue-bright);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Agente o automatización ---------- */
+.diferencia {
+  margin-top: 44px;
+  padding: 24px 20px;
+  border: 1px solid var(--blue-line);
+  border-radius: 18px;
+  background: linear-gradient(180deg, var(--blue-soft), var(--surface) 70%);
+}
+
+.comparar {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+@media (min-width: 640px) {
+  .comparar {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.comparar > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+}
+
+.comparar p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.etiqueta {
+  font-size: 0.7rem !important;
+  font-weight: 600;
+  color: var(--blue-bright) !important;
+}
+
+.frase {
+  font-family: var(--font-titulo);
+  font-size: 1.15rem !important;
+  font-weight: 600;
+  color: var(--text) !important;
+}
+
+.ejemplo {
+  margin-top: 4px;
+  padding-left: 12px;
+  border-left: 2px solid var(--blue-line);
+  font-style: italic;
+}
+
+/* ---------- Productos ---------- */
+.enMarcha {
+  border-color: var(--blue-line);
+  transition: border-color 0.15s ease;
+}
+
+.enMarcha:active {
+  border-color: var(--blue-bright);
+}
+
+.badge {
+  align-self: flex-start;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--text-faint);
+}
+
+.badgeVerde {
+  border-color: #1c4b2e;
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.para {
+  margin-top: -4px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem !important;
+  color: var(--text-faint) !important;
+}
+
+.ver {
+  margin-top: auto;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--blue-bright);
+}
+
+.subtitulo {
+  margin: 26px 0 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+.rejillaPequena .producto {
+  gap: 6px;
+  padding: 16px;
+  background: transparent;
+  border-style: dashed;
+}
+
+.rejillaPequena h3 {
+  font-size: 1rem;
+}
+
+/* ---------- Cómo trabajamos ---------- */
+.pasos {
+  display: flex;
+  flex-direction: column;
+}
+
+.pasos li {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.pasos li:last-child {
+  border-bottom: none;
+}
+
+.pasos .numero {
+  padding-top: 3px;
+}
+
+.pasos h3 {
+  margin-bottom: 4px;
+}
+
+/* ---------- Llamada final ---------- */
+.final {
+  margin-top: 44px;
+  padding: 32px 22px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.final p {
+  max-width: 440px;
+  margin: 10px auto 22px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.pie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 20px calc(28px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border-soft);
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-faint);
+}
