@@ -49,6 +49,9 @@ export default function Portada() {
           >
             Habla con un asesor
           </a>
+          <Link href="/servicios/" className={styles.verServicios}>
+            Ver nuestros servicios <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </main>
 

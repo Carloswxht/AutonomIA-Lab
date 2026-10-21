@@ -178,6 +178,25 @@
   transform: scale(0.97);
 }
 
+.verServicios {
+  display: block;
+  width: fit-content;
+  margin: 18px auto 0;
+  padding: 10px 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--blue-bright);
+}
+
+.verServicios span {
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+.verServicios:active span {
+  transform: translateX(3px);
+}
+
 /* ---------- Pie ---------- */
 .pie {
   padding: 48px 24px calc(40px + env(safe-area-inset-bottom));
