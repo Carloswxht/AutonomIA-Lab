@@ -127,7 +127,7 @@ PLANTILLAS = {
             "Pulsa el botón y elige una nueva. Tu contraseña actual seguirá funcionando hasta que la cambies.",
         ],
         boton="Poner nueva contraseña",
-        enlace="{{ .SiteURL }}/auth/confirmar/?token_hash={{ .TokenHash }}&type=recovery",
+        enlace="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery",
         extra_html="",
         nota="Por seguridad, el enlace solo sirve una vez y caduca al poco tiempo. Si no lo has pedido tú, ignora este correo: nadie puede entrar sin él.",
     ),
