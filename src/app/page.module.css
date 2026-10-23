@@ -10,6 +10,34 @@
   text-align: center;
 }
 
+/* Sello «MIEMBROS» bajo la marca: el acceso es solo para quien Carlos aprueba. */
+.miembros {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* Las rayas a los lados; el espacio de más compensa el letter-spacing de la última letra. */
+.miembros::before,
+.miembros::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--border);
+}
+
+.miembros::after {
+  margin-left: -0.34em;
+}
+
 .acceso {
   margin-top: 18px;
 }

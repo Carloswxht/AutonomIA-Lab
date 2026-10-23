@@ -16,10 +16,11 @@ export default function Portada() {
       <nav className={styles.arriba}>
         <div className={styles.wrap}>
           <Marca />
+          <p className={styles.miembros}>Miembros</p>
           <div className={styles.acceso}>
             <FormularioEntrar />
             <Link href="/solicitar" className={styles.solicitar}>
-              ¿No tienes cuenta? <span>Solicitar acceso</span>
+              ¿Aún no eres miembro? <span>Solicitar acceso</span>
             </Link>
             <Link href="/recuperar" className={styles.olvido}>
               ¿Olvidaste tu contraseña?
