@@ -2,99 +2,65 @@
 
 @PLATAFORMA.md
 
-> **Desde el 18 oct manda `PLATAFORMA.md`** (bases comunes de todos los repositorios; **la copia maestra es la de este repositorio**). Donde este archivo contradiga a `PLATAFORMA.md`, gana `PLATAFORMA.md`. Cambios respecto a lo escrito abajo el 11 oct:
-> - **Base de datos única: `autonomialab-db`** (ref `dorunbacwnkwdatfscri`), no «autonomIA Lab» (`dafmorfftnucsxcsafop`, renombrada «autonomIA Lab antiguo» y pausada). Sus tablas se pasarán a las carpetas `comun` / `autonomialab` de `autonomialab-db` (siguiente paso de esta sesión, con plan previo y el «sí» de Carlos). **En `autonomialab-db` funciona ya MultiBar con un cliente real (La Mar de Gambas): nunca tocar la carpeta `multibar`.**
-> - **Dominio principal: `autonomialab.es`** (decisión de Carlos, 18 oct: más confianza en España); `autonomialab.com` redirige a `.es`. Revisar Site URL, plantillas de correo y remitentes.
-> - **MultiBar no se rehace como módulo «Hostelería»**: es un producto aparte, en su repositorio `multibar-platform` (`carta.autonomialab.es`). La SaaS lo enlaza desde «Tus aplicaciones». Lo mismo con cada gremio nuevo.
-> - **Gymbro** (gimnasios, repositorio `gymbro`, `gymbro.autonomialab.es`; primer cliente War300) es también un producto aparte, no el módulo «Entrenamiento» de abajo. Tiene su `/plataforma/` (la misma cuenta de plataforma de Carlos que MultiBar) y su panel del dueño. Lo de `war300` de las notas del 11 oct ya está hecho así.
-> - **Bases en la versión 11 (20 oct)**, cambiadas desde la sesión de Gymbro con permiso de Carlos (dictado y correos con punto final; Gymbro con sus paneles). Desde aquí se siguen cambiando.
-> - Cuentas: el personal de cada negocio tiene una cuenta de un solo negocio (ver `PLATAFORMA.md`). **Desde el 21 oct todas las cuentas van al login de Supabase** (bases v12).
->
-> **Sesión del 21 oct — Fase 2 (la SaaS pasa a `autonomialab-db`):**
-> - SQL en `datos/cambios/` y pruebas en `datos/pruebas/` (como en los otros repositorios). Lo de la base antigua quedó en `supabase/archivo-base-antigua/` (no aplicar).
-> - `datos/cambios/2026-10-21-cuentas-supabase.sql`: `comun.usuarios.auth_id` + disparadores de copia con `auth.users` (misma contraseña; historial intacto); carpeta `autonomialab` (`miembros_`, `solicitudes_acceso_`, `clientes_autonomialab`, cerradas) y funciones `*_autonomialab` en `public` (la web no lee tablas). Pruebas: `datos/pruebas/2026-10-21-cuentas-supabase.sql` → debe terminar en `PRUEBAS_OK` (deshace todo).
-> - Prueba local: Postgres 16 del contenedor (`initdb` como usuario `postgres` en `/srv/pglocal`, puerto 5433) con una imitación de `auth` y de `comun` (columnas copiadas de la base real).
-> - Web: `.env.example` apunta a `autonomialab-db`. «Clientes» = negocios de `comun.negocios` (se dan de alta en el `/plataforma/` de cada producto); en `/admin/negocio/?id=N` se da acceso a la web a sus dueños. Catálogo de productos en `src/lib/productos.ts`. Carlos entra en `/admin` con `carloswxht+plataforma@gmail.com`.
-> - Guía para MultiBar y Gymbro: `docs/login-supabase-productos.md`.
-> - **Aplicado en Supabase el 21 oct** (OK de Carlos, con `execute_sql`): las 8 cuentas enlazadas con la misma contraseña; historial de War300 idéntico (16 entrenos y 198 de progreso, misma huella md5); pruebas `PRUEBAS_OK` en la base real sin dejar nada; avisos de seguridad: solo los de siempre (tablas cerradas sin políticas, funciones `security definer`) y «Leaked password protection» desactivada.
-> - **Red del entorno:** `dorunbacwnkwdatfscri.supabase.co` permitido (21 oct). Prueba real `tests/e2e/real.spec.ts` en verde (plataforma de prueba y cuenta gratuita), cuentas de prueba bloqueadas al terminar.
-> - Campos de correo: `type="text"` + `inputMode="email"` (con `type="email"` el móvil no deja enviar el punto final del dictado; lo quita el servidor).
-> - **Web de páginas fijas para GitHub Pages (21 oct, decisión de Carlos: GitHub Pages ya, Hetzner cuando haga lo del pasaporte).** Sin servidor: el móvil habla directamente con Supabase con la clave publicable (`src/lib/supabase/cliente.ts`); acciones en el navegador (`src/app/acciones.ts`, `src/app/admin/acciones.ts`); `<ConSesion>` (`src/lib/sesion.tsx`) comprueba la sesión en cada página. Direcciones: `/solicitud/?t=`, `/admin/negocio/?id=`. Publicación automática en `main` (`.github/workflows/publicar.yml`, dominio `public/CNAME`). Todo en `docs/publicar.md` (también cómo volver a Hetzner; la versión con servidor es el commit `49455cf`). **Riesgo aceptado por Carlos:** Supabase va detrás de Cloudflare (comprobado: `server: cloudflare`), así que los bloqueos de LaLiga en días de partido pueden afectar, igual que a MultiBar y Gymbro; probarlo un día de partido. Los dominios de Carlos están en DonDominio (comprobado: `ns1/ns2.dondominio.com`), no en Cloudflare. Historial revisado antes de hacer público el repositorio: sin claves secretas.
-> - **Ojo:** las bases (`PLATAFORMA.md`) son públicas en los repositorios de MultiBar y Gymbro y llevan detalles de la seguridad de Carlos (correo de recuperación, estado de su Google): proponerle quitarlos en la v13.
-> - **Pendiente:** panel de Supabase (Site URL `autonomialab.es`, Redirect URLs de cada producto, SMTP de Resend, plantillas, desactivar «Allow new users to sign up»). Bases v12 copiadas y fusionadas (21 oct, OK de Carlos): gymbro #14 y multibar-platform #55. MultiBar ya entra con Supabase (v35, publicada); Gymbro v107 hecha en su rama, falta aplicar su SQL y fusionar. Pendiente aquí: plantilla «Reset Password» con `{{ .RedirectTo }}` + Redirect URLs de cada producto; llevar a las bases que el Gmail de Carlos ya tiene 2FA (21 oct).
+> **Manda `PLATAFORMA.md`** (bases comunes de todos los repositorios; **la copia maestra es la de este repositorio** y solo se cambia desde aquí). Donde este archivo contradiga a `PLATAFORMA.md`, gana `PLATAFORMA.md`. Al cambiar las bases: subir su versión y dejar la misma copia en `gymbro` y `multibar-platform` con un PR en cada uno (`add_repo` con acceso `push`).
 
+Responde SIEMPRE en español. Quien habla es Carlos, fundador. **Trabaja solo desde un móvil Android** (sesiones en la nube): respuestas cortas, claras y con el resultado primero. Nada de pedirle que ejecute comandos: tú lo haces todo. Carlos dicta por voz: interpretar la intención, no el literal. Cuando tenga que tocar paneles (Supabase, DonDominio, GitHub, Resend…), guiarle paso a paso, darle los enlaces en bloques de código y pedirle captura.
 
-Responde SIEMPRE en español. Quien habla es Carlos, fundador. **Trabaja solo desde un móvil Android** (sesiones en la nube): las respuestas deben ser cortas, claras y con el resultado primero. Nada de pedirle que ejecute comandos en un terminal: tú lo haces todo. Carlos dicta por voz: interpretar la intención, no el literal. Cuando tenga que tocar paneles (Supabase, DonDominio, Resend…), guiarle paso a paso y pedirle captura.
+## Qué es este repositorio
+La web de la empresa en **`https://autonomialab.es`** (GitHub Pages, repositorio **público** desde el 21 oct): portada para miembros, solicitar acceso, panel de miembros, `/admin` de Carlos y la página de servicios. Es también el **dueño de las carpetas `comun` y `autonomialab`** de la base única `autonomialab-db`. MultiBar y Gymbro son productos aparte, cada uno con su repositorio y su sesión; esta web los enlaza.
 
-## Marca
-- El nombre es **autonomIA Lab**. Nunca "IA Partner" / "Partner" (nombre viejo, descartado).
-- Dominios (comprados en **DonDominio**, DNS de DonDominio): `autonomialab.com` = principal (web, plataforma y correos); `autonomialab.es` redirigirá a `.com`. El `.com` ya pasó la verificación ICANN.
+## Estado (23 oct)
+- **Publicado y en `main`:** PR #9 (Fase 2 + web de páginas fijas), #10 (servicios), #11 (enlace a servicios en la portada), #12 (sello «Miembros», «Entrar» en azul suave, pie al día). Cada fusión en `main` se publica sola (`.github/workflows/publicar.yml`). Rama de trabajo: `ccr-66066c8f-u7w8ll` (al día con `main`).
+- **Pantallas:**
+  - `/` portada: sello «MIEMBROS», entrar, «¿Aún no eres miembro? Solicitar acceso», «Habla con un asesor», «Ver nuestros servicios».
+  - `/solicitar` → `/solicitud/?t=CÓDIGO` (datos opcionales del negocio). `/recuperar`, `/nueva-contrasena`, `/auth/confirmar/`, `/confirmado/`.
+  - `/miembros/`: tarjeta «Nuestros servicios» (la primera), 6 secciones (gratis: Aplicaciones útiles, Ranking, Blog; de pago: Agentes, Plantillas, Universidad; **todas «Próximamente», sin contenido**), «Tus aplicaciones» (cliente) o «Paneles de plataforma» (Carlos).
+  - `/admin/` (solo cuenta de plataforma): solicitudes (aprobar/rechazar, WhatsApp), negocios de `comun.negocios` con su ficha `/admin/negocio/?id=N` (productos, datos legales, dar o quitar acceso a la web a sus dueños), miembros, enlaces a los `/plataforma/` de cada producto.
+  - `/servicios/`: página pública con los 9 servicios, agente o automatización, productos y cómo trabajamos (contenido en `src/lib/servicios.ts`, que sale de `docs/servicios.md`).
+- **Carlos entra en `/admin` con `carloswxht+plataforma@gmail.com`** (su cuenta de plataforma, la misma de los paneles de MultiBar y Gymbro; su Gmail normal es de La Torre Bar).
 
-## Qué es esto
-Pasamos de páginas HTML sueltas a un **SaaS**. `prototipos/` son maquetas de referencia de diseño y contenido, no el código final:
-- `index.html` portada filtro · `miembros.html` panel de tarjetas · `aplicaciones.html` demos (Control de horario y Pendientes de obra) · `servicios.html`, `info.html` ventas (WhatsApp +34 605 288 673) · `panel-gestion-referencia.html` patrones (tarjetas, nav inferior, vistas).
+## Pendiente, en este orden
+1. **Panel de Supabase (Carlos, con pasos guiados y capturas):** Authentication → URL Configuration: Site URL `https://autonomialab.es`; Redirect URLs `https://autonomialab.es/**`, `https://carta.autonomialab.es/**`, `https://gymbro.autonomialab.es/**`. SMTP de Resend. Plantillas de `supabase/plantillas/` (enlaces a `{{ .SiteURL }}/auth/confirmar/?…`; la de «Reset Password» debería llevar a la página de cada producto con `{{ .RedirectTo }}` para que MultiBar y Gymbro dejen sus correos propios). Desactivar «Allow new users to sign up». Valorar «Leaked password protection». Sin esto no salen los correos de «acceso aprobado» ni «cambiar contraseña».
+2. Contenido de «Aplicaciones útiles» (demos de `prototipos/aplicaciones.html`: Control de horario y Pendientes de obra).
+3. Nombre del producto de pisos en alquiler (propuestos: MultiPiso —recomendado—, Portería, PisoClaro, MiPiso al Día; comprobar en la OEPM antes).
+4. Cuando todos los productos usen solo Supabase: quitar los disparadores de copia de `comun.usuarios` y pasar `comun.sesiones` / `comun.recuperaciones` a archivo (sin DROP).
+5. Hetzner (cuando Carlos haga la verificación con pasaporte): ver `docs/publicar.md`.
+6. Antes del primer cliente de pago: Supabase Pro y copias (ver Fase 5 de `PLATAFORMA.md`), contrato y encargo del tratamiento revisados por un asesor, aviso legal y privacidad de la web.
+7. Probar un día de partido (bloqueos de LaLiga) la web, MultiBar y Gymbro con datos móviles.
 
-## Negocio (decidido el 11 oct)
-- Se venden **aplicaciones web empresariales a medida** a autónomos, pymes y empresas en España. La membresía gratuita es el gancho para captar clientes.
-- **Plataforma modular, una sola base de datos**: cada empresa cliente recibe "su" app combinando módulos (Hostelería, Pendientes de obra, Control de horario…), su marca (nombre, logo, colores) y opciones. Si algo no cabe en configuración, se hace como módulo nuevo y entra en el catálogo. Coste por cliente ≈ 0 (no un proyecto por cliente).
-- **Membresía**: gratis = Aplicaciones útiles, Ranking, Blog de noticias. De pago = Agentes, Plantillas descargables, Universidad. Quien contrata una app tiene **acceso completo**. Planes y precios **sin definir: no inventarlos** ("Subir plan" → WhatsApp).
-- **Cuentas — versión final**: «Solicitar acceso» **solo con el correo** → «Solicitud recibida, pendiente de aprobación, te escribiremos en breve» + formulario opcional (Eres: autónomo/pyme/empresa grande/otro · sector · nombre · WhatsApp · qué mejorar). Carlos aprueba en `/admin` → se crea el usuario y le llega un correo para **crear su contraseña** (nunca se envían contraseñas por correo ni WhatsApp). Sin nombre de empresa al registrarse.
-- **Clientes**: cuando alguien compra una app, Carlos escribe su correo en `/admin` → «Nuevo cliente» → se crea su espacio (organización) y queda como admin. Los datos del negocio los pone Carlos. El cliente da acceso a sus empleados por correo.
-- Cobros: factura manual al principio; Stripe más adelante.
-- **Primer módulo**: **Hostelería** (carta QR + pedidos + panel de barra), rehecho a partir de `Carloswxht/la-mar-de-gambas` (cliente real; sigue funcionando aparte, en Neon + GitHub Pages, hasta migrarlo). Después Pendientes de obra y Control de horario (verificar normativa de registro de jornada en fuente oficial antes de venderlo).
-- Unificar en la plataforma: `la-mar-de-gambas` y `El-Recreo` (bares) → Hostelería; `war300` (rutinas de gimnasio) → futuro módulo Entrenamiento; `Sueloslagiralda-web` (web de empresa, probablemente en Cloudflare Pages) → servicio de webs.
-- **Webs de clientes**: proyectos distintos (kit base, una carpeta por cliente), fuera del MVP. Se pueden alojar en nuestro servidor y cobrar alojamiento + mantenimiento, pero **solo lo que hacemos nosotros**: no vender "hosting abierto" (que el cliente suba su propia web/WordPress). En nuestras apps solo se sube lo programado (fotos, datos), con tipo y tamaño limitados.
+## Base de datos (`autonomialab-db`, ref `dorunbacwnkwdatfscri`)
+- SQL en `datos/cambios/` y pruebas en `datos/pruebas/` (como en los otros repositorios). Lo de la base antigua («autonomIA Lab antiguo», `dafmorfftnucsxcsafop`, pausada; no tocar) quedó en `supabase/archivo-base-antigua/` (no aplicar).
+- `datos/cambios/2026-10-21-cuentas-supabase.sql` (**aplicado el 21 oct**): `comun.usuarios.auth_id` + disparadores de copia con `auth.users` (misma contraseña; historial intacto, comprobado con huella md5); carpeta `autonomialab` (`miembros_autonomialab`, `solicitudes_acceso_autonomialab`, `clientes_autonomialab`; cerradas, RLS sin políticas a propósito) y funciones `*_autonomialab` en `public` (la web no lee tablas); `privado.es_plataforma()`, `privado.limpiar_correo()`.
+- Pruebas: pegar entero `datos/pruebas/2026-10-21-cuentas-supabase.sql`; debe acabar con el error `PRUEBAS_OK` (deshace todo). Lanzarlas tras cada cambio.
+- Se aplica con `execute_sql` (MCP de Supabase) y el OK de Carlos. **Cualquier SQL con `DELETE` o `DROP` se cancela**: retirar con `revoke` o `update` de estado; si hay que borrar, lo pega Carlos en el SQL Editor. Bloques grandes, en trozos.
+- Prueba en local: Postgres 16 del contenedor (`initdb` como usuario `postgres` en `/srv/pglocal`, puerto 5433) con una imitación de `auth` y de `comun` (columnas copiadas de la base real).
+- No tocar nunca las carpetas `multibar` ni `gymbro` ni sus funciones: son de sus repositorios.
 
-## Infraestructura
-- **Hospedaje**: el navegador del usuario **solo habla con nuestro dominio**; Supabase solo desde el servidor (antibloqueos de LaLiga y cookies de Safari). Nada de Cloudflare delante. Sin Vercel (Carlos lo descartó).
-- **Producción: VPS Hetzner (Alemania) con IP propia**, ~6–10 €/mes + copias (20 %), por horas y sin permanencia. Coolify para publicar desde GitHub. Antes de usar la IP, comprobar que no está en listas de bloqueo. App preparada para mudarse en un día. Cuando haya varios clientes: separar plataforma y webs de clientes (otro servidor o IP). Se decidió contratarlo el 11 oct (siguiente paso).
-- **Supabase**: proyecto **autonomIA Lab** (ref `dafmorfftnucsxcsafop`, `eu-central-1` Frankfurt), plan gratis. Pasar a Pro (~25 $/mes) con clientes reales (el gratis se pausa por inactividad y no hace copias diarias). Otros proyectos de Carlos: "Suelos la Giralda" (pausado), "War300" (activo).
-- **Correos**: Supabase envía por SMTP de **Resend** (cuenta de Carlos con su Gmail; dominio `autonomialab.com` verificado; región Irlanda; remitente `autonomIA Lab <no-responder@autonomialab.com>`; registros DNS en DonDominio: `resend._domainkey` TXT, `rsend` y `send` CNAME, `_dmarc` TXT `v=DMARC1; p=none;`). Clave de Resend solo en Supabase (permiso "Sending access").
-- Plantillas de correo con la marca en `supabase/plantillas/` (se generan con `_base.py`; página para copiarlas: https://claude.ai/artifact/F4MCWsd9dP3guEvxDUfMhr). En Supabase → Authentication → Emails: **Magic Link** = acceso aprobado (`type=magiclink`), **Reset Password** = cambiar contraseña (`type=recovery`); enlaces con `token_hash` → `src/app/auth/confirmar/route.ts`. Site URL: `https://autonomialab.com`. Pendiente que Carlos repegue la última versión (letra mono sin Courier en Android). Los botones funcionarán cuando la web esté publicada.
-- Seguridad recomendada a Carlos: 2FA en Gmail, GitHub, Supabase, Resend y DonDominio. Nunca usar ni guardar la `service_role` de Supabase.
-
-## Estado (11 oct) — plan en `docs/plan-mvp.md`
-1. ✅ Esqueleto Next.js 16 + TypeScript, portada (`/`), fuentes alojadas en la app (RGPD), CI en GitHub Actions.
-2. ✅ Base de datos con RLS por organización (`supabase/migrations/`), tests en la propia base.
-3. ✅ Login con contraseña, «¿Olvidaste tu contraseña?» (`/recuperar`, `/nueva-contrasena`), `/auth/confirmar`, `/confirmado`.
-4. ✅ `/admin` (solo superadmin): solicitudes (aprobar/rechazar, WhatsApp directo), usuarios con acceso, «Nuevo cliente» por correo, ficha de cliente (marca, módulos, personas).
-5. ✅ `/miembros`: tarjetas gratis/pago, «Tus aplicaciones» (clientes, solo espacios activos), barra inferior con menú hamburguesa; secciones con página «Próximamente».
-- Flujo de acceso: `/solicitar` → `/solicitud/[token]` (datos opcionales; sectores de más a menos autónomos en `src/lib/sectores.ts`: 7 primeros verificados con MITES ene-2026, resto aproximado).
-- **Hetzner (en curso, 11 oct)**: cuenta creada (particular, con su Gmail; sin VAT ID) y 2FA activa con Google Authenticator. **Pendiente**: verificación de identidad con **pasaporte** (Carlos no tiene DNI; lo hará más tarde). Recomendado (no urgente): rehacer la 2FA y la clave de recuperación porque salieron en capturas del chat. Después: crear proyecto `autonomIA Lab`, token de API como secreto del entorno + permitir `api.hetzner.cloud` en la red, y crear el servidor (precio exacto en pantalla antes de crearlo).
-- **Siguiente**: terminar Hetzner y publicar. Después: contenido de «Aplicaciones útiles» (portar demos del prototipo) y módulo Hostelería.
-- **Antes del primer cliente real (obligatorio)** — el alojamiento + mantenimiento se vende como ingreso recurrente (decidido; ante el cliente responde Carlos, no Supabase/Hetzner):
-  1. **Copias**: Supabase **Pro** (copia diaria; valorar PITR) + **copia propia nocturna** automática desde el servidor de Hetzner (`pg_dump`) a otro sitio (p. ej. Storage Box de Hetzner), con alerta si falla y **prueba de recuperación** periódica.
-  2. **Contrato tipo + encargo de tratamiento (RGPD)** revisado por gestor/abogado: copias diarias, pérdida máxima posible (horas desde la última copia), sin prometer 100 % de disponibilidad, responsabilidad limitada; aceptar los DPA de Hetzner, Supabase y Resend; aviso legal y política de privacidad.
-- Vista previa estática (sin servidor) de las pantallas públicas: https://claude.ai/artifact/ULY9dFJ6FGL6SkTjFLJErC (se regenera con `scripts/vista-previa.mjs`).
-
-## Al empezar cada sesión
-- El trabajo de la sesión 1 está en la rama `ccr-39965d98-hf2x5g` (PR #1 hacia `main`, CI en verde). Si ya está fusionado, partir de `main`; si no, partir de esa rama.
-- El recordatorio de las plantillas de correo (12 oct, 10:00) se programó en la sesión 1: si Carlos abre otra sesión, recordárselo igualmente.
-- `cp .env.example .env.local` (dirección y clave publicable de Supabase; no son secretas).
-- Red del entorno: Personalizada, con `dafmorfftnucsxcsafop.supabase.co` permitido. En Node hace falta el proxy: `NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt` (ya puesto en `playwright.config.ts`). WebFetch a webs externas está bloqueado.
-- **Supabase MCP**: se cancela cualquier SQL con `DELETE` o `DROP`. Para retirar algo: `revoke`, `update` de estado o tabla nueva; si hay que borrar, pedírselo a Carlos en el SQL Editor.
-- Tests de la base: `select pruebas.aislamiento(), pruebas.admin(), pruebas.clientes();` → `OK` ×3. Lanzarlos tras cada migración.
-- Pruebas reales con usuarios de ejemplo: `docs/pruebas.md` (superadmin de prueba `ejemplo-pruebas@autonomialab.test`, bloqueado entre pruebas; cuenta gratuita `ejemplo-cliente@autonomialab.test`; al terminar, dejar todo bloqueado/suspendido).
-- Carlos (`carloswxht@gmail.com`) es superadmin.
-- Para enviar correos de prueba a Carlos: `signInWithOtp` (acceso aprobado) o `resetPasswordForEmail` con un cliente sin cookies; 60 s entre correos al mismo usuario.
-
-## Técnica
-- Next.js (App Router) + TypeScript, un solo repo. `cacheComponents` desactivado. `src/proxy.ts` refresca la sesión.
-- Supabase: Auth real, Postgres con `organizacion_id` y **RLS por organización**; funciones `security definer` con `search_path = ''` para lo que necesita saltarse RLS; ayudas en el esquema `privado` y tests en `pruebas` (no expuestos). Prohibido `using (true)` para `anon`.
-- Tablas: `organizaciones`, `perfiles`, `miembros`, `modulos`, `organizacion_modulos`, `solicitudes_acceso` (la antigua `solicitudes_cuenta` queda como histórico sin uso).
-- SQL siempre en `supabase/migrations/`; Claude lo aplica con el MCP y avisa a Carlos.
+## Técnica de la web
+- Next.js 16 (App Router) + TypeScript con `output: "export"` (páginas fijas en `out/`), `trailingSlash: true`. Sin servidor: el navegador habla con Supabase con la clave publicable (`src/lib/supabase/cliente.ts`; nunca la `service_role`).
+- Acciones de los formularios en el navegador (`src/app/acciones.ts`, `src/app/admin/acciones.ts`); `<ConSesion>` y `useYo()` (`src/lib/sesion.tsx`) comprueban la sesión en cada página con `yo_autonomialab`; cada función de la base vuelve a comprobar quién llama. Catálogo de productos en `src/lib/productos.ts`.
+- Campos de correo `type="text"` + `inputMode="email"` (con `type="email"` el móvil no deja enviar el punto final del dictado; la acción y la base lo quitan).
+- Antes de entregar: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` y `npm run test:e2e` (sirve `out/` con `scripts/servir.mjs`; en el entorno de Claude, Chromium sale por el proxy). Prueba real contra la base: `docs/pruebas.md` (cuenta de plataforma de prueba `ejemplo-pruebas@autonomialab.test` y gratuita `ejemplo-cliente@autonomialab.test`; dejarlas bloqueadas al terminar). Capturas a 390 px a Carlos.
+- Red del entorno: `dorunbacwnkwdatfscri.supabase.co` permitido (desde el 21 oct). Desde el contenedor no se abren `autonomialab.es` ni los subdominios (403 del proxy): las comprueba Carlos en su móvil.
+- Para fusionar: PR desde la rama de trabajo, CI en verde («comprobar») y el «fusiónalo» de Carlos. Esperar la publicación (`publicar.yml`) y avisarle.
 
 ## Diseño
-- Tema oscuro `#0A0B0D`, acento azul `#3B82F6`. Tipografías: Space Grotesk (títulos), Work Sans (cuerpo), IBM Plex Mono (números, marca).
-- Marca en pantalla: `[autonomIA Lab]` con cursor parpadeante.
-- Móvil primero. Barra inferior con menú hamburguesa, tarjetas con badge.
-- Evitar el aspecto de plantilla genérica de IA. No sacrificar usabilidad por estética. Lenguaje inclusivo neutro ("Ya tienes acceso", no "Bienvenido").
-- Antes de cualquier UI nueva importante: decir qué referencias/tendencias se aplican.
+- Tema oscuro `#0A0B0D`, azul `#3B82F6`. Space Grotesk (títulos), Work Sans (cuerpo), IBM Plex Mono (números, marca, etiquetas). Marca `[autonomIA Lab]` con cursor parpadeante. Fuentes dentro de la app (RGPD).
+- Móvil primero, sobrio y profesional (estilo «editorial técnico»: numeración en mono, tarjetas con borde fino, un solo botón principal azul). Evitar la plantilla genérica de IA. Lenguaje inclusivo neutro.
+- Antes de una UI nueva importante: decir qué referencias se aplican.
+
+## Negocio (lo que sigue valiendo de las notas del 11 oct)
+- Se venden servicios y productos a autónomos, pymes y empresas en España (lista en `docs/servicios.md`). La membresía gratuita es el gancho; quien contrata tiene acceso completo. **Planes y precios sin definir: no inventarlos** («Subir plan» y los botones de contacto llevan a WhatsApp +34 605 288 673).
+- Cuentas de la web: «Solicitar acceso» solo con el correo → Carlos aprueba en `/admin` → le llega un correo para crear su contraseña (nunca se envían contraseñas). Un cliente es un miembro de la web enlazado a su negocio desde la ficha del negocio.
+- Webs de clientes: solo lo que hacemos nosotros, alojado y mantenido por nosotros (no «hosting abierto»).
+- No inventar empresas, cifras ni testimonios (el caso de Suelos La Giralda del prototipo no se publica sin el OK de Carlos). Nunca afirmar que algo «cumple la ley» sin fuente oficial.
+- `prototipos/`: maquetas de octubre (referencia de diseño y textos, con datos de ejemplo y afirmaciones antiguas como Cloudflare: no copiarlas tal cual).
+
+## Correos
+- Resend (cuenta de Carlos), dominio `autonomialab.com` verificado (región Irlanda), remitente `avisos@autonomialab.com`. Pendiente verificar `autonomialab.es` en Resend y pasar los remitentes a `.es`. La clave de Resend solo en Supabase.
+- Plantillas con la marca en `supabase/plantillas/` (se generan con `_base.py`): «Magic Link» = acceso aprobado (`type=magiclink`), «Reset Password» = cambiar contraseña (`type=recovery`), ambas a `/auth/confirmar/` con `token_hash`.
 
 ## Forma de trabajar con Carlos
-- Antes de entregar: lint, typecheck, tests, build y pruebas de pantalla a 390x844 (también las reales contra Supabase cuando aplique); confirmarle que se validó y mandarle capturas.
-- Cuando haya varias formas válidas, dar opinión honesta y una recomendación clara; no devolverle la pregunta.
-- Feedback directo, incluso crítico. No asegurar al 100 % lo que no se puede garantizar.
-- No inventar empresas, cifras ni testimonios. Los datos de ejemplo se marcan como "ejemplo". Cifras con fuente.
-- Nunca afirmar que algo "cumple la ley" sin verificarlo en fuente oficial.
-- Commits pequeños en español, en la rama de trabajo; actualizar este archivo al terminar cada bloque.
+- Antes de una tarea grande: explicar qué se va a tocar y esperar su «sí». Si pide «opina» o «analicemos»: solo opinión, sin cambios.
+- Dar opinión honesta y una recomendación clara; no devolverle la pregunta. No asegurar al 100 % lo que no se puede garantizar.
+- Commits pequeños en español en la rama de trabajo; actualizar este archivo al terminar cada bloque.
