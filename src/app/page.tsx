@@ -57,7 +57,7 @@ export default function Portada() {
       </main>
 
       <footer className={styles.pie}>
-        <p>autonomIA Lab — Paneles web con IA para autónomos, pymes y empresas en España.</p>
+        <p>autonomIA Lab — Inteligencia artificial y aplicaciones a medida para autónomos, pymes y empresas en España.</p>
       </footer>
     </>
   );

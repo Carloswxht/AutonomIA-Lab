@@ -75,10 +75,11 @@
 .formulario button {
   min-height: 44px;
   padding: 11px 14px;
-  border: 1px solid var(--border);
+  /* Azul suave: se ve que se puede tocar, sin quitar protagonismo a «Habla con un asesor». */
+  border: 1px solid var(--blue-line);
   border-radius: 10px;
-  background: var(--surface-2);
-  color: var(--text-dim);
+  background: var(--blue-soft);
+  color: var(--blue-bright);
   font: inherit;
   font-size: 0.9rem;
   font-weight: 600;
@@ -92,8 +93,9 @@
   opacity: 0.6;
 }
 
-.formulario button:hover {
-  background: var(--surface-3);
+.formulario button:hover,
+.formulario button:active {
+  border-color: var(--blue);
   color: var(--text);
 }
 
