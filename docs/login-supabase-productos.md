@@ -28,7 +28,10 @@ cambia **su** web y **sus** funciones en **su** sesión, sin tocar `comun`.
    Las funciones viejas (con token) **se quedan** hasta que la web nueva funcione; luego se les quita el permiso
    (`revoke execute`), sin DROP.
 2. **Web**: entrar con `supabase.auth.signInWithPassword`, salir con `signOut`, recuperar con
-   `resetPasswordForEmail(correo, { redirectTo: 'https://<subdominio>/...' })` y «nueva contraseña» con `updateUser`.
+   `resetPasswordForEmail(correo, { redirectTo: 'https://<subdominio>/<página>/' })` y «nueva contraseña» con `updateUser`.
+   El correo lo manda la Edge Function común `enviar-correo` con la imagen del negocio: su botón abre esa página con
+   `token_hash` y `type`; la página llama a `supabase.auth.verifyOtp({ token_hash, type })` y luego pide la contraseña
+   nueva. Colores y logo de cada negocio: ver `docs/correos-productos.md`.
    Limpiar el correo (espacios y puntos del final) antes de mandarlo. La sesión la guarda la librería de Supabase.
 3. **Altas de cuentas**: se siguen haciendo en `comun.usuarios` como hoy (la cuenta de Supabase nace sola). Para que la
    persona cree su contraseña, en lugar del enlace de bienvenida propio se le manda el correo de Supabase

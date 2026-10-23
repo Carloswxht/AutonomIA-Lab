@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Marca } from "@/components/Marca";
 import { enlaceWhatsApp } from "@/lib/contacto";
 import { FormularioEntrar } from "./FormularioEntrar";
+import { ReenviarEnlace } from "./ReenviarEnlace";
 import styles from "./page.module.css";
 
 const MENSAJES = [
@@ -13,6 +14,7 @@ const MENSAJES = [
 export default function Portada() {
   return (
     <>
+      <ReenviarEnlace />
       <nav className={styles.arriba}>
         <div className={styles.wrap}>
           <Marca />

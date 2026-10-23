@@ -10,7 +10,7 @@ Responde SIEMPRE en español. Quien habla es Carlos, fundador. **Trabaja solo de
 La web de la empresa en **`https://autonomialab.es`** (GitHub Pages, repositorio **público** desde el 21 oct): portada para miembros, solicitar acceso, panel de miembros, `/admin` de Carlos y la página de servicios. Es también el **dueño de las carpetas `comun` y `autonomialab`** de la base única `autonomialab-db`. MultiBar y Gymbro son productos aparte, cada uno con su repositorio y su sesión; esta web los enlaza.
 
 ## Estado (23 oct)
-- **Publicado y en `main`:** PR #9 (Fase 2 + web de páginas fijas), #10 (servicios), #11 (enlace a servicios en la portada), #12 (sello «Miembros», «Entrar» en azul suave, pie al día). Cada fusión en `main` se publica sola (`.github/workflows/publicar.yml`). Rama de trabajo: `ccr-66066c8f-u7w8ll` (al día con `main`).
+- **Publicado y en `main`:** PR #9 (Fase 2 + web de páginas fijas), #10 (servicios), #11 (enlace a servicios en la portada), #12 (sello «Miembros», «Entrar» en azul suave, pie al día). Cada fusión en `main` se publica sola (`.github/workflows/publicar.yml`). Rama de trabajo: `ccr-73e2782b-k4g7ub` (PR #14: correos con la imagen de cada negocio).
 - **Pantallas:**
   - `/` portada: sello «MIEMBROS», entrar, «¿Aún no eres miembro? Solicitar acceso», «Habla con un asesor», «Ver nuestros servicios».
   - `/solicitar` → `/solicitud/?t=CÓDIGO` (datos opcionales del negocio). `/recuperar`, `/nueva-contrasena`, `/auth/confirmar/`, `/confirmado/`.
@@ -20,7 +20,8 @@ La web de la empresa en **`https://autonomialab.es`** (GitHub Pages, repositorio
 - **Carlos entra en `/admin` con `carloswxht+plataforma@gmail.com`** (su cuenta de plataforma, la misma de los paneles de MultiBar y Gymbro; su Gmail normal es de La Torre Bar).
 
 ## Pendiente, en este orden
-1. **Panel de Supabase (Carlos, con pasos guiados y capturas):** Authentication → URL Configuration: Site URL `https://autonomialab.es`; Redirect URLs `https://autonomialab.es/**`, `https://carta.autonomialab.es/**`, `https://gymbro.autonomialab.es/**`. SMTP de Resend. Plantillas de `supabase/plantillas/` (enlaces a `{{ .SiteURL }}/auth/confirmar/?…`; la de «Reset Password» debería llevar a la página de cada producto con `{{ .RedirectTo }}` para que MultiBar y Gymbro dejen sus correos propios). Desactivar «Allow new users to sign up». Valorar «Leaked password protection». Sin esto no salen los correos de «acceso aprobado» ni «cambiar contraseña».
+1. **Correos de las cuentas (Carlos, con pasos guiados y capturas):** Authentication → URL Configuration: Site URL `https://autonomialab.es`; Redirect URLs `https://autonomialab.es/**`, `https://carta.autonomialab.es/**`, `https://gymbro.autonomialab.es/**`. Después, **Auth → Hooks → Send Email Hook** (HTTPS, a la Edge Function `enviar-correo`) y su secreto en Edge Functions → Secrets como `SEND_EMAIL_HOOK_SECRET`. Desactivar «Allow new users to sign up». Valorar «Leaked password protection». Probar con «¿Olvidaste tu contraseña?» de la cuenta de plataforma. Ya no hace falta el SMTP de Resend en Supabase; las plantillas de `supabase/plantillas/` quedan de reserva (si se apaga el hook).
+   - Luego, en sus sesiones: MultiBar y Gymbro ponen su `marca_correo_<tipo>` y pasan a `resetPasswordForEmail` (encargo en `docs/correos-productos.md`).
 2. Contenido de «Aplicaciones útiles» (demos de `prototipos/aplicaciones.html`: Control de horario y Pendientes de obra).
 3. Nombre del producto de pisos en alquiler (propuestos: MultiPiso —recomendado—, Portería, PisoClaro, MiPiso al Día; comprobar en la OEPM antes).
 4. Cuando todos los productos usen solo Supabase: quitar los disparadores de copia de `comun.usuarios` y pasar `comun.sesiones` / `comun.recuperaciones` a archivo (sin DROP).
@@ -57,8 +58,11 @@ La web de la empresa en **`https://autonomialab.es`** (GitHub Pages, repositorio
 - `prototipos/`: maquetas de octubre (referencia de diseño y textos, con datos de ejemplo y afirmaciones antiguas como Cloudflare: no copiarlas tal cual).
 
 ## Correos
-- Resend (cuenta de Carlos), dominio `autonomialab.com` verificado (región Irlanda), remitente `avisos@autonomialab.com`. Pendiente verificar `autonomialab.es` en Resend y pasar los remitentes a `.es`. La clave de Resend solo en Supabase.
-- Plantillas con la marca en `supabase/plantillas/` (se generan con `_base.py`): «Magic Link» = acceso aprobado (`type=magiclink`), «Reset Password» = cambiar contraseña (`type=recovery`), ambas a `/auth/confirmar/` con `token_hash`.
+- Resend (cuenta de Carlos), dominio `autonomialab.com` verificado (región Irlanda), remitente `avisos@autonomialab.com`. Pendiente verificar `autonomialab.es` en Resend y pasar los remitentes a `.es`. La clave de Resend solo en Supabase (`RESEND_API_KEY`, la comparten las Edge Functions).
+- **Desde el 23 oct, todos los correos del login de Supabase los manda la Edge Function `enviar-correo`** (`supabase/functions/enviar-correo/`, Send Email Hook, `verify_jwt = false`, comprueba la firma con `SEND_EMAIL_HOOK_SECRET`): con el nombre del negocio como remitente («La Mar de Gambas <avisos@autonomialab.com>»), su logo y sus colores, y respuestas al correo del negocio. Miembros de la web y cuenta de plataforma: imagen de autonomIA Lab. El botón va a la página que pidió el correo (`redirect_to`) con `token_hash`. Diseño en `plantilla.ts` (probado con `npm test`); para desplegar, subir `index.ts` y `plantilla.ts` enteros y comprobar con `get_edge_function`.
+- La imagen la da `public.marca_correo(auth_id)` (`datos/cambios/2026-10-23-marca-correo.sql`, **aplicado el 23 oct**, huella md5 `7baf1dca47fa5b2eec37c7f94f835a5c`; pruebas en `datos/pruebas/2026-10-23-marca-correo.sql`, acaban en `PRUEBAS_OK`), que llama a `public.marca_correo_<tipo>` de cada producto si existe (encargo en `docs/correos-productos.md`).
+- Opción futura (apagada): «correo propio» desde el dominio del cliente (verificarlo en Resend; quizá plan de pago).
+- Plantillas fijas de reserva en `supabase/plantillas/` (se generan con `_base.py`).
 
 ## Forma de trabajar con Carlos
 - Antes de una tarea grande: explicar qué se va a tocar y esperar su «sí». Si pide «opina» o «analicemos»: solo opinión, sin cambios.

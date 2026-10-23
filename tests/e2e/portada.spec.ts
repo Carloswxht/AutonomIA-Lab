@@ -72,6 +72,11 @@ test("los enlaces caducados se explican", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "El enlace no sirve" })).toBeVisible();
 });
 
+test("un enlace de correo que llega a la portada pasa a /auth/confirmar", async ({ page }) => {
+  await page.goto("/?token_hash=falso&type=recovery");
+  await expect(page).toHaveURL(/\/confirmado\/\?motivo=contrasena$/);
+});
+
 test("Recuperar contraseña pide un correo válido", async ({ page }) => {
   await page.goto("/recuperar");
   await page.getByLabel("Correo").fill("ejemplo@sin-punto");

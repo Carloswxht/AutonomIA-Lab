@@ -9,7 +9,8 @@ import { supabase } from "@/lib/supabase/cliente";
 // Destino de los enlaces de los correos. Las plantillas de Supabase (Authentication → Emails) apuntan aquí con
 // token_hash, así el enlace funciona aunque se abra en otro navegador:
 //   Magic link (acceso aprobado):  {{ .SiteURL }}/auth/confirmar/?token_hash={{ .TokenHash }}&type=magiclink
-//   Reset password:                {{ .SiteURL }}/auth/confirmar/?token_hash={{ .TokenHash }}&type=recovery
+//   Reset password:                {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery
+// (RedirectTo es la página de cada producto; si Supabase no la admite, pone la Site URL y la portada reenvía aquí).
 // También acepta ?code= (enlaces por defecto de Supabase, solo si se abren en el mismo navegador).
 const TRAS_TIPO: Partial<Record<EmailOtpType, string>> = {
   magiclink: "/nueva-contrasena/",

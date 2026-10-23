@@ -80,7 +80,8 @@ export async function recuperarContrasena(_previo: EstadoFormulario, f: FormData
 
   try {
     const { error } = await supabase().auth.resetPasswordForEmail(v.datos.email, {
-      redirectTo: `${window.location.origin}/auth/confirmar/?siguiente=/nueva-contrasena/`,
+      // Sin «?»: la plantilla «Reset Password» añade «?token_hash=…» a esta dirección (ver supabase/plantillas/_base.py).
+      redirectTo: `${window.location.origin}/auth/confirmar/`,
     });
     if (error && (error.code === "over_email_send_rate_limit" || error.code === "over_request_rate_limit"))
       return { error: mensajeErrorAuth(error.code) };
