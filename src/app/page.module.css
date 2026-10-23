@@ -10,6 +10,34 @@
   text-align: center;
 }
 
+/* Sello «MIEMBROS» bajo la marca: el acceso es solo para quien Carlos aprueba. */
+.miembros {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* Las rayas a los lados; el espacio de más compensa el letter-spacing de la última letra. */
+.miembros::before,
+.miembros::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--border);
+}
+
+.miembros::after {
+  margin-left: -0.34em;
+}
+
 .acceso {
   margin-top: 18px;
 }
@@ -47,10 +75,11 @@
 .formulario button {
   min-height: 44px;
   padding: 11px 14px;
-  border: 1px solid var(--border);
+  /* Azul suave: se ve que se puede tocar, sin quitar protagonismo a «Habla con un asesor». */
+  border: 1px solid var(--blue-line);
   border-radius: 10px;
-  background: var(--surface-2);
-  color: var(--text-dim);
+  background: var(--blue-soft);
+  color: var(--blue-bright);
   font: inherit;
   font-size: 0.9rem;
   font-weight: 600;
@@ -64,8 +93,9 @@
   opacity: 0.6;
 }
 
-.formulario button:hover {
-  background: var(--surface-3);
+.formulario button:hover,
+.formulario button:active {
+  border-color: var(--blue);
   color: var(--text);
 }
 

@@ -16,10 +16,11 @@ export default function Portada() {
       <nav className={styles.arriba}>
         <div className={styles.wrap}>
           <Marca />
+          <p className={styles.miembros}>Miembros</p>
           <div className={styles.acceso}>
             <FormularioEntrar />
             <Link href="/solicitar" className={styles.solicitar}>
-              ¿No tienes cuenta? <span>Solicitar acceso</span>
+              ¿Aún no eres miembro? <span>Solicitar acceso</span>
             </Link>
             <Link href="/recuperar" className={styles.olvido}>
               ¿Olvidaste tu contraseña?
@@ -56,7 +57,7 @@ export default function Portada() {
       </main>
 
       <footer className={styles.pie}>
-        <p>autonomIA Lab — Paneles web con IA para autónomos, pymes y empresas en España.</p>
+        <p>autonomIA Lab — Inteligencia artificial y aplicaciones a medida para autónomos, pymes y empresas en España.</p>
       </footer>
     </>
   );
