@@ -21,13 +21,12 @@ La web de la empresa en **`https://autonomialab.es`** (GitHub Pages, repositorio
 
 ## Pendiente, en este orden
 1. **Correos de las cuentas:** Send Email Hook **encendido y probado** (23–24 oct: web, MultiBar y Gymbro, cada uno con su imagen; `marca_correo_multibar` y `marca_correo_gymbro` ya existen). SMTP de Resend puesto y límite a 100 correos/hora (24 oct). Falta en el panel de Supabase (Carlos, con pasos guiados): comprobar Site URL `https://autonomialab.es` y Redirect URLs (`https://autonomialab.es/**`, `https://carta.autonomialab.es/**`, `https://gymbro.autonomialab.es/**`), desactivar «Allow new users to sign up» y valorar «Leaked password protection». Probar también «acceso aprobado» al aprobar una solicitud real.
-2. **Next.js avisa de una vulnerabilidad conocida en la 16.4.0** (24 oct, al compilar: `next upgrade --agent=security`). Actualizar en una tarea aparte, probando todo.
-3. Contenido de «Aplicaciones útiles» (demos de `prototipos/aplicaciones.html`: Control de horario y Pendientes de obra).
-4. Nombre del producto de pisos en alquiler (propuestos: MultiPiso —recomendado—, Portería, PisoClaro, MiPiso al Día; comprobar en la OEPM antes).
-5. Cuando todos los productos usen solo Supabase: quitar los disparadores de copia de `comun.usuarios` y pasar `comun.sesiones` / `comun.recuperaciones` a archivo (sin DROP).
-6. Hetzner (cuando Carlos haga la verificación con pasaporte): ver `docs/publicar.md`.
-7. Antes del primer cliente de pago: Supabase Pro y copias (ver Fase 5 de `PLATAFORMA.md`), contrato y encargo del tratamiento revisados por un asesor, aviso legal y privacidad de la web.
-8. Probar un día de partido (bloqueos de LaLiga) la web, MultiBar y Gymbro con datos móviles.
+2. Contenido de «Aplicaciones útiles» (demos de `prototipos/aplicaciones.html`: Control de horario y Pendientes de obra).
+3. Nombre del producto de pisos en alquiler (propuestos: MultiPiso —recomendado—, Portería, PisoClaro, MiPiso al Día; comprobar en la OEPM antes).
+4. Cuando todos los productos usen solo Supabase: quitar los disparadores de copia de `comun.usuarios` y pasar `comun.sesiones` / `comun.recuperaciones` a archivo (sin DROP).
+5. Hetzner (cuando Carlos haga la verificación con pasaporte): ver `docs/publicar.md`.
+6. Antes del primer cliente de pago: Supabase Pro y copias (ver Fase 5 de `PLATAFORMA.md`), contrato y encargo del tratamiento revisados por un asesor, aviso legal y privacidad de la web.
+7. Probar un día de partido (bloqueos de LaLiga) la web, MultiBar y Gymbro con datos móviles.
 
 ## Base de datos (`autonomialab-db`, ref `dorunbacwnkwdatfscri`)
 - SQL en `datos/cambios/` y pruebas en `datos/pruebas/` (como en los otros repositorios). Lo de la base antigua («autonomIA Lab antiguo», `dafmorfftnucsxcsafop`, pausada; no tocar) quedó en `supabase/archivo-base-antigua/` (no aplicar).
@@ -38,7 +37,7 @@ La web de la empresa en **`https://autonomialab.es`** (GitHub Pages, repositorio
 - No tocar nunca las carpetas `multibar` ni `gymbro` ni sus funciones: son de sus repositorios.
 
 ## Técnica de la web
-- Next.js 16 (App Router) + TypeScript con `output: "export"` (páginas fijas en `out/`), `trailingSlash: true`. Sin servidor: el navegador habla con Supabase con la clave publicable (`src/lib/supabase/cliente.ts`; nunca la `service_role`).
+- Next.js 16.4.3 (App Router; 24 oct: de la 16.4.0 por avisos de seguridad que no afectaban a la web fija; `npm audit` a 0, revisarlo de vez en cuando) + TypeScript con `output: "export"` (páginas fijas en `out/`), `trailingSlash: true`. Sin servidor: el navegador habla con Supabase con la clave publicable (`src/lib/supabase/cliente.ts`; nunca la `service_role`).
 - Acciones de los formularios en el navegador (`src/app/acciones.ts`, `src/app/admin/acciones.ts`); `<ConSesion>` y `useYo()` (`src/lib/sesion.tsx`) comprueban la sesión en cada página con `yo_autonomialab`; cada función de la base vuelve a comprobar quién llama. Catálogo de productos en `src/lib/productos.ts`.
 - Campos de correo `type="text"` + `inputMode="email"` (con `type="email"` el móvil no deja enviar el punto final del dictado; la acción y la base lo quitan).
 - Antes de entregar: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` y `npm run test:e2e` (sirve `out/` con `scripts/servir.mjs`; en el entorno de Claude, Chromium sale por el proxy). Prueba real contra la base: `docs/pruebas.md` (cuenta de plataforma de prueba `ejemplo-pruebas@autonomialab.test` y gratuita `ejemplo-cliente@autonomialab.test`; dejarlas bloqueadas al terminar). Capturas a 390 px a Carlos.
