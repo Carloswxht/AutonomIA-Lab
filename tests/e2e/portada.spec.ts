@@ -7,18 +7,21 @@ const sinScrollLateral = async (page: import("@playwright/test").Page) => {
   expect(extra).toBeLessThanOrEqual(0);
 };
 
-test("la portada muestra marca, acceso, mensajes y asesor", async ({ page }) => {
+test("la portada muestra marca, acceso, servicios por perfil y asesor", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByLabel("autonomIA Lab").first()).toBeVisible();
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("inteligencia artificial");
-  await expect(page.getByRole("listitem")).toHaveCount(3);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Nuestros servicios");
+  await expect(page.getByText("Esto es lo que puede hacer")).toHaveCount(0);
+  for (const [nombre, clave] of [["Autónomos", "autonomos"], ["Pymes", "pymes"], ["Empresas", "empresas"]])
+    await expect(page.getByRole("link", { name: new RegExp(`^${nombre} `) })).toHaveAttribute("href", `/servicios/?para=${clave}`);
+  await expect(page.getByText("¿Para quién es?")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Trabajas por tu cuenta/ })).toBeVisible();
   await expect(page.getByRole("link", { name: "Habla con un asesor" })).toHaveAttribute(
     "href",
     /^https:\/\/wa\.me\/34605288673\?text=/,
   );
   await expect(page.getByRole("link", { name: /Solicitar acceso/ })).toHaveAttribute("href", "/solicitar/");
   await expect(page.getByRole("link", { name: "¿Olvidaste tu contraseña?" })).toHaveAttribute("href", "/recuperar/");
-  await expect(page.getByRole("link", { name: /Ver nuestros servicios/ })).toHaveAttribute("href", "/servicios/");
   await sinScrollLateral(page);
   await page.screenshot({ path: "test-results/portada-390.png", fullPage: true });
 });
@@ -94,4 +97,37 @@ test("la página de servicios enseña los 9 servicios, los productos y lleva a W
   await expect(page.getByRole("link", { name: "Pedir un diagnóstico" })).toHaveAttribute("href", /^https:\/\/wa\.me\/34605288673\?text=/);
   await sinScrollLateral(page);
   await page.screenshot({ path: "test-results/servicios-390.png", fullPage: true });
+});
+
+test("servicios cambia según el perfil, lo recuerda y se puede volver a la versión para todos", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: /^Autónomos / }).click();
+  await expect(page).toHaveURL(/\/servicios\/\?para=autonomos$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Haces de todo. Que lo repetitivo se haga solo.");
+  await expect(page.getByRole("group", { name: "Ver para:" }).getByRole("button", { name: "Autónomos" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("h3").first()).toHaveText("Diagnóstico de IA");
+  await expect(page.getByText("Para ti").first()).toBeVisible();
+  await sinScrollLateral(page);
+  await page.screenshot({ path: "test-results/servicios-autonomos-390.png", fullPage: true });
+
+  await page.getByRole("button", { name: "Empresas" }).click();
+  await expect(page).toHaveURL(/\?para=empresas$/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("integradas en cómo ya trabajáis");
+  await expect(page.locator("h3").nth(1)).toHaveText("Aplicaciones web empresariales a medida");
+  await expect(page.getByRole("link", { name: "Contactar por WhatsApp" })).toHaveAttribute("href", /^https:\/\/wa\.me\/34605288673\?text=/);
+  await page.screenshot({ path: "test-results/servicios-empresas-390.png", fullPage: true });
+
+  // Sin ?para=, el móvil recuerda el último perfil.
+  await page.goto("/servicios/");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("integradas en cómo ya trabajáis");
+  await page.getByRole("button", { name: "Ver la página para todos" }).click();
+  await expect(page).toHaveURL(/\/servicios\/$/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("en tu negocio");
+  await page.reload();
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("en tu negocio");
+
+  await page.goto("/servicios/?para=pymes");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Tu equipo, tus clientes y tus datos, en orden.");
+  await page.goto("/servicios/?para=otra");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("en tu negocio");
 });

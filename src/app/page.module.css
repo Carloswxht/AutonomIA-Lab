@@ -136,7 +136,7 @@
   color: var(--text-faint);
 }
 
-/* ---------- Mensajes ---------- */
+/* ---------- Nuestros servicios ---------- */
 .hero {
   position: relative;
   padding: 40px 0 56px;
@@ -165,34 +165,78 @@
   letter-spacing: -0.02em;
 }
 
-.mensajes {
-  max-width: 360px;
-  margin: 30px auto 0;
+.lema {
+  margin-top: 10px;
+  font-size: 0.98rem;
+  color: var(--text-dim);
+}
+
+.perfiles {
+  max-width: 420px;
+  margin: 28px auto 0;
   list-style: none;
   text-align: left;
 }
 
-.mensajes li {
+.perfiles li + li {
+  margin-top: 10px;
+}
+
+/* Mismo azul suave que «Entrar»: se ve que se puede tocar sin quitar protagonismo a «Habla con un asesor». */
+.perfil {
   display: flex;
-  gap: 10px;
-  margin-top: 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 18px;
+  border: 1px solid var(--blue-line);
+  border-radius: 14px;
+  background: var(--blue-soft);
+  transition:
+    border-color 0.15s ease,
+    transform 0.12s ease;
+}
+
+.perfil:hover,
+.perfil:active {
+  border-color: var(--blue);
+}
+
+.perfil:active {
+  transform: scale(0.98);
+}
+
+.perfilTexto strong {
+  display: block;
   font-family: var(--font-titulo);
-  font-size: 1.14rem;
+  font-size: 1.08rem;
   font-weight: 600;
-  line-height: 1.35;
-}
-
-.mensajes li:first-child {
-  margin-top: 0;
-}
-
-.mensajes li span {
-  flex: 0 0 auto;
   color: var(--blue-bright);
 }
 
+.perfilTexto span {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+
+.flecha {
+  flex: 0 0 auto;
+  font-size: 1.3rem;
+  color: var(--blue-bright);
+  transition: transform 0.15s ease;
+}
+
+.perfil:active .flecha {
+  transform: translateX(3px);
+}
+
 .asesor {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 36px;
   padding: 16px 30px;
   border-radius: 12px;
@@ -204,27 +248,14 @@
   transition: transform 0.12s ease;
 }
 
+.whatsapp {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
 .asesor:active {
   transform: scale(0.97);
-}
-
-.verServicios {
-  display: block;
-  width: fit-content;
-  margin: 18px auto 0;
-  padding: 10px 6px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--blue-bright);
-}
-
-.verServicios span {
-  display: inline-block;
-  transition: transform 0.15s ease;
-}
-
-.verServicios:active span {
-  transform: translateX(3px);
 }
 
 /* ---------- Pie ---------- */

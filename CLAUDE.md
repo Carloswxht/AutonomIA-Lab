@@ -12,21 +12,22 @@ La web de la empresa en **`https://autonomialab.es`** (GitHub Pages, repositorio
 ## Estado (23 oct)
 - **Publicado y en `main`:** PR #9 (Fase 2 + web de páginas fijas), #10 (servicios), #11 (enlace a servicios en la portada), #12 (sello «Miembros», «Entrar» en azul suave, pie al día), #14 (correos con la imagen de cada negocio). Cada fusión en `main` se publica sola (`.github/workflows/publicar.yml`). Rama de trabajo: `ccr-73e2782b-k4g7ub` (al día con `main`).
 - **Pantallas:**
-  - `/` portada: sello «MIEMBROS», entrar, «¿Aún no eres miembro? Solicitar acceso», «Habla con un asesor», «Ver nuestros servicios».
+  - `/` portada: sello «MIEMBROS», entrar, «¿Aún no eres miembro? Solicitar acceso»; debajo «Nuestros servicios» (título), «Inteligencia artificial y aplicaciones a medida», tres filas con flecha en azul suave (**Autónomos** · Trabajas por tu cuenta, **Pymes** · Tienes un equipo, **Empresas** · Varias áreas o sedes; llevan a `/servicios/?para=…`) y «Habla con un asesor» con el icono de WhatsApp (24 oct: fuera la frase grande, las tres flechas y la pregunta).
   - `/solicitar` → `/solicitud/?t=CÓDIGO` (datos opcionales del negocio). `/recuperar`, `/nueva-contrasena`, `/auth/confirmar/`, `/confirmado/`.
   - `/miembros/`: tarjeta «Nuestros servicios» (la primera), 6 secciones (gratis: Aplicaciones útiles, Ranking, Blog; de pago: Agentes, Plantillas, Universidad; **todas «Próximamente», sin contenido**), «Tus aplicaciones» (cliente) o «Paneles de plataforma» (Carlos).
   - `/admin/` (solo cuenta de plataforma): solicitudes (aprobar/rechazar, WhatsApp), negocios de `comun.negocios` con su ficha `/admin/negocio/?id=N` (productos, datos legales, dar o quitar acceso a la web a sus dueños), miembros, enlaces a los `/plataforma/` de cada producto.
-  - `/servicios/`: página pública con los 9 servicios, agente o automatización, productos y cómo trabajamos (contenido en `src/lib/servicios.ts`, que sale de `docs/servicios.md`).
+  - `/servicios/`: página pública con los 9 servicios, agente o automatización, productos y cómo trabajamos (contenido en `src/lib/servicios.ts`, que sale de `docs/servicios.md`). **Por perfil (24 oct):** arriba «Ver para:» Autónomos · Pymes · Empresas (`?para=autonomos|pymes|empresas`, el móvil lo recuerda en `servicios.perfil`; «Ver la página para todos» lo quita): cambian la entrada, el orden de los servicios, una línea «Para ti» en cada uno y el cierre (`PERFILES`, textos en `docs/servicios-por-perfil.md`). Sin perfil se ve como antes.
 - **Carlos entra en `/admin` con `carloswxht+plataforma@gmail.com`** (su cuenta de plataforma, la misma de los paneles de MultiBar y Gymbro; su Gmail normal es de La Torre Bar).
 
 ## Pendiente, en este orden
 1. **Correos de las cuentas:** Send Email Hook **encendido y probado** (23–24 oct: web, MultiBar y Gymbro, cada uno con su imagen; `marca_correo_multibar` y `marca_correo_gymbro` ya existen). SMTP de Resend puesto y límite a 100 correos/hora (24 oct). Falta en el panel de Supabase (Carlos, con pasos guiados): comprobar Site URL `https://autonomialab.es` y Redirect URLs (`https://autonomialab.es/**`, `https://carta.autonomialab.es/**`, `https://gymbro.autonomialab.es/**`), desactivar «Allow new users to sign up» y valorar «Leaked password protection». Probar también «acceso aprobado» al aprobar una solicitud real.
-2. Contenido de «Aplicaciones útiles» (demos de `prototipos/aplicaciones.html`: Control de horario y Pendientes de obra).
-3. Nombre del producto de pisos en alquiler (propuestos: MultiPiso —recomendado—, Portería, PisoClaro, MiPiso al Día; comprobar en la OEPM antes).
-4. Cuando todos los productos usen solo Supabase: quitar los disparadores de copia de `comun.usuarios` y pasar `comun.sesiones` / `comun.recuperaciones` a archivo (sin DROP).
-5. Hetzner (cuando Carlos haga la verificación con pasaporte): ver `docs/publicar.md`.
-6. Antes del primer cliente de pago: Supabase Pro y copias (ver Fase 5 de `PLATAFORMA.md`), contrato y encargo del tratamiento revisados por un asesor, aviso legal y privacidad de la web.
-7. Probar un día de partido (bloqueos de LaLiga) la web, MultiBar y Gymbro con datos móviles.
+2. **Next.js avisa de una vulnerabilidad conocida en la 16.4.0** (24 oct, al compilar: `next upgrade --agent=security`). Actualizar en una tarea aparte, probando todo.
+3. Contenido de «Aplicaciones útiles» (demos de `prototipos/aplicaciones.html`: Control de horario y Pendientes de obra).
+4. Nombre del producto de pisos en alquiler (propuestos: MultiPiso —recomendado—, Portería, PisoClaro, MiPiso al Día; comprobar en la OEPM antes).
+5. Cuando todos los productos usen solo Supabase: quitar los disparadores de copia de `comun.usuarios` y pasar `comun.sesiones` / `comun.recuperaciones` a archivo (sin DROP).
+6. Hetzner (cuando Carlos haga la verificación con pasaporte): ver `docs/publicar.md`.
+7. Antes del primer cliente de pago: Supabase Pro y copias (ver Fase 5 de `PLATAFORMA.md`), contrato y encargo del tratamiento revisados por un asesor, aviso legal y privacidad de la web.
+8. Probar un día de partido (bloqueos de LaLiga) la web, MultiBar y Gymbro con datos móviles.
 
 ## Base de datos (`autonomialab-db`, ref `dorunbacwnkwdatfscri`)
 - SQL en `datos/cambios/` y pruebas en `datos/pruebas/` (como en los otros repositorios). Lo de la base antigua («autonomIA Lab antiguo», `dafmorfftnucsxcsafop`, pausada; no tocar) quedó en `supabase/archivo-base-antigua/` (no aplicar).
