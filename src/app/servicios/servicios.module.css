@@ -477,6 +477,7 @@
   border: 0;
   background: none;
   color: var(--text-dim);
+  font-family: var(--font-cuerpo);
   font-size: 0.82rem;
   text-decoration: underline;
   text-underline-offset: 3px;
