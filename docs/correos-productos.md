@@ -22,7 +22,9 @@ as $$
     'texto',   ...,   -- #RRGGBB
     'acento',  ...,   -- #RRGGBB: botón y franja de arriba
     'nombre',  ...,   -- opcional: si el producto usa otro nombre que comun.negocios.nombre
-    'responder_a', ...) -- opcional: correo al que llegan las respuestas (si no, comun.negocios.correo_legal)
+    'responder_a', ..., -- opcional: correo al que llegan las respuestas (si no, comun.negocios.correo_legal)
+    'entrar', ...)      -- opcional: página https://…autonomialab.es donde entran sus cuentas (si alguien pide el
+                        --   correo desde autonomialab.es, el botón lleva aquí; MultiBar y Gymbro ya tienen la suya por defecto)
   from multibar.ajustes_multibar a where a.negocio_id = p_negocio;
 $$;
 revoke all on function public.marca_correo_multibar(integer) from public, anon, authenticated;
