@@ -59,8 +59,10 @@ function Check() {
 function Selector({ perfil }: { perfil: Perfil | null }) {
   return (
     <div className={styles.perfiles}>
-      <p className={styles.paraQuien}>¿Para quién es?</p>
-      <div className={styles.perfilesBotones} role="group" aria-label="¿Para quién es?">
+      <p className={styles.paraQuien} id="ver-para">
+        Ver para:
+      </p>
+      <div className={styles.perfilesBotones} role="group" aria-labelledby="ver-para">
         {PERFILES.map((p) => (
           <button
             key={p.clave}

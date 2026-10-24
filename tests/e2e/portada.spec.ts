@@ -13,7 +13,9 @@ test("la portada muestra marca, acceso, servicios por perfil y asesor", async ({
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Nuestros servicios");
   await expect(page.getByText("Esto es lo que puede hacer")).toHaveCount(0);
   for (const [nombre, clave] of [["Autónomos", "autonomos"], ["Pymes", "pymes"], ["Empresas", "empresas"]])
-    await expect(page.getByRole("link", { name: nombre, exact: true })).toHaveAttribute("href", `/servicios/?para=${clave}`);
+    await expect(page.getByRole("link", { name: new RegExp(`^${nombre} `) })).toHaveAttribute("href", `/servicios/?para=${clave}`);
+  await expect(page.getByText("¿Para quién es?")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Trabajas por tu cuenta/ })).toBeVisible();
   await expect(page.getByRole("link", { name: "Habla con un asesor" })).toHaveAttribute(
     "href",
     /^https:\/\/wa\.me\/34605288673\?text=/,
@@ -99,10 +101,10 @@ test("la página de servicios enseña los 9 servicios, los productos y lleva a W
 
 test("servicios cambia según el perfil, lo recuerda y se puede volver a la versión para todos", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Autónomos", exact: true }).click();
+  await page.getByRole("link", { name: /^Autónomos / }).click();
   await expect(page).toHaveURL(/\/servicios\/\?para=autonomos$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Haces de todo. Que lo repetitivo se haga solo.");
-  await expect(page.getByRole("button", { name: "Autónomos" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("group", { name: "Ver para:" }).getByRole("button", { name: "Autónomos" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("h3").first()).toHaveText("Diagnóstico de IA");
   await expect(page.getByText("Para ti").first()).toBeVisible();
   await sinScrollLateral(page);

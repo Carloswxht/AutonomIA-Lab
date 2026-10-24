@@ -105,6 +105,8 @@ export const PASOS = [
 export type Perfil = {
   clave: "autonomos" | "pymes" | "empresas";
   boton: string;
+  /** Línea corta bajo el botón de la portada, para que cada cual se reconozca. */
+  detalle: string;
   titulo: string;
   entrada: string;
   /** Títulos de los servicios en el orden de este perfil, con su línea «para ti». */
@@ -116,6 +118,7 @@ export const PERFILES: Perfil[] = [
   {
     clave: "autonomos",
     boton: "Autónomos",
+    detalle: "Trabajas por tu cuenta",
     titulo: "Haces de todo. Que lo repetitivo se haga solo.",
     entrada:
       "Atiendes, presupuestas, facturas con tu programa, contestas WhatsApp a deshoras… Te quitamos de encima lo que se repite para que dediques tu tiempo a tu oficio y a tus clientes.",
@@ -140,6 +143,7 @@ export const PERFILES: Perfil[] = [
   {
     clave: "pymes",
     boton: "Pymes",
+    detalle: "Tienes un equipo",
     titulo: "Tu equipo, tus clientes y tus datos, en orden.",
     entrada:
       "Cuando el negocio crece aparecen las hojas de cálculo sueltas, los avisos que se pierden y las tareas que dependen de una sola persona. Ponemos orden con herramientas hechas para cómo trabajáis vosotros.",
@@ -164,6 +168,7 @@ export const PERFILES: Perfil[] = [
   {
     clave: "empresas",
     boton: "Empresas",
+    detalle: "Varias áreas o sedes",
     titulo: "IA y aplicaciones a medida, integradas en cómo ya trabajáis.",
     entrada:
       "Proyectos por fases, con un responsable claro, los datos en Europa y mantenimiento continuo. Sin cambiar de golpe lo que hoy funciona.",

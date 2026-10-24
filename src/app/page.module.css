@@ -171,47 +171,72 @@
   color: var(--text-dim);
 }
 
-.paraQuien {
-  margin-top: 30px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-
 .perfiles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
   max-width: 420px;
-  margin: 12px auto 0;
+  margin: 28px auto 0;
+  list-style: none;
+  text-align: left;
 }
 
+.perfiles li + li {
+  margin-top: 10px;
+}
+
+/* Mismo azul suave que «Entrar»: se ve que se puede tocar sin quitar protagonismo a «Habla con un asesor». */
 .perfil {
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 10px 6px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  font-family: var(--font-titulo);
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
-  transition: border-color 0.15s ease;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 18px;
+  border: 1px solid var(--blue-line);
+  border-radius: 14px;
+  background: var(--blue-soft);
+  transition:
+    border-color 0.15s ease,
+    transform 0.12s ease;
+}
+
+.perfil:hover,
+.perfil:active {
+  border-color: var(--blue);
 }
 
 .perfil:active {
-  border-color: var(--blue);
+  transform: scale(0.98);
+}
+
+.perfilTexto strong {
+  display: block;
+  font-family: var(--font-titulo);
+  font-size: 1.08rem;
+  font-weight: 600;
   color: var(--blue-bright);
 }
 
+.perfilTexto span {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+
+.flecha {
+  flex: 0 0 auto;
+  font-size: 1.3rem;
+  color: var(--blue-bright);
+  transition: transform 0.15s ease;
+}
+
+.perfil:active .flecha {
+  transform: translateX(3px);
+}
+
 .asesor {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 36px;
   padding: 16px 30px;
   border-radius: 12px;
@@ -221,6 +246,12 @@
   font-weight: 600;
   box-shadow: 0 10px 28px rgba(59, 130, 246, 0.32);
   transition: transform 0.12s ease;
+}
+
+.whatsapp {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
 }
 
 .asesor:active {
