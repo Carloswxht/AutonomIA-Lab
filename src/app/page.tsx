@@ -1,15 +1,10 @@
 import Link from "next/link";
 import { Marca } from "@/components/Marca";
 import { enlaceWhatsApp } from "@/lib/contacto";
+import { PERFILES } from "@/lib/servicios";
 import { FormularioEntrar } from "./FormularioEntrar";
 import { ReenviarEnlace } from "./ReenviarEnlace";
 import styles from "./page.module.css";
-
-const MENSAJES = [
-  "Que tus clientes nunca tengan que esperar.",
-  "Que te ahorres tiempo y dinero.",
-  "Que tus tareas se hagan solas, sin esperar a que tengas tiempo.",
-];
 
 export default function Portada() {
   return (
@@ -34,15 +29,18 @@ export default function Portada() {
       <main className={styles.hero}>
         <div className={styles.halo} aria-hidden="true" />
         <div className={`${styles.wrap} ${styles.heroDentro}`}>
-          <h1>Esto es lo que puede hacer la inteligencia artificial por tu negocio.</h1>
+          <h1>Nuestros servicios</h1>
+          <p className={styles.lema}>Inteligencia artificial y aplicaciones a medida</p>
 
-          <ul className={styles.mensajes}>
-            {MENSAJES.map((m) => (
-              <li key={m}>
-                <span aria-hidden="true">→</span> {m}
-              </li>
+          <p className={styles.paraQuien}>¿Para quién es?</p>
+          <div className={styles.perfiles}>
+            {/* Enlace normal (no <Link>): la página de servicios lee ?para= al cargarse. */}
+            {PERFILES.map((p) => (
+              <a key={p.clave} href={`/servicios/?para=${p.clave}`} className={styles.perfil}>
+                {p.boton}
+              </a>
             ))}
-          </ul>
+          </div>
 
           <a
             className={styles.asesor}
@@ -52,9 +50,6 @@ export default function Portada() {
           >
             Habla con un asesor
           </a>
-          <Link href="/servicios/" className={styles.verServicios}>
-            Ver nuestros servicios <span aria-hidden="true">→</span>
-          </Link>
         </div>
       </main>
 

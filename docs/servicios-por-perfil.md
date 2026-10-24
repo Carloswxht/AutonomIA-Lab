@@ -1,6 +1,6 @@
-# Servicios por perfil · BORRADOR para que lo revise Carlos
+# Servicios por perfil (aprobado por Carlos el 24 oct; publicado en `src/lib/servicios.ts`, `PERFILES`)
 
-Arriba de `/servicios/`, tres botones: **Soy autónomo · Tengo una pyme · Soy una empresa**.
+En la portada («Nuestros servicios» → «¿Para quién es?») y arriba de `/servicios/`, tres botones: **Autónomos · Pymes · Empresas** (lenguaje neutro).
 Sin elegir, la página se ve como hoy. Al elegir, cambian la entrada, el orden de los servicios, la frase de cada uno
 («Para ti: …») y el cierre. Los servicios y productos son los mismos para todos (los de `docs/servicios.md`).
 Sin cifras, casos ni clientes inventados.
@@ -59,7 +59,7 @@ Sin cifras, casos ni clientes inventados.
 
 **Entrada**
 > **IA y aplicaciones a medida, integradas en cómo ya trabajáis.**
-> Proyectos por fases, con un responsable claro, los datos en Europa y el mantenimiento incluido. Sin cambiar de golpe
+> Proyectos por fases, con un responsable claro, los datos en Europa y mantenimiento continuo. Sin cambiar de golpe
 > lo que hoy funciona.
 
 **Orden y «para ti»**
@@ -69,7 +69,7 @@ Sin cifras, casos ni clientes inventados.
 4. **Automatizaciones**: para tu empresa, conectar los programas que ya usáis para que la información no se copie a mano.
 5. **CRM a medida**: para tu empresa, un CRM que se adapta a vuestro proceso comercial, no al revés.
 6. **Formación en IA**: para tu empresa, formación por equipos y buenas prácticas con los datos.
-7. **Alojamiento y mantenimiento**: para tu empresa, datos guardados en Europa (Fráncfort), copias y mantenimiento continuo.
+7. **Alojamiento y mantenimiento**: para tu empresa, datos guardados en Europa (Fráncfort) y mantenimiento continuo (las «copias» se añadirán al pasar a Supabase Pro).
 8. **Páginas web profesionales**: para tu empresa, webs y páginas de producto rápidas y cuidadas.
 9. **Ficha de Google y reseñas**: para tu empresa, la ficha de cada sede al día.
 
@@ -84,7 +84,7 @@ Sin cifras, casos ni clientes inventados.
   iguales para los tres.
 - Sin precios hasta que Carlos los decida.
 
-## Dudas para Carlos
-1. **Empresa**: «copias» y «un responsable claro» se cumplen cuando pasemos a Supabase Pro (pendiente antes del primer cliente de pago). ¿Lo dejo así o lo quito hasta entonces?
-2. **Empresa**: «conectar los programas que ya usáis» depende de cada programa. ¿Lo ofrecemos?
-3. **Autónomo**: menciono «facturas con tu programa» solo para describir su día. No ofrecemos facturación (está descartada). ¿Te parece bien?
+## Respuestas de Carlos (24 oct)
+1. «Un responsable claro»: sí. «Copias»: fuera hasta Supabase Pro (hoy no se hacen copias diarias).
+2. «Conectar los programas que ya usáis»: sí, se ofrece (según cada programa).
+3. «Facturas con tu programa» en el día del autónomo: sí (no ofrecemos facturación).
