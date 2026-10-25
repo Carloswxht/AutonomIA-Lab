@@ -5,7 +5,14 @@ import { supabase } from "@/lib/supabase/cliente";
 
 export type Cliente = { negocio_id: number; nombre: string; tipo: string; rol: string; productos: string[] };
 /** Quién es en la web, según la base (`yo_autonomialab`). null = no tiene acceso (p. ej. cuenta de un negocio). */
-export type Yo = { tipo: "plataforma" | "miembro"; nombre: string | null; email: string; cliente: Cliente | null };
+export type Yo = {
+  tipo: "plataforma" | "miembro";
+  nombre: string | null;
+  email: string;
+  cliente: Cliente | null;
+  /** Dueño de un negocio cliente: entra con la misma cuenta de la app de su negocio (25 oct). */
+  automatico?: boolean;
+};
 
 /** Pregunta a la base quién es el usuario con sesión (null si no hay sesión o no es de la web). */
 export async function consultarYo(): Promise<Yo | null> {
