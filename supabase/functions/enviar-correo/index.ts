@@ -17,7 +17,7 @@
 // =====================================================================
 
 import { Webhook } from "npm:standardwebhooks@1.0.0";
-import { correoDe, type Marca, montarEnlace, remitente } from "./plantilla.ts";
+import { correoDe, destinoCorreo, type Marca, montarEnlace, remitente } from "./plantilla.ts";
 
 type Usuario = { id: string; email: string; new_email?: string };
 type DatosCorreo = {
@@ -54,8 +54,8 @@ async function marcaDe(authId: string): Promise<Marca> {
   }
 }
 
-async function mandar(para: string, m: Marca, tipo: string, enlace?: string, codigo?: string) {
-  const correo = correoDe({ tipo, enlace, codigo }, m);
+async function mandar(para: string, m: Marca, tipo: string, enlace?: string, codigo?: string, aviso?: string) {
+  const correo = correoDe({ tipo, enlace, codigo, aviso }, m);
   if (!correo) return;
   const direccion = Deno.env.get("CORREO_REMITENTE") || "avisos@autonomialab.com";
   const responder = typeof m.responder_a === "string" && /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(m.responder_a) ? [m.responder_a] : undefined;
@@ -95,8 +95,8 @@ Deno.serve(async (req) => {
 
   try {
     const tipo = email_data.email_action_type;
-    const destino = email_data.redirect_to || email_data.site_url;
     const m = await marcaDe(user.id);
+    const { destino, aviso } = destinoCorreo(email_data.redirect_to || email_data.site_url, m);
     if (tipo === "email_change") {
       // Ojo, Supabase cruza los nombres: token_hash_new va con el correo actual y token_hash con el nuevo.
       if (user.new_email && email_data.token_hash_new) {
@@ -109,7 +109,7 @@ Deno.serve(async (req) => {
       await mandar(user.email, m, tipo, undefined, email_data.token);
     } else {
       const enlace = email_data.token_hash ? montarEnlace(destino, email_data.token_hash, tipo) : undefined;
-      await mandar(user.email, m, tipo, enlace);
+      await mandar(user.email, m, tipo, enlace, undefined, enlace ? aviso : undefined);
     }
   } catch (e) {
     console.error("enviar-correo", e);

@@ -15,12 +15,16 @@ export type Marca = {
   texto?: string;
   acento?: string;
   responder_a?: string;
+  slug?: string; // dirección corta del negocio
+  miembro_web?: boolean; // la cuenta también es miembro de la web de autonomIA Lab
+  entrar?: string; // opcional, del producto: página https donde entran sus cuentas
 };
 
 export type Datos = {
   tipo: string; // email_action_type de Supabase
   enlace?: string; // ya montado con token_hash
   codigo?: string; // código de 6 cifras (reautenticación)
+  aviso?: string; // párrafo extra (texto sin HTML)
 };
 
 export type Correo = { asunto: string; html: string; texto: string };
@@ -263,7 +267,8 @@ export function correoDe(d: Datos, m: Marca): Correo | null {
   if (!c) return null;
   const p = paleta(m);
   const enlace = c.boton && d.enlace ? esc(d.enlace) : null;
-  const parrafos = c.parrafos
+  const todos = d.aviso ? [...c.parrafos, `<b>${esc(d.aviso)}</b>`] : c.parrafos;
+  const parrafos = todos
     .map((t) => `<p style="margin:0 0 14px;font-family:${CUERPO};font-size:16px;line-height:1.6;color:${p.tenue};">${t.replace(/<b>/g, `<b style="color:${p.texto};font-weight:600;">`)}</p>`)
     .join("");
   const boton = enlace
@@ -325,6 +330,7 @@ export function correoDe(d: Datos, m: Marca): Correo | null {
     aTexto(c.titulo),
     "",
     ...c.parrafos.map(aTexto),
+    ...(d.aviso ? ["", d.aviso] : []),
     ...(c.extra === "codigo" ? ["", String(d.codigo ?? "")] : []),
     ...(enlace ? ["", `${c.boton}: ${d.enlace}`] : []),
     "",
@@ -346,4 +352,33 @@ export function montarEnlace(destino: string, tokenHash: string, tipo: string): 
 export function remitente(m: Marca, direccion: string): string {
   const nombre = nombreDe(m).replace(/["<>\r\n\\]/g, "").slice(0, 60).trim() || AUTONOMIA.nombre;
   return `"${nombre}" <${direccion}>`;
+}
+
+// Páginas donde entran las cuentas de cada producto (con ?token_hash=… al final). Un producto puede dar la suya
+// en marca_correo_<tipo> con la clave «entrar».
+const ENTRAR: Record<string, (slug: string) => string> = {
+  multibar: (slug) => `https://carta.autonomialab.es/panel/?bar=${slug}`,
+  gymbro: (slug) => `https://gymbro.autonomialab.es/?g=${slug}`,
+};
+
+// Si una cuenta de un negocio (que no es miembro de la web) pide el correo desde autonomialab.es, el botón la lleva
+// a la página de su producto: en la web de autonomIA Lab no podría entrar. Ej.: el dueño de un bar que escribe su
+// correo en «¿Olvidaste tu contraseña?» de autonomialab.es.
+export function destinoCorreo(destino: string, m: Marca): { destino: string; aviso?: string } {
+  if (m.marca !== "negocio" || m.miembro_web) return { destino };
+  let host = "";
+  try {
+    host = new URL(destino).hostname;
+  } catch {
+    return { destino };
+  }
+  if (host !== "autonomialab.es" && host !== "www.autonomialab.es") return { destino };
+  const propia = typeof m.entrar === "string" && /^https:\/\/[a-z0-9-]+\.autonomialab\.es\/[^\s"'<>]*$/.test(m.entrar) ? m.entrar : null;
+  const slug = typeof m.slug === "string" && /^[a-z0-9][a-z0-9-]{1,39}$/.test(m.slug) ? m.slug : null;
+  const pagina = propia ?? (slug && m.producto && ENTRAR[m.producto] ? ENTRAR[m.producto](slug) : null);
+  if (!pagina) return { destino };
+  return {
+    destino: pagina,
+    aviso: `Esta cuenta es de ${nombreDe(m)}: el botón te lleva a su página para entrar, no a la web de autonomIA Lab.`,
+  };
 }

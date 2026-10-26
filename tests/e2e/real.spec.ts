@@ -13,7 +13,7 @@ test("solicitar acceso → aprobar → ficha de un negocio", async ({ page, brow
 
   // 1. Un visitante pide acceso solo con su correo y luego cuenta a qué se dedica.
   const visitante = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  await visitante.goto("/");
+  await visitante.goto("/entrar/");
   await visitante.getByRole("link", { name: /Solicitar acceso/ }).click();
   // Como lo deja el dictado: con mayúsculas y un punto al final.
   await visitante.getByLabel("Correo").fill(`${correo.toUpperCase()}.`);
@@ -33,7 +33,7 @@ test("solicitar acceso → aprobar → ficha de un negocio", async ({ page, brow
   await visitante.close();
 
   // 2. Carlos entra, ve la solicitud y la aprueba.
-  await page.goto("/");
+  await page.goto("/entrar/");
   await page.getByPlaceholder("Correo").fill(email!);
   await page.getByPlaceholder("Contraseña").fill(password!);
   await page.getByRole("button", { name: "Entrar" }).click();
@@ -83,7 +83,7 @@ test("solicitar acceso → aprobar → ficha de un negocio", async ({ page, brow
 const emailGratis = process.env.PRUEBA_GRATIS_EMAIL;
 test("cuenta gratuita: secciones de pago cerradas y sin acceso a administración", async ({ page }) => {
   test.skip(!emailGratis, "Sin cuenta gratuita de prueba (PRUEBA_GRATIS_EMAIL)");
-  await page.goto("/");
+  await page.goto("/entrar/");
   await page.getByPlaceholder("Correo").fill(emailGratis!);
   await page.getByPlaceholder("Contraseña").fill(password!);
   await page.getByRole("button", { name: "Entrar" }).click();

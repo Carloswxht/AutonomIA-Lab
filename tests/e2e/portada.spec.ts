@@ -7,27 +7,57 @@ const sinScrollLateral = async (page: import("@playwright/test").Page) => {
   expect(extra).toBeLessThanOrEqual(0);
 };
 
-test("la portada muestra marca, acceso, servicios por perfil y asesor", async ({ page }) => {
+test("la portada muestra qué hacemos, las apps, la garantía y el pie", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByLabel("autonomIA Lab").first()).toBeVisible();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Nuestros servicios");
-  await expect(page.getByText("Esto es lo que puede hacer")).toHaveCount(0);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Tu negocio, con su propia app.");
+  await expect(page.getByText("Montada en una semana y con alguien que te responde.")).toBeVisible();
+  await expect(page.getByPlaceholder("Contraseña")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Escríbenos por WhatsApp" })).toHaveAttribute("href", /^https:\/\/wa\.me\/34605288673\?text=/);
+  await page.getByRole("link", { name: "Ver las apps" }).click();
+  await expect(page).toHaveURL(/#apps$/);
+  await expect(page.getByRole("heading", { name: "Pruébalas ahora" })).toBeInViewport();
+  await expect(page.getByRole("link", { name: "Ver la demo de MultiBar" })).toHaveAttribute("href", "https://carta.autonomialab.es");
+  await expect(page.getByRole("link", { name: "Ver la demo de Gymbro" })).toHaveAttribute("href", "https://gymbro.autonomialab.es");
+  await expect(page.getByText("Desde 59 €/mes · Sin permanencia · 15 días de prueba")).toBeVisible();
+  await expect(page.getByText("Pruébala", { exact: true })).toHaveCount(2);
+  await expect(page.getByRole("heading", { name: "Sin letra pequeña" })).toBeVisible();
+  await expect(page.getByText("Si algo falla, lo arreglamos en 24 horas")).toBeVisible();
   for (const [nombre, clave] of [["Autónomos", "autonomos"], ["Pymes", "pymes"], ["Empresas", "empresas"]])
     await expect(page.getByRole("link", { name: new RegExp(`^${nombre} `) })).toHaveAttribute("href", `/servicios/?para=${clave}`);
-  await expect(page.getByText("¿Para quién es?")).toHaveCount(0);
-  await expect(page.getByRole("link", { name: /Trabajas por tu cuenta/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Habla con un asesor" })).toHaveAttribute(
-    "href",
-    /^https:\/\/wa\.me\/34605288673\?text=/,
-  );
-  await expect(page.getByRole("link", { name: /Solicitar acceso/ })).toHaveAttribute("href", "/solicitar/");
-  await expect(page.getByRole("link", { name: "¿Olvidaste tu contraseña?" })).toHaveAttribute("href", "/recuperar/");
+  const pie = page.getByRole("contentinfo");
+  await expect(pie.getByRole("link", { name: "Aviso legal" })).toHaveAttribute("href", "/aviso-legal/");
+  await expect(pie.getByRole("link", { name: "Política de privacidad" })).toHaveAttribute("href", "/privacidad/");
+  await expect(pie.getByRole("link", { name: "Política de cookies" })).toHaveAttribute("href", "/cookies/");
+  await expect(pie.getByRole("link", { name: "hola@autonomialab.es" })).toHaveAttribute("href", "mailto:hola@autonomialab.es");
+  await expect(pie.getByRole("link", { name: "Acceso miembros" })).toHaveAttribute("href", "/entrar/");
   await sinScrollLateral(page);
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: "test-results/portada-390.png", fullPage: true });
 });
 
-test("Entrar con datos incorrectos (o sin conexión) muestra un error claro", async ({ page }) => {
+test("Acceso miembros lleva a entrar, solicitar acceso y recuperar", async ({ page }) => {
   await page.goto("/");
+  await page.getByRole("contentinfo").getByRole("link", { name: "Acceso miembros" }).click();
+  await expect(page).toHaveURL(/\/entrar\/$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Acceso miembros");
+  await expect(page.getByRole("link", { name: "Solicitar acceso" })).toHaveAttribute("href", "/solicitar/");
+  await expect(page.getByRole("link", { name: "¿Olvidaste tu contraseña?" })).toHaveAttribute("href", "/recuperar/");
+  await sinScrollLateral(page);
+  await page.screenshot({ path: "test-results/entrar-390.png", fullPage: true });
+});
+
+test("las páginas legales existen con su título", async ({ page }) => {
+  for (const [ruta, titulo] of [["/aviso-legal/", "Aviso legal"], ["/privacidad/", "Política de privacidad"], ["/cookies/", "Política de cookies"]]) {
+    await page.goto(ruta);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(titulo);
+    await expect(page.getByRole("contentinfo")).toBeVisible();
+  }
+  await page.screenshot({ path: "test-results/cookies-390.png", fullPage: true });
+});
+
+test("Entrar con datos incorrectos (o sin conexión) muestra un error claro", async ({ page }) => {
+  await page.goto("/entrar/");
   await page.getByPlaceholder("Correo").fill("ejemplo@ejemplo.com");
   await page.getByPlaceholder("Contraseña").fill("ejemplo");
   await page.getByRole("button", { name: "Entrar" }).click();
@@ -36,11 +66,11 @@ test("Entrar con datos incorrectos (o sin conexión) muestra un error claro", as
   ).toBeVisible();
 });
 
-test("sin sesión, miembros y administración vuelven a la portada", async ({ page }) => {
+test("sin sesión, miembros y administración llevan a Acceso miembros", async ({ page }) => {
   await page.goto("/miembros");
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveURL(/\/entrar\/$/);
   await page.goto("/admin");
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveURL(/\/entrar\/$/);
 });
 
 test("/registro lleva a solicitar acceso", async ({ page }) => {
@@ -93,7 +123,10 @@ test("la página de servicios enseña los 9 servicios, los productos y lleva a W
   for (const t of ["Agentes de IA", "Automatizaciones", "Diagnóstico de IA", "Formación en IA", "Aplicaciones web empresariales a medida", "CRM a medida", "Páginas web profesionales", "Alojamiento y mantenimiento", "Ficha de Google y reseñas"])
     await expect(page.getByRole("heading", { name: t, exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "¿Agente o automatización?" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /MultiBar/ })).toHaveAttribute("href", "https://carta.autonomialab.es");
+  await expect(page.getByRole("link", { name: "Ver la demo de MultiBar" })).toHaveAttribute("href", "https://carta.autonomialab.es");
+  await expect(page.getByRole("heading", { name: "Pruébalas ahora" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sin letra pequeña" })).toBeVisible();
+  await expect(page.getByText("Próximamente")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Pedir un diagnóstico" })).toHaveAttribute("href", /^https:\/\/wa\.me\/34605288673\?text=/);
   await sinScrollLateral(page);
   await page.screenshot({ path: "test-results/servicios-390.png", fullPage: true });

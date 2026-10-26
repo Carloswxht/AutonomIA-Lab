@@ -28,7 +28,7 @@ export function Aviso() {
           Prueba a entrar con tu correo y tu contraseña. Si te dice que el correo no está confirmado, vuelve a crear la
           cuenta con el mismo correo y te llegará un enlace nuevo.
         </p>
-        <Link href="/" className={styles.boton}>
+        <Link href="/entrar" className={styles.boton}>
           Entrar
         </Link>
       </PantallaCuenta>
@@ -37,7 +37,7 @@ export function Aviso() {
   return (
     <PantallaCuenta titulo="Correo confirmado">
       <p className={styles.intro}>Ya puedes entrar con tu correo y tu contraseña.</p>
-      <Link href="/" className={styles.boton}>
+      <Link href="/entrar" className={styles.boton}>
         Entrar
       </Link>
     </PantallaCuenta>

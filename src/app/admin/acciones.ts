@@ -66,3 +66,16 @@ export async function quitarPersona(_p: EstadoFormulario, f: FormData): Promise<
   if (error) return { error: mensaje(error) };
   return { ok: true };
 }
+
+/** Quita (o devuelve) el acceso automático a la web de un dueño de la app de su negocio. No borra nada. */
+export async function accesoDueno(_p: EstadoFormulario, f: FormData): Promise<EstadoFormulario> {
+  const id = negocio(f);
+  if (!id) return { error: FALLO };
+  const { error } = await supabase().rpc("admin_acceso_dueno_autonomialab", {
+    p_negocio: id,
+    p_auth: texto(f, "persona"),
+    p_quitar: texto(f, "quitar") === "1",
+  });
+  if (error) return { error: mensaje(error) };
+  return { ok: true };
+}

@@ -33,6 +33,7 @@ type Solicitud = {
   creado_en: string;
 };
 type Miembro = { auth_id: string; email: string; nombre: string | null; creado_en: string; ha_entrado: boolean; negocio: string | null };
+type Dueno = { auth_id: string; email: string; nombre: string | null; negocio: string; ha_entrado: boolean };
 type Negocio = { id: number; nombre: string; slug: string; tipo: string; activo: boolean; productos: string[]; personas: number };
 
 const leer = () =>
@@ -40,14 +41,16 @@ const leer = () =>
     supabase().rpc("admin_solicitudes_autonomialab"),
     supabase().rpc("admin_miembros_autonomialab"),
     supabase().rpc("admin_clientes_autonomialab"),
+    supabase().rpc("admin_duenos_web_autonomialab"),
   ]);
 
 export default function Admin() {
   const [datos, recargar] = useDatos(leer);
   if (!datos) return <p className="cargando">Cargando…</p>;
-  const [{ data: solicitudes }, { data: miembros }, { data: negocios }] = datos;
+  const [{ data: solicitudes }, { data: miembros }, { data: negocios }, { data: duenos }] = datos;
   const pendientes = (solicitudes ?? []) as Solicitud[];
   const registrados = (miembros ?? []) as Miembro[];
+  const duenosWeb = (duenos ?? []) as Dueno[];
   const lista = (negocios ?? []) as Negocio[];
   const activos = lista.filter((n) => n.activo);
 
@@ -166,6 +169,30 @@ export default function Admin() {
                 <span className={`${styles.badge} ${u.negocio ? styles.badgeAzul : styles.badgeVerde}`}>
                   {u.negocio ? "Cliente" : "Gratis"}
                 </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section aria-labelledby="t-duenos">
+        <h2 id="t-duenos" className={styles.titulo}>
+          Dueños con acceso automático ({duenosWeb.length})
+        </h2>
+        {duenosWeb.length === 0 ? (
+          <p className={styles.vacio}>Ningún dueño entra todavía con la cuenta de su negocio.</p>
+        ) : (
+          <ul className={styles.lista}>
+            {duenosWeb.map((d) => (
+              <li key={d.auth_id} className={`${styles.tarjeta} ${styles.persona}`}>
+                <div>
+                  <p className={styles.mono}>{d.email}</p>
+                  <p className={styles.fecha}>
+                    {d.negocio}
+                    {d.ha_entrado ? "" : " · aún no ha entrado"}
+                  </p>
+                </div>
+                <span className={`${styles.badge} ${styles.badgeAzul}`}>Dueño</span>
               </li>
             ))}
           </ul>

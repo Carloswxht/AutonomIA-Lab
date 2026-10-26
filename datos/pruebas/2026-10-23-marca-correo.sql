@@ -1,4 +1,4 @@
--- Pruebas de datos/cambios/2026-10-23-marca-correo.sql. Crean sus propios negocios y cuentas de ejemplo y al final
+-- Pruebas de datos/cambios/2026-10-23-marca-correo.sql y 2026-10-24-marca-correo-destino.sql (aplicar las dos antes). Crean sus propios negocios y cuentas de ejemplo y al final
 -- lanzan el error 'PRUEBAS_OK', que deshace TODO (también la función de producto de mentira «marca_correo_pruebacorreo»).
 -- Necesitan aplicadas 2026-10-21-cuentas-supabase.sql (cuentas enlazadas) y 2026-10-23-marca-correo.sql.
 do $pruebas$
@@ -28,13 +28,17 @@ begin
      or v_m->>'producto' <> 'pruebasinfuncion' or v_m ? 'logo' or v_m ? 'fondo' then
     raise exception 'FALLO 1: %', v_m;
   end if;
+  if v_m->>'slug' <> 'prueba-b-' || v_sufijo or (v_m->>'miembro_web')::boolean then
+    raise exception 'FALLO 1b (slug, miembro_web): %', v_m;
+  end if;
 
   -- 2. Producto con función propia: sus colores mandan; lo que no da, se queda de comun.negocios.
   execute $f$create function public.marca_correo_pruebacorreo(p_negocio integer) returns jsonb language sql
-    as $c$ select jsonb_build_object('fondo', '#FFFFFF', 'acento', '#D9722A', 'texto', null, 'otra', 'x') $c$$f$;
+    as $c$ select jsonb_build_object('fondo', '#FFFFFF', 'acento', '#D9722A', 'texto', null, 'otra', 'x', 'entrar', 'https://prueba.autonomialab.es/entrar/') $c$$f$;
   v_m := public.marca_correo(v_auth_a);
   if v_m->>'nombre' <> 'Bar de ejemplo' or v_m->>'logo' <> 'https://ejemplo.test/logo.png' or v_m->>'fondo' <> '#FFFFFF'
-     or v_m->>'acento' <> '#D9722A' or v_m->>'responder_a' <> 'hola@ejemplo.test' or v_m ? 'texto' or v_m ? 'otra' then
+     or v_m->>'acento' <> '#D9722A' or v_m->>'responder_a' <> 'hola@ejemplo.test' or v_m ? 'texto' or v_m ? 'otra'
+     or v_m->>'entrar' <> 'https://prueba.autonomialab.es/entrar/' then
     raise exception 'FALLO 2: %', v_m;
   end if;
 

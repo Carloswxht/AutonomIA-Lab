@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Marca } from "@/components/Marca";
 import { enlaceWhatsApp } from "@/lib/contacto";
-import { PASOS, PRODUCTOS_EN_CAMINO, PRODUCTOS_EN_MARCHA } from "@/lib/servicios";
+import { Apps, Garantia } from "@/components/Apps";
+import { PASOS } from "@/lib/servicios";
 import { PorPerfil } from "./PorPerfil";
 import styles from "./servicios.module.css";
 
@@ -51,40 +52,15 @@ export default function Servicios() {
                 </div>
               </section>
 
-              <section className={styles.grupo} aria-labelledby="t-productos">
-                <div className={styles.grupoCabeza}>
-                  <h2 id="t-productos">Aplicaciones listas para tu sector</h2>
-                  <p>Ya hechas y probadas: las adaptamos a tu marca y a tu forma de trabajar.</p>
-                </div>
-                <ul className={styles.rejilla}>
-                  {PRODUCTOS_EN_MARCHA.map((p) => (
-                    <li key={p.nombre}>
-                      <a href={p.url} target="_blank" rel="noopener noreferrer" className={`${styles.producto} ${styles.enMarcha}`}>
-                        <span className={`${styles.badge} ${styles.badgeVerde}`}>En marcha</span>
-                        <h3>{p.nombre}</h3>
-                        <p className={styles.para}>{p.para}</p>
-                        <p>{p.resumen}</p>
-                        <span className={styles.ver}>Verla →</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                <h3 className={styles.subtitulo}>Próximamente</h3>
-                <ul className={styles.rejillaPequena}>
-                  {PRODUCTOS_EN_CAMINO.map((p) => (
-                    <li key={p.nombre} className={styles.producto}>
-                      <h3>{p.nombre}</h3>
-                      <p className={styles.para}>{p.para}</p>
-                      <p>{p.resumen}</p>
-                    </li>
-                  ))}
-                </ul>
-              </section>
+              <div className={styles.grupo}>
+                <Apps />
+                <Garantia />
+              </div>
 
               <section className={styles.grupo} aria-labelledby="t-pasos">
                 <div className={styles.grupoCabeza}>
                   <h2 id="t-pasos">Cómo trabajamos</h2>
-                  <p>Sin letra pequeña: sabes en cada momento qué estamos haciendo.</p>
+                  <p>Sabes en cada momento qué estamos haciendo.</p>
                 </div>
                 <ol className={styles.pasos}>
                   {PASOS.map((p, i) => (
@@ -103,10 +79,6 @@ export default function Servicios() {
         />
       </main>
 
-      <footer className={styles.pie}>
-        <Marca />
-        <p>Inteligencia artificial y aplicaciones a medida para autónomos, pymes y empresas en España.</p>
-      </footer>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { color, contraste, correoDe, montarEnlace, paleta, remitente } from "./plantilla";
+import { color, contraste, correoDe, destinoCorreo, montarEnlace, paleta, remitente } from "./plantilla";
 
 const BAR = { marca: "negocio", producto: "multibar", nombre: "La Mar de Gambas", persona: "Ana", fondo: "#FFFFFF", acento: "#D9722A" };
 
@@ -56,5 +56,28 @@ describe("correos con la imagen del negocio", () => {
     expect(c.html).toContain("Qué encontrarás dentro");
     expect(correoDe({ tipo: "mfa_factor_enrolled_notification" }, BAR)).toBeNull();
     expect(correoDe({ tipo: "reauthentication", codigo: "123456" }, BAR)!.html).toContain("123456");
+  });
+
+  it("una cuenta de un bar que pide el correo desde la web va a su panel, con aviso", () => {
+    const bar = { ...BAR, slug: "la-torre-bar", nombre: "La Torre Bar" };
+    const r = destinoCorreo("https://autonomialab.es/auth/confirmar/", bar);
+    expect(r.destino).toBe("https://carta.autonomialab.es/panel/?bar=la-torre-bar");
+    expect(r.aviso).toContain("Esta cuenta es de La Torre Bar");
+    const c = correoDe({ tipo: "recovery", enlace: montarEnlace(r.destino, "H", "recovery"), aviso: r.aviso }, bar)!;
+    expect(c.html).toContain("carta.autonomialab.es/panel/?bar=la-torre-bar&amp;token_hash=H");
+    expect(c.texto).toContain("Esta cuenta es de La Torre Bar");
+    // Un gimnasio, a su app.
+    expect(destinoCorreo("https://www.autonomialab.es/", { marca: "negocio", producto: "gymbro", slug: "war300" }).destino).toBe("https://gymbro.autonomialab.es/?g=war300");
+  });
+
+  it("no cambia el destino en los demás casos", () => {
+    const bar = { ...BAR, slug: "la-torre-bar" };
+    expect(destinoCorreo("https://carta.autonomialab.es/panel/?bar=x", bar)).toEqual({ destino: "https://carta.autonomialab.es/panel/?bar=x" });
+    expect(destinoCorreo("https://autonomialab.es/", { ...bar, miembro_web: true }).destino).toBe("https://autonomialab.es/");
+    expect(destinoCorreo("https://autonomialab.es/", { marca: "autonomialab" }).destino).toBe("https://autonomialab.es/");
+    expect(destinoCorreo("https://autonomialab.es/", { marca: "negocio", producto: "otro", slug: "x1" }).destino).toBe("https://autonomialab.es/");
+    expect(destinoCorreo("https://autonomialab.es/", { ...bar, slug: "../mal" }).destino).toBe("https://autonomialab.es/");
+    expect(destinoCorreo("https://autonomialab.es/", { ...bar, entrar: "https://malo.com/x" }).destino).toBe("https://carta.autonomialab.es/panel/?bar=la-torre-bar");
+    expect(destinoCorreo("https://autonomialab.es/", { ...bar, entrar: "https://nuevo.autonomialab.es/entrar/" }).destino).toBe("https://nuevo.autonomialab.es/entrar/");
   });
 });

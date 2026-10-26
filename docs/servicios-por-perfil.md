@@ -82,7 +82,7 @@ Sin cifras, casos ni clientes inventados.
 ## Lo que no cambia
 - «Agente de IA» frente a «automatización», los productos (MultiBar, Gymbro y los que vienen) y «Cómo trabajamos»:
   iguales para los tres.
-- Sin precios hasta que Carlos los decida.
+- Precios: solo los de MultiBar y Gymbro que publicó Carlos el 26 oct (bloque «Pruébalas ahora»).
 
 ## Respuestas de Carlos (24 oct)
 1. «Un responsable claro»: sí. «Copias»: fuera hasta Supabase Pro (hoy no se hacen copias diarias).

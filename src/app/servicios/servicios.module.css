@@ -55,11 +55,6 @@
 .eyebrow,
 .etiqueta,
 .numero,
-.badge {
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
 
 .eyebrow {
   position: relative;
@@ -167,7 +162,6 @@
 }
 
 .rejilla,
-.rejillaPequena,
 .ejemplos,
 .pasos {
   list-style: none;
@@ -178,11 +172,6 @@
   gap: 12px;
 }
 
-.rejillaPequena {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 10px;
-}
 
 @media (min-width: 640px) {
   .rejilla {
@@ -311,66 +300,14 @@
   font-style: italic;
 }
 
-/* ---------- Productos ---------- */
-.enMarcha {
-  border-color: var(--blue-line);
-  transition: border-color 0.15s ease;
-}
 
-.enMarcha:active {
-  border-color: var(--blue-bright);
-}
 
-.badge {
-  align-self: flex-start;
-  padding: 3px 8px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 0.62rem;
-  font-weight: 600;
-  color: var(--text-faint);
-}
 
-.badgeVerde {
-  border-color: #1c4b2e;
-  background: var(--green-soft);
-  color: var(--green);
-}
 
-.para {
-  margin-top: -4px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem !important;
-  color: var(--text-faint) !important;
-}
 
-.ver {
-  margin-top: auto;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--blue-bright);
-}
 
-.subtitulo {
-  margin: 26px 0 12px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-faint);
-}
 
-.rejillaPequena .producto {
-  gap: 6px;
-  padding: 16px;
-  background: transparent;
-  border-style: dashed;
-}
 
-.rejillaPequena h3 {
-  font-size: 1rem;
-}
 
 /* ---------- Cómo trabajamos ---------- */
 .pasos {
@@ -414,17 +351,6 @@
   color: var(--text-dim);
 }
 
-.pie {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 28px 20px calc(28px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--border-soft);
-  text-align: center;
-  font-size: 0.82rem;
-  color: var(--text-faint);
-}
 
 /* ---------- ¿Para quién es? (autónomos, pymes, empresas) ---------- */
 .perfiles {

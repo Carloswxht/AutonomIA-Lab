@@ -50,7 +50,7 @@ export function MenuInferior() {
           </button>
         </form>
       </div>
-      <nav className={styles.barra} aria-label="Menú principal">
+      <nav className={`${styles.barra} menu-inferior`} aria-label="Menú principal">
         <button
           type="button"
           className={`${styles.hamburguesa} ${abierto ? styles.abierto : ""}`}
