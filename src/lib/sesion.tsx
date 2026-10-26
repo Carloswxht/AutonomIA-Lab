@@ -38,7 +38,7 @@ export function ConSesion({ requiere = "miembro", children }: { requiere?: "miem
       .catch(() => null)
       .then((r) => {
         if (!vivo) return;
-        if (!r) return window.location.replace("/");
+        if (!r) return window.location.replace("/entrar/");
         if (requiere === "plataforma" && r.tipo !== "plataforma") return window.location.replace("/miembros/");
         setYo(r);
       });

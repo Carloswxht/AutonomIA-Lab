@@ -74,14 +74,34 @@ export const GRUPOS: Grupo[] = [
   },
 ];
 
-export type ProductoServicio = { nombre: string; para: string; resumen: string; url?: string };
+export type ProductoServicio = { nombre: string; para: string; resumen: string; url?: string; precio?: string };
 
-/** Productos propios: una aplicación por sector, que cada negocio recibe con su marca. */
+/** Productos propios: una aplicación por sector, que cada negocio recibe con su marca. Textos y precios de Carlos (26 oct). */
 export const PRODUCTOS_EN_MARCHA: ProductoServicio[] = [
-  { nombre: "MultiBar", para: "Bares y restaurantes", resumen: "Carta digital por QR, pedidos desde la mesa y panel de barra.", url: "https://carta.autonomialab.es" },
-  { nombre: "Gymbro", para: "Gimnasios", resumen: "Rutinas y registro de entrenos para los socios, con panel para el dueño.", url: "https://gymbro.autonomialab.es" },
+  {
+    nombre: "MultiBar",
+    para: "Bares y cervecerías",
+    resumen: "Tus clientes piden desde el móvil y el pedido llega a la barra al momento. Tú cobras como siempre, sin cambiar tu caja.",
+    precio: "Desde 59 €/mes · Sin permanencia · 15 días de prueba",
+    url: "https://carta.autonomialab.es",
+  },
+  {
+    nombre: "Gymbro",
+    para: "Entrenadores personales",
+    resumen: "Tú montas la rutina, tu cliente apunta lo que hace y tú ves su historial en tu panel.",
+    precio: "Desde 19 €/mes · Sin permanencia · 15 días de prueba",
+    url: "https://gymbro.autonomialab.es",
+  },
 ];
 
+/** Lo que ofrecemos a cualquier cliente, debajo de las apps (Carlos, 26 oct). */
+export const GARANTIA = [
+  "Sin permanencia: te vas cuando quieras",
+  "Si algo falla, lo arreglamos en 24 horas",
+  "Hablas con una persona, por WhatsApp",
+];
+
+// Ya no se enseña en la web (Carlos, 26 oct: fuera «Próximamente»); se queda como lista de lo que viene.
 export const PRODUCTOS_EN_CAMINO: ProductoServicio[] = [
   { nombre: "Reservas y citas", para: "Peluquerías, clínicas, talleres", resumen: "Citas online con recordatorios para que nadie falte." },
   { nombre: "Panel de datos", para: "Dueños de negocio", resumen: "Ventas, horas punta y clientes que vuelven, en una pantalla." },

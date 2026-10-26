@@ -4,142 +4,16 @@
   padding: 0 24px;
 }
 
-/* ---------- Arriba: marca + acceso ---------- */
+/* ---------- Arriba: la marca ---------- */
 .arriba {
   padding-top: calc(22px + env(safe-area-inset-top));
   text-align: center;
 }
 
-/* Sello «MIEMBROS» bajo la marca: el acceso es solo para quien Carlos aprueba. */
-.miembros {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 10px;
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-/* Las rayas a los lados; el espacio de más compensa el letter-spacing de la última letra. */
-.miembros::before,
-.miembros::after {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: var(--border);
-}
-
-.miembros::after {
-  margin-left: -0.34em;
-}
-
-.acceso {
-  margin-top: 18px;
-}
-
-.formulario {
-  max-width: 260px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.formulario input {
-  width: 100%;
-  min-height: 44px;
-  padding: 11px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-  color: var(--text);
-  font: inherit;
-  /* 16px evita que el iPhone haga zoom al tocar el campo. */
-  font-size: 1rem;
-}
-
-.formulario input:focus {
-  outline: none;
-  border-color: var(--blue-bright);
-}
-
-.formulario input::placeholder {
-  color: var(--text-faint);
-}
-
-.formulario button {
-  min-height: 44px;
-  padding: 11px 14px;
-  /* Azul suave: se ve que se puede tocar, sin quitar protagonismo a «Habla con un asesor». */
-  border: 1px solid var(--blue-line);
-  border-radius: 10px;
-  background: var(--blue-soft);
-  color: var(--blue-bright);
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
-}
-
-.formulario button:disabled {
-  opacity: 0.6;
-}
-
-.formulario button:hover,
-.formulario button:active {
-  border-color: var(--blue);
-  color: var(--text);
-}
-
-.aviso {
-  line-height: 1.4;
-  font-size: 0.85rem;
-  color: var(--red);
-}
-
-.oculto {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-
-.solicitar {
-  display: inline-block;
-  margin-top: 13px;
-  padding: 6px 0;
-  font-size: 0.8rem;
-  color: var(--text-faint);
-}
-
-.solicitar span {
-  color: var(--blue-bright);
-  font-weight: 600;
-}
-
-.olvido {
-  display: block;
-  width: fit-content;
-  margin: 2px auto 0;
-  padding: 6px 0;
-  font-size: 0.78rem;
-  color: var(--text-faint);
-}
-
-/* ---------- Nuestros servicios ---------- */
+/* ---------- Arriba: qué hacemos ---------- */
 .hero {
   position: relative;
-  padding: 40px 0 56px;
+  padding: 44px 0 52px;
   text-align: center;
 }
 
@@ -161,19 +35,70 @@
 .hero h1 {
   max-width: 420px;
   margin: 0 auto;
-  font-size: 1.92rem;
+  font-size: 2.15rem;
   letter-spacing: -0.02em;
 }
 
 .lema {
-  margin-top: 10px;
-  font-size: 0.98rem;
+  max-width: 400px;
+  margin: 12px auto 0;
+  font-family: var(--font-titulo);
+  font-size: 1.12rem;
+  line-height: 1.35;
+  color: var(--blue-bright);
+}
+
+.texto {
+  max-width: 420px;
+  margin: 16px auto 0;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.verApps {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 26px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.verApps:active {
+  border-color: var(--blue-line);
+}
+
+/* ---------- Nuestros servicios (lleva a /servicios/ por perfil) ---------- */
+.servicios {
+  margin-top: 44px;
+  padding: 40px 0 48px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.servicios h2 {
+  font-size: 1.55rem;
+  letter-spacing: -0.01em;
+}
+
+.nota {
+  margin-top: 8px;
   color: var(--text-dim);
 }
 
 .perfiles {
-  max-width: 420px;
-  margin: 28px auto 0;
+  margin: 20px 0 0;
   list-style: none;
   text-align: left;
 }
@@ -182,7 +107,7 @@
   margin-top: 10px;
 }
 
-/* Mismo azul suave que «Entrar»: se ve que se puede tocar sin quitar protagonismo a «Habla con un asesor». */
+/* Azul suave: se ve que se puede tocar sin quitar protagonismo a «Escríbenos por WhatsApp». */
 .perfil {
   display: flex;
   align-items: center;
@@ -237,7 +162,6 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-top: 36px;
   padding: 16px 30px;
   border-radius: 12px;
   background: var(--blue);
@@ -256,15 +180,4 @@
 
 .asesor:active {
   transform: scale(0.97);
-}
-
-/* ---------- Pie ---------- */
-.pie {
-  padding: 48px 24px calc(40px + env(safe-area-inset-bottom));
-  text-align: center;
-}
-
-.pie p {
-  font-size: 0.75rem;
-  color: var(--text-faint);
 }

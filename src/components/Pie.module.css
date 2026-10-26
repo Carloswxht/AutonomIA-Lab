@@ -1,0 +1,42 @@
+.pie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 28px 20px calc(28px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border-soft);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+/* En el panel de miembros hay un menú fijo abajo: que no tape el pie. */
+:global(body:has(.menu-inferior)) .pie {
+  padding-bottom: calc(28px + 66px + env(safe-area-inset-bottom));
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 16px;
+}
+
+.legal a,
+.miembros {
+  padding: 6px 0;
+}
+
+.legal a:active,
+.miembros:active,
+.correo:active {
+  color: var(--text-dim);
+}
+
+.correo {
+  color: var(--text-dim);
+}
+
+.miembros {
+  font-size: 0.74rem;
+}

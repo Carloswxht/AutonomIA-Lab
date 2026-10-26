@@ -11,7 +11,7 @@ export default function Solicitar() {
     <PantallaCuenta titulo="Solicitar acceso" intro="Déjanos tu correo. Revisamos cada solicitud y te avisamos cuando tu acceso esté listo.">
       <FormularioCuenta accion="solicitar" campos={["email"]} boton="Solicitar acceso" enviando="Enviando…" />
       <p className={styles.alternativa}>
-        ¿Ya tienes acceso? <Link href="/">Entrar</Link>
+        ¿Ya tienes acceso? <Link href="/entrar">Entrar</Link>
       </p>
     </PantallaCuenta>
   );

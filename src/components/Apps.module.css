@@ -1,0 +1,132 @@
+/* Bloque de apps y garantía: mismas tarjetas de borde fino que /servicios/ (estilo «editorial técnico»). */
+.bloque,
+.garantia {
+  scroll-margin-top: 24px;
+  text-align: left;
+}
+
+.bloque h2,
+.garantia h2 {
+  font-size: 1.55rem;
+  letter-spacing: -0.01em;
+}
+
+.rejilla {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .rejilla {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid var(--blue-line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.app h3 {
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.app p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.badge {
+  align-self: flex-start;
+  padding: 3px 8px;
+  border: 1px solid #1c4b2e;
+  border-radius: 6px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.app .para {
+  margin-top: -4px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.app .precio {
+  padding-top: 12px;
+  border-top: 1px solid var(--border-soft);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* Azul suave, como las demás acciones secundarias: el botón principal azul es WhatsApp. */
+.demo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  margin-top: 4px;
+  border: 1px solid var(--blue-line);
+  border-radius: 12px;
+  background: var(--blue-soft);
+  color: var(--blue-bright);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease;
+}
+
+.demo:active {
+  border-color: var(--blue);
+}
+
+.garantia {
+  margin-top: 40px;
+  padding: 24px 22px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.garantia ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  list-style: none;
+}
+
+.garantia li {
+  display: flex;
+  gap: 10px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.garantia svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

@@ -4,6 +4,7 @@ import "@fontsource/space-grotesk/600.css";
 import "@fontsource/work-sans/400.css";
 import "@fontsource/work-sans/600.css";
 import "@fontsource/ibm-plex-mono/600.css";
+import { Pie } from "@/components/Pie";
 import "./globals.css";
 
 // Las fuentes van dentro de la app (no se cargan desde Google) por RGPD.
@@ -30,7 +31,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Pie />
+      </body>
     </html>
   );
 }

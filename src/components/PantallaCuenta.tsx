@@ -4,7 +4,7 @@ import { Marca } from "./Marca";
 import styles from "./Cuenta.module.css";
 
 /** Marco común de las pantallas de cuenta (crear cuenta, recuperar, nueva contraseña…). */
-export function PantallaCuenta({ titulo, intro, children }: { titulo: string; intro?: ReactNode; children: ReactNode }) {
+export function PantallaCuenta({ titulo, intro, children }: { titulo: string; intro?: ReactNode; children?: ReactNode }) {
   return (
     <main className={styles.caja}>
       <Link href="/" aria-label="Volver a la portada">

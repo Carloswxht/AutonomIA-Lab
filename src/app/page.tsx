@@ -1,8 +1,7 @@
-import Link from "next/link";
+import { Apps, Garantia } from "@/components/Apps";
 import { Marca } from "@/components/Marca";
 import { enlaceWhatsApp } from "@/lib/contacto";
 import { PERFILES } from "@/lib/servicios";
-import { FormularioEntrar } from "./FormularioEntrar";
 import { ReenviarEnlace } from "./ReenviarEnlace";
 import styles from "./page.module.css";
 
@@ -14,64 +13,64 @@ function IconoWhatsApp() {
   );
 }
 
+const WHATSAPP = enlaceWhatsApp("Hola, me gustaría hablar con un asesor de autonomIA Lab.");
+
+// Portada (Carlos, 26 oct): primero qué hacemos y las apps para probar; el acceso de miembros pasa al pie.
 export default function Portada() {
   return (
     <>
       <ReenviarEnlace />
-      <nav className={styles.arriba}>
-        <div className={styles.wrap}>
-          <Marca />
-          <p className={styles.miembros}>Miembros</p>
-          <div className={styles.acceso}>
-            <FormularioEntrar />
-            <Link href="/solicitar" className={styles.solicitar}>
-              ¿Aún no eres miembro? <span>Solicitar acceso</span>
-            </Link>
-            <Link href="/recuperar" className={styles.olvido}>
-              ¿Olvidaste tu contraseña?
-            </Link>
+      <header className={styles.arriba}>
+        <Marca />
+      </header>
+
+      <main>
+        <section className={styles.hero}>
+          <div className={styles.halo} aria-hidden="true" />
+          <div className={`${styles.wrap} ${styles.heroDentro}`}>
+            <h1>Tu negocio, con su propia app.</h1>
+            <p className={styles.lema}>Montada en una semana y con alguien que te responde.</p>
+            <p className={styles.texto}>
+              En autonomIA Lab creamos aplicaciones sencillas para bares, entrenadores y negocios de Sevilla. Te la
+              montamos, te la explicamos y la mantenemos.
+            </p>
+            <div className={styles.botones}>
+              <a className={styles.asesor} href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+                <IconoWhatsApp />
+                Escríbenos por WhatsApp
+              </a>
+              <a className={styles.verApps} href="#apps">
+                Ver las apps
+              </a>
+            </div>
           </div>
-        </div>
-      </nav>
+        </section>
 
-      <main className={styles.hero}>
-        <div className={styles.halo} aria-hidden="true" />
-        <div className={`${styles.wrap} ${styles.heroDentro}`}>
-          <h1>Nuestros servicios</h1>
-          <p className={styles.lema}>Inteligencia artificial y aplicaciones a medida</p>
+        <div className={styles.wrap}>
+          <Apps />
+          <Garantia />
 
-          <ul className={styles.perfiles}>
-            {/* Enlace normal (no <Link>): la página de servicios lee ?para= al cargarse. */}
-            {PERFILES.map((p) => (
-              <li key={p.clave}>
-                <a href={`/servicios/?para=${p.clave}`} className={styles.perfil}>
-                  <span className={styles.perfilTexto}>
-                    <strong>{p.boton}</strong>
-                    <span>{p.detalle}</span>
-                  </span>
-                  <span className={styles.flecha} aria-hidden="true">
-                    →
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <a
-            className={styles.asesor}
-            href={enlaceWhatsApp("Hola, me gustaría hablar con un asesor de autonomIA Lab.")}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <IconoWhatsApp />
-            Habla con un asesor
-          </a>
+          <section className={styles.servicios} aria-labelledby="t-servicios">
+            <h2 id="t-servicios">Nuestros servicios</h2>
+            <p className={styles.nota}>Inteligencia artificial y aplicaciones a medida</p>
+            <ul className={styles.perfiles}>
+              {PERFILES.map((p) => (
+                <li key={p.clave}>
+                  <a href={`/servicios/?para=${p.clave}`} className={styles.perfil}>
+                    <span className={styles.perfilTexto}>
+                      <strong>{p.boton}</strong>
+                      <span>{p.detalle}</span>
+                    </span>
+                    <span className={styles.flecha} aria-hidden="true">
+                      →
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       </main>
-
-      <footer className={styles.pie}>
-        <p>autonomIA Lab — Inteligencia artificial y aplicaciones a medida para autónomos, pymes y empresas en España.</p>
-      </footer>
     </>
   );
 }
